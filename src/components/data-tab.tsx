@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { toast } from "@/hooks/use-toast"
-import { Button } from "@/components/ui/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "./ui/button";
 import {
     Form,
     FormControl,
@@ -13,60 +12,73 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-
+// Validation schema
 const FormSchema = z.object({
     title: z.string().min(2, { message: "Title must be at least 2 characters." }),
     phase: z.string().min(1, { message: "Phase is required." }),
-    date: z.date({ required_error: "Date is required." }),
+    date: z.string().min(1, { message: "Date is required." }),
     author: z.string().min(2, { message: "Author name must be at least 2 characters." }),
     client: z.string().min(2, { message: "Client name must be at least 2 characters." }),
     country: z.string().min(2, { message: "Country must be at least 2 characters." }),
     biddingEntity: z.string().min(2, { message: "Bidding entity is required." }),
     technicalUnit: z.string().min(2, { message: "Technical unit is required." }),
     consortiumRole: z.string().min(2, { message: "Consortium role is required." }),
-    deadline: z.date({ required_error: "Deadline is required." }),
-})
+    deadline: z.string().min(1, { message: "Deadline is required." }),
+});
 
-const countryNames = ["Kenya"]
+const countryNames = ["Kenya", "Uganda", "Tanzania"];
 
-export default function
-    DataTab() {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
+// Utility function to format Date to string in a consistent way
+const formatDateToString = (date: Date): string => {
+    const newDate = new Date(date);
+    newDate.setUTCHours(0, 0, 0, 0); // Ensure it's at midnight in UTC
+    return newDate.toISOString().split("T")[0]; // Return only the date part (YYYY-MM-DD)
+};
+
+// Main form component
+export default function DataTab() {
+    // Load the form data from localStorage if available
+    const loadFormData = () => {
+        const savedData = localStorage.getItem("formData");
+        return savedData ? JSON.parse(savedData) : {
             title: "",
             phase: "",
-            date: new Date(),
+            date: formatDateToString(new Date()),
             author: "",
             client: "",
             country: "",
             biddingEntity: "",
             technicalUnit: "",
             consortiumRole: "",
-            deadline: new Date(),
-        },
-    })
+            deadline: formatDateToString(new Date()),
+        };
+    };
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
-    }
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: loadFormData(), // Load initial state from localStorage
+    });
+
+    // Save form data to localStorage whenever the form values change
+    const handleFieldChange = (fieldName: keyof z.infer<typeof FormSchema>, value: any) => {
+        // Save form data to localStorage
+        localStorage.setItem("formData", JSON.stringify(form.getValues()));
+    };
+
+    // Submit the form and handle the data
+    const onSubmit = () => {
+        // Perform form submission actions (e.g., send the form data to an API)
+        console.log(form.getValues());
+    };
 
     return (
-
         <Form {...form}>
             <Card className="shadow-none">
                 <CardHeader>
@@ -74,8 +86,8 @@ export default function
                     <CardDescription>General description of the project.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        {/* Title Field (Full Width) */}
+                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
+                        {/* Title Field */}
                         <FormField
                             control={form.control}
                             name="title"
@@ -83,21 +95,28 @@ export default function
                                 <FormItem>
                                     <FormLabel>Title</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Sustainable Business for Uganda (SB4U) Platform" {...field} />
+                                        <Input
+                                            placeholder="Enter project title"
+                                            {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                handleFieldChange("title", e.target.value);
+                                            }}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        {/* Two Columns Layout */}
+                        {/* Multi-field Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             {[
-                                { label: "Author", fieldName: "author", placeholder: "Yovan Muhsin" },
-                                { label: "Client", fieldName: "client", placeholder: "EU" },
-                                { label: "Bidding Entity", fieldName: "biddingEntity", placeholder: "Uganda" },
-                                { label: "Technical Unit", fieldName: "technicalUnit", placeholder: "Private Sector Development" },
-                                { label: "Consortium Role", fieldName: "consortiumRole", placeholder: "Lead" },
+                                { label: "Author", fieldName: "author", placeholder: "Enter author name" },
+                                { label: "Client", fieldName: "client", placeholder: "Enter client name" },
+                                { label: "Bidding Entity", fieldName: "biddingEntity", placeholder: "Enter bidding entity" },
+                                { label: "Technical Unit", fieldName: "technicalUnit", placeholder: "Enter technical unit" },
+                                { label: "Consortium Role", fieldName: "consortiumRole", placeholder: "Enter consortium role" },
                             ].map(({ label, fieldName, placeholder }) => (
                                 <FormField
                                     key={fieldName}
@@ -107,7 +126,14 @@ export default function
                                         <FormItem>
                                             <FormLabel>{label}</FormLabel>
                                             <FormControl>
-                                                <Input placeholder={placeholder} {...field} />
+                                                <Input
+                                                    placeholder={placeholder}
+                                                    {...field}
+                                                    onChange={(e) => {
+                                                        field.onChange(e);
+                                                        handleFieldChange(fieldName as keyof z.infer<typeof FormSchema>, e.target.value);
+                                                    }}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -123,22 +149,19 @@ export default function
                                     <FormItem>
                                         <FormLabel>Stage</FormLabel>
                                         <Select
-                                            onValueChange={field.onChange}
+                                            onValueChange={(value) => {
+                                                field.onChange(value);
+                                                handleFieldChange("phase", value);
+                                            }}
                                             value={field.value}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Select a stage" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Expression of Interest">
-                                                    Expression of Interest
-                                                </SelectItem>
-                                                <SelectItem value="Capture">
-                                                    Capture
-                                                </SelectItem>
-                                                <SelectItem value="Tender stage">
-                                                    Tender stage
-                                                </SelectItem>
+                                                <SelectItem value="Expression of Interest">Expression of Interest</SelectItem>
+                                                <SelectItem value="Capture">Capture</SelectItem>
+                                                <SelectItem value="Tender stage">Tender stage</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -154,7 +177,10 @@ export default function
                                     <FormItem>
                                         <FormLabel>Country</FormLabel>
                                         <Select
-                                            onValueChange={field.onChange}
+                                            onValueChange={(value) => {
+                                                field.onChange(value);
+                                                handleFieldChange("country", value);
+                                            }}
                                             value={field.value}
                                         >
                                             <SelectTrigger>
@@ -173,7 +199,7 @@ export default function
                                 )}
                             />
 
-                            {/* Date Picker for "date" */}
+                            {/* Date Picker */}
                             <FormField
                                 control={form.control}
                                 name="date"
@@ -184,7 +210,7 @@ export default function
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Input
-                                                        value={field.value?.toLocaleDateString() || ""}
+                                                        value={field.value}
                                                         readOnly
                                                         placeholder="Select a date"
                                                     />
@@ -193,19 +219,22 @@ export default function
                                             <PopoverContent>
                                                 <Calendar
                                                     mode="single"
-                                                    selected={field.value}
-                                                    onSelect={(date) => field.onChange(date)}
-                                                    disabled={(date) => date < new Date()}
+                                                    selected={new Date(field.value)}
+                                                    onSelect={(date) => {
+                                                        const formattedDate = formatDateToString(date);
+                                                        field.onChange(formattedDate);
+                                                        handleFieldChange("date", formattedDate);
+                                                    }}
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the date of generation for the report.</FormDescription>
+                                        <FormDescription>Select the project's start date.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
 
-                            {/* Date Picker for "deadline" */}
+                            {/* Deadline Picker */}
                             <FormField
                                 control={form.control}
                                 name="deadline"
@@ -216,7 +245,7 @@ export default function
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Input
-                                                        value={field.value?.toLocaleDateString() || ""}
+                                                        value={field.value}
                                                         readOnly
                                                         placeholder="Select a deadline"
                                                     />
@@ -225,24 +254,27 @@ export default function
                                             <PopoverContent>
                                                 <Calendar
                                                     mode="single"
-                                                    selected={field.value}
-                                                    onSelect={(date) => field.onChange(date)}
-                                                    disabled={(date) => date < new Date()} // Disable past dates
+                                                    selected={new Date(field.value)}
+                                                    onSelect={(date) => {
+                                                        const formattedDate = formatDateToString(date);
+                                                        field.onChange(formattedDate);
+                                                        handleFieldChange("deadline", formattedDate);
+                                                    }}
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project deadline.</FormDescription>
+                                        <FormDescription>Select the project's deadline.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
-
-                        <Button type="submit">Submit</Button>
+                        <div className="mt-4">
+                            <Button type="submit">Submit</Button>
+                        </div>
                     </form>
                 </CardContent>
             </Card>
         </Form>
-
-    )
+    );
 }

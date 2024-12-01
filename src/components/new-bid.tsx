@@ -1,3 +1,4 @@
+'use-client'
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -12,6 +13,7 @@ import { CustomTabs } from "./new-bid-tabs"
 
 
 export default function NewBid() {
+    // this needs to be the stored state of the bids
     return (
         <Dialog>
             <DialogTrigger asChild>

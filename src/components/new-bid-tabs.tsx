@@ -29,11 +29,6 @@ export function CustomTabs() {
             </TabsContent>
             <TabsContent value="risk">
                 <Risk />
-                <div className="">
-                    <Button>
-                        Submit changes
-                    </Button>
-                </div>
             </TabsContent>
         </Tabs>
     )
