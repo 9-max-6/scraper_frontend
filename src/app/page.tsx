@@ -6,6 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import Bids from "@/components/bids"
 
 export default function Page() {
   return (
@@ -23,7 +24,7 @@ export default function Page() {
           <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
             <div className="flex flex-col gap-2">
               <div>
-                Filters
+                <Bids />
               </div>
 
             </div>

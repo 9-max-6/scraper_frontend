@@ -1,6 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast"
+import { DataTabProps } from "./new-bid";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -15,13 +19,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Loader2 } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import { format } from "date-fns";
+import axios from "axios";
+import { Textarea } from "./ui/textarea";
 // Validation schema
 const FormSchema = z.object({
     title: z.string().min(2, { message: "Title must be at least 2 characters." }),
+    des: z.string().min(100, { message: "Description must be at least 20 characters." }),
     phase: z.string().min(1, { message: "Phase is required." }),
     date: z.string().min(1, { message: "Date is required." }),
     author: z.string().min(2, { message: "Author name must be at least 2 characters." }),
@@ -35,20 +43,22 @@ const FormSchema = z.object({
 
 const countryNames = ["Kenya", "Uganda", "Tanzania"];
 
-// Utility function to format Date to string in a consistent way
-const formatDateToString = (date: Date): string => {
-    const newDate = new Date(date);
-    newDate.setUTCHours(0, 0, 0, 0); // Ensure it&apos;s at midnight in UTC
-    return newDate.toISOString().split("T")[0]; // Return only the date part (YYYY-MM-DD)
-};
+
 
 // Main form component
-export default function DataTab() {
+export default function DataTab(props: DataTabProps) {
     // Load the form data from localStorage if available
+
+    const { open, setopen } = props
+    const [loading, setloading] = useState(false)
+    const { toast } = useToast()
+
+
     const loadFormData = () => {
         const savedData = localStorage.getItem("formData");
         return savedData ? JSON.parse(savedData) : {
             title: "",
+            des: "",
             phase: "",
             date: formatDateToString(new Date()),
             author: "",
@@ -73,14 +83,43 @@ export default function DataTab() {
     };
 
     // Submit the form and handle the data
-    const onSubmit = () => {
-        // Perform form submission actions (e.g., send the form data to an API)
-        console.log(form.getValues());
+    const onSubmit = async () => {
+        const formData = localStorage.getItem("formData");
+        if (formData) {
+            const parsedData = JSON.parse(formData);
+            try {
+                setloading(true)
+                const response = await axios.post('/api/bid/', parsedData);
+                toast({
+                    title: "Success!",
+                    description: "Bid added successfully",
+                    className: "h-24 text-lg",
+                    action: (
+                        <Button variant="destructive" onClick={() => { console.log("Undo") }}>
+                            Undo
+                        </Button>
+                    )
+                })
+                setopen(false);
+            } catch (error) {
+                console.error("Error submitting form data:", error);
+                toast({
+                    title: "Error!",
+                    description: "There was an error submitting the bid",
+                    variant: "destructive",
+                    action: (
+                        <Button onClick={onSubmit} variant="muted">
+                            Try again
+                        </Button>
+                    )
+                })
+            }
+        }
     };
 
     return (
         <Form {...form}>
-            <Card className="">
+            <Card className="shadow-none border-none">
                 <CardHeader>
                     <CardTitle>Project Datasheet</CardTitle>
                     <CardDescription>General description of the project.</CardDescription>
@@ -108,6 +147,7 @@ export default function DataTab() {
                                 </FormItem>
                             )}
                         />
+
 
                         {/* Multi-field Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -159,8 +199,8 @@ export default function DataTab() {
                                                 <SelectValue placeholder="Select a stage" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Expression of Interest">Expression of Interest</SelectItem>
                                                 <SelectItem value="Capture">Capture</SelectItem>
+                                                <SelectItem value="Expression of Interest">Expression of Interest</SelectItem>
                                                 <SelectItem value="Tender stage">Tender stage</SelectItem>
                                             </SelectContent>
                                         </Select>
@@ -199,40 +239,6 @@ export default function DataTab() {
                                 )}
                             />
 
-                            {/* Date Picker */}
-                            <FormField
-                                control={form.control}
-                                name="date"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Date</FormLabel>
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Input
-                                                        value={field.value}
-                                                        readOnly
-                                                        placeholder="Select a date"
-                                                    />
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent>
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={new Date(field.value)}
-                                                    onSelect={(date) => {
-                                                        const formattedDate = formatDateToString(date);
-                                                        field.onChange(formattedDate);
-                                                        handleFieldChange("date", formattedDate);
-                                                    }}
-                                                />
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormDescription>Select the project&apos;s start date.</FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
 
                             {/* Deadline Picker */}
                             <FormField
@@ -245,7 +251,7 @@ export default function DataTab() {
                                             <PopoverTrigger asChild>
                                                 <FormControl>
                                                     <Input
-                                                        value={field.value}
+                                                        value={field.value ? format(new Date(field.value), "yyyy-MM-dd") : ""}
                                                         readOnly
                                                         placeholder="Select a deadline"
                                                     />
@@ -254,29 +260,61 @@ export default function DataTab() {
                                             <PopoverContent>
                                                 <Calendar
                                                     mode="single"
-                                                    selected={new Date(field.value)}
+                                                    selected={field.value ? new Date(field.value) : undefined}
                                                     onSelect={(date) => {
-                                                        const formattedDate = formatDateToString(date);
-                                                        field.onChange(formattedDate);
-                                                        handleFieldChange("deadline", formattedDate);
+                                                        if (date) {
+                                                            const formattedDate = format(date, "yyyy-MM-dd");
+                                                            field.onChange(formattedDate); // Update the form value
+                                                        }
                                                     }}
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project&apos;s deadline.</FormDescription>
+                                        <FormDescription>Select the project's deadline.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+
+
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="des"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Description</FormLabel>
+                                    <FormControl>
+                                        <Textarea
+                                            placeholder="Enter project description"
+                                            {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                handleFieldChange("des", e.target.value);
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <div className="w-full flex">
                             <Button type="submit" className="ml-auto">
-                                Submit
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
+                                        {" "} Loading
+                                    </>
+                                ) : (
+                                    <>
+                                        Submit
+                                    </>
+                                )}
                             </Button>
                         </div>
                     </form>
                 </CardContent>
             </Card>
-        </Form>
+        </Form >
     );
 }
