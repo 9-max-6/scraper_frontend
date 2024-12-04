@@ -1,11 +1,6 @@
 import { create } from 'zustand';
 import {
   BidType,
-  BidDataType,
-  CapabilitiesType,
-  CompetitivenessType,
-  CommercialsType,
-  RiskType,
 } from '@/types/types';
 
 /**

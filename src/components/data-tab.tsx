@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "./ui/button";
 import {
     Form,
     FormControl,
@@ -14,6 +13,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -38,7 +38,7 @@ const countryNames = ["Kenya", "Uganda", "Tanzania"];
 // Utility function to format Date to string in a consistent way
 const formatDateToString = (date: Date): string => {
     const newDate = new Date(date);
-    newDate.setUTCHours(0, 0, 0, 0); // Ensure it's at midnight in UTC
+    newDate.setUTCHours(0, 0, 0, 0); // Ensure it&apos;s at midnight in UTC
     return newDate.toISOString().split("T")[0]; // Return only the date part (YYYY-MM-DD)
 };
 
@@ -67,7 +67,7 @@ export default function DataTab() {
     });
 
     // Save form data to localStorage whenever the form values change
-    const handleFieldChange = (fieldName: keyof z.infer<typeof FormSchema>, value: any) => {
+    const handleFieldChange = () => {
         // Save form data to localStorage
         localStorage.setItem("formData", JSON.stringify(form.getValues()));
     };
@@ -80,7 +80,7 @@ export default function DataTab() {
 
     return (
         <Form {...form}>
-            <Card className="shadow-none">
+            <Card className="">
                 <CardHeader>
                     <CardTitle>Project Datasheet</CardTitle>
                     <CardDescription>General description of the project.</CardDescription>
@@ -228,7 +228,7 @@ export default function DataTab() {
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project's start date.</FormDescription>
+                                        <FormDescription>Select the project&apos;s start date.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -263,14 +263,16 @@ export default function DataTab() {
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project's deadline.</FormDescription>
+                                        <FormDescription>Select the project&apos;s deadline.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                         </div>
-                        <div className="mt-4">
-                            <Button type="submit">Submit</Button>
+                        <div className="w-full flex">
+                            <Button type="submit" className="ml-auto">
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </CardContent>

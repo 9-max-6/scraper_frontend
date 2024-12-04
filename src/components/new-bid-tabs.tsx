@@ -1,5 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "./ui/button"
 import DataTab from "./data-tab"
 import Capabilities from "./cap-tab"
 import Competitiveness from "./comp-tab"

@@ -1,15 +1,16 @@
 'use-client'
-import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { CustomTabs } from "./new-bid-tabs"
+import { Plus } from "lucide-react";
+import DataTab from "./data-tab";
+
 
 
 export default function NewBid() {
@@ -17,7 +18,7 @@ export default function NewBid() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">New profile</Button>
+                <Plus className="mr-2 text-blue-500 h-24 w-24 cursor-pointer" />
             </DialogTrigger>
             <DialogContent className="w-[90%] overflow-scroll max-w-[1024px] h-screen flex flex-col gap-4">
                 <DialogHeader>
@@ -30,7 +31,7 @@ export default function NewBid() {
                 </DialogHeader>
 
                 {/* My custom tabs */}
-                <CustomTabs />
+                <DataTab />
                 {/* My custom tabs */}
             </DialogContent>
         </Dialog >
