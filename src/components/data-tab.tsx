@@ -26,6 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { format } from "date-fns";
 import axios from "axios";
 import { Textarea } from "./ui/textarea";
+import { bidStore } from "@/store/bid-store";
 // Validation schema
 const FormSchema = z.object({
     title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -52,7 +53,7 @@ export default function DataTab(props: DataTabProps) {
     const { open, setopen } = props
     const [loading, setloading] = useState(false)
     const { toast } = useToast()
-
+    const incrementBid = bidStore((state) => state.incrementBid);
 
     const loadFormData = () => {
         const savedData = localStorage.getItem("formData");
@@ -87,6 +88,7 @@ export default function DataTab(props: DataTabProps) {
         const formData = localStorage.getItem("formData");
         if (formData) {
             const parsedData = JSON.parse(formData);
+
             try {
                 setloading(true)
                 const response = await axios.post('/api/bid/', parsedData);
@@ -101,6 +103,7 @@ export default function DataTab(props: DataTabProps) {
                     )
                 })
                 setopen(false);
+                incrementBid();
             } catch (error) {
                 console.error("Error submitting form data:", error);
                 toast({

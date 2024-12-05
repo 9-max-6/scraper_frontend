@@ -1,26 +1,21 @@
-import { create } from 'zustand';
-import {
-  BidType,
-} from '@/types/types';
 
 /**
  * Bid Store
  * Handles the list of bids and allows initialization and adding new bids.
  */
+import { create } from "zustand";
+
+/**
+ * Bid Store
+ * Tracks the count of bids and allows incrementing the count on submissions.
+ */
 export const bidStore = create<{
-  bids: BidType[];
-  bidsInit: (bidsServed: BidType[]) => void;
-  setBid: (newBid: BidType) => void;
-  getBids: () => BidType[];
+  bidCount: number;
+  incrementBid: () => void;
+  getBidCount: () => number;
 }>((set, get) => ({
-  bids: [],
-  bidsInit: (bidsServed = []) =>
-    set((state) => ({
-      bids: bidsServed.length === 0 ? state.bids : [...bidsServed],
-    })),
-  setBid: (newBid) =>
-    set((state) => ({
-      bids: [...state.bids, newBid],
-    })),
-  getBids: () => get().bids,
+  bidCount: 0, // Initialize the count to 0
+  incrementBid: () => set((state) => ({ bidCount: state.bidCount + 1 })), // Increment count
+  getBidCount: () => get().bidCount, // Retrieve the current count
 }));
+
