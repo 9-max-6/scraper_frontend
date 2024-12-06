@@ -48,18 +48,18 @@ export default function Capabilities() {
     };
 
     return (
-        <div>
+        <div className="overflow-scroll">
             <div className="flex">
                 <Button variant="secondary" className="ml-auto">
                     Score: {capScore}
                 </Button>
             </div>
             {categories.map((category) => (
-                <div key={category.name} className="mb-8">
+                <div key={category.name} className="mb-8 overflow-scroll">
                     {/* Category Title */}
                     <h3 className="text-xl font-bold mb-4">{category.name} </h3>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
                             const categoryKey = category.tag; // e.g., 'competence', 'country', 'clients'
                             const isSelected = selectedValues[categoryKey] === level.value;

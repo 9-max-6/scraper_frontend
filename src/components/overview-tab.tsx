@@ -1,8 +1,11 @@
+import { BidType } from '@/types/types'
 import React from 'react'
 
-function Overview() {
+function Overview({ props }: { props: BidType }) {
     return (
-        <div>Overview</div>
+        <div className="p-2">
+
+        </div>
     )
 }
 

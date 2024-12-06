@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useState } from "react";
+import { DataTabProps } from "@/types/types";
 import { useToast } from "@/hooks/use-toast"
-import { DataTabProps } from "./new-bid";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -50,28 +50,32 @@ const countryNames = ["Kenya", "Uganda", "Tanzania"];
 export default function DataTab(props: DataTabProps) {
     // Load the form data from localStorage if available
 
-    const { open, setopen } = props
+    const { setopen } = props
     const [loading, setloading] = useState(false)
     const { toast } = useToast()
     const incrementBid = bidStore((state) => state.incrementBid);
 
-    const loadFormData = () => {
-        const savedData = localStorage.getItem("formData");
-        return savedData ? JSON.parse(savedData) : {
-            title: "",
-            des: "",
-            phase: "",
-            date: formatDateToString(new Date()),
-            author: "",
-            client: "",
-            country: "",
-            biddingEntity: "",
-            technicalUnit: "",
-            consortiumRole: "",
-            deadline: formatDateToString(new Date()),
-        };
-    };
+    const detailedView = props.detailedView;
 
+    const loadFormData = () => {
+        const value = localStorage.getItem("formData");
+        if (value === null) {
+            const savedData = localStorage.getItem("formData");
+            return savedData ? JSON.parse(savedData) : {
+                title: "",
+                des: "",
+                phase: "",
+                date: formatDateToString(new Date()),
+                author: "",
+                client: "",
+                country: "",
+                biddingEntity: "",
+                technicalUnit: "",
+                consortiumRole: "",
+                deadline: formatDateToString(new Date()),
+            };
+        };
+    }
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: loadFormData(), // Load initial state from localStorage
@@ -302,18 +306,22 @@ export default function DataTab(props: DataTabProps) {
                             )}
                         />
                         <div className="w-full flex">
-                            <Button type="submit" className="ml-auto">
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
-                                        {" "} Loading
-                                    </>
-                                ) : (
-                                    <>
-                                        Submit
-                                    </>
-                                )}
-                            </Button>
+                            {
+                                !detailedView && (
+                                    <Button type="submit" className="ml-auto">
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
+                                                {" "} Loading
+                                            </>
+                                        ) : (
+                                            <>
+                                                Submit
+                                            </>
+                                        )}
+                                    </Button>
+                                )
+                            }
                         </div>
                     </form>
                 </CardContent>

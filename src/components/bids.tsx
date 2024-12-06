@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { bidStore } from "@/store/bid-store";
 import DataCard from "./data-card";
+import { BidTypeArray } from "@/types/types";
 
 async function fetchOpportunities() {
-    const response = await fetch("/api/bid");
+    const response = await fetch("/api/bids");
     const data = await response.json();
 
     if (response.ok) {
@@ -16,7 +17,7 @@ async function fetchOpportunities() {
 }
 
 function Bids() {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<BidTypeArray>([]);
     const [loading, setLoading] = useState(true);
     const bidCount = bidStore((state) => state.bidCount);
 
@@ -41,7 +42,8 @@ function Bids() {
     }
 
     return (
-        <div className="flex flex-col gap-3 w-2/3 mx-auto">
+        <div className="flex flex-col gap-3 w-full">
+            {/* Add url to the actual opportunity */}
             {data.map((entry, index) => (
                 <DataCard key={index} entry={entry} />
             ))}

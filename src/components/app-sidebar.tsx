@@ -17,7 +17,6 @@ import {
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -91,29 +90,24 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="persistent" className="items-center border-none" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            {/* <SidebarMenuButton size="lg" asChild>
-              <Image
-                src="/dt_global_logo.jpeg" // Reference the image from the public directory
-                layout="responsive" // Maintain aspect ratio
-                width={50} // Original width of the image
-                height={50} // Original height of the image
-                alt="DT Global Logo"
-              />
+    <Sidebar variant="persistent" className="items-center border-none ml-36 bg-background" {...props}>
+      <SidebarMenu >
+        <SidebarMenuItem className="bg-background">
+          <Image
+            src="/dt.png"
+            layout="responsive" // Reference the image from the public directory
+            height={100}// Original height of the imag
+            width={100}
+            alt="DT Global Logo"
+          />
 
-            </SidebarMenuButton> */}
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent className="items-center">
+        </SidebarMenuItem>
+      </SidebarMenu>
+      <SidebarContent className="pl-6 bg-background">
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="pl-6 bg-background h-[1/8]">
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>

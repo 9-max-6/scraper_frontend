@@ -1,33 +1,103 @@
-import React from "react";
+'use client'
 import {
-    Drawer,
-    DrawerClose,
-    DrawerContent,
-    DrawerDescription,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
-import { useState } from "react";
+    Card,
+    CardContent,
+    CardTitle,
+    CardHeader,
+    CardFooter,
+    CardDescription
+} from "./ui/card";
+import Image from 'next/image'
+import DataCardFooter from "./data-card-footer";
+import { Badge } from "./ui/badge";
+import { Separator } from "./ui/separator";
+import { DollarSign, Clock, Target, User, Bookmark } from "lucide-react";
+import { BidType } from "@/types/types";
 import { Button } from "./ui/button";
-import DataCardTrigger from "./data-card-trigger";
-import DrawerTabs from "./drawer-tabs";
-function DataCard({ entry }) {
-    const [open, setopen] = useState(false)
+
+export default function DataCard({ entry }: { entry: BidType }) {
+    // Do the math to determine if the deadline is passed or not.
+    // const deadlinePassed = (new Date() - entry.deadline) < 0
     return (
-        <Drawer open={open} onOpenChange={setopen}>
-            <DrawerTrigger>
-                <DataCardTrigger entry={entry} setopen={setopen} />
-            </DrawerTrigger>
-            <DrawerContent className="h-[90vh] overflow-scroll min-h-[90vh]">
-                <div className="mx-auto w-2/3 relative">
-                    <DrawerTabs entry={entry} />
+
+        <Card className="box-content">
+            <CardHeader>
+                <div className="flex gap-2 justify-between w-full">
+                    <div className="grow-0">
+                        <Image
+                            src="/dt_global_logo.jpeg" // Reference the image from the public directory
+                            width={60} // Original width of the image
+                            height={60} // Original height of the image
+                            alt="DT Global Logo"
+                        />
+                    </div>
+                    <div className="text-left grow self-start flex flex-col gap-2">
+                        <CardTitle className="text-xl">
+                            {entry.bidData.title}
+                        </CardTitle>
+                        <CardDescription>
+                            {entry.bidData.client}
+                        </CardDescription>
+                    </div>
+
                 </div>
-            </DrawerContent>
-        </Drawer>
 
-    );
+
+            </CardHeader>
+            <CardContent className="relative ml-12">
+                <Separator className="mb-2" />
+                <div className="grid grid-cols-4 gap-2 justify-between">
+                    <div className="flex col-span-1  grow-1 flex-col gap-2">
+                        <li className="list-none flex items-center gap-1">
+                            <DollarSign /> {entry.metrics.commercials.contract ? entry.metrics.commercials.contract : "Missing..."}
+                        </li>
+                        <li className="list-none flex items-center gap-1">
+                            <Clock /> {entry.metrics.commercials.project ? entry.metrics.commercials.project : "Missing..."}
+                        </li>
+                        <li className="list-none flex items-center gap-1">
+                            <Target /> {entry.bidData.deadline ? entry.bidData.deadline : "Missing..."}
+                        </li>
+
+                    </div>
+
+
+                    <div className="col-span-3 text-left">
+                        <CardDescription className="text-semibold">
+
+                            {entry.bidData.des}
+                        </CardDescription>
+                        <CardDescription className="my-2 flex gap-2 items-center text-sm">
+                            <User />
+                            {entry.bidData.author}
+
+                        </CardDescription>
+                        <CardDescription>
+                            <Badge className="my-2 self-start">
+                                {entry.bidData.phase}
+                            </Badge>
+                        </CardDescription>
+                    </div>
+                </div>
+            </CardContent>
+            <Separator />
+            <CardFooter className="bg-muted flex items-center py-2">
+
+                {/* Updated at: {entry.date} */}
+                {/* Add a variable to the backend that tracks when the opportunity was
+                updated and when it was created. */}
+                <div className="mr-auto">
+                    <CardDescription>
+                        Updated at:{" "}{entry.bidData.date}
+                    </CardDescription>
+                </div>
+                <div className="ml-auto flex gap-2">
+                    <Button variant="link">
+                        <Bookmark size={48} />
+                    </Button>
+                    <DataCardFooter entry={entry} />
+                </div>
+            </CardFooter>
+        </Card>
+
+    )
 }
-
-export default DataCard;

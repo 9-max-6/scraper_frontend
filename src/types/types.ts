@@ -1,6 +1,7 @@
 // General bid data type
 export interface BidDataType {
     title: string; // Title of the bid
+    id: number; // Title of the bid
     phase: string; // Current phase of the bid
     date: string; // Date of the bid
     author: string; // Author of the bid
@@ -10,6 +11,7 @@ export interface BidDataType {
     technicalUnit: string; // Technical unit responsible
     consortiumRole: string; // Role in the consortium
     deadline: string; // Submission deadline
+    des: string; // Submission deadline
   }
   
   // Capabilities metrics type
@@ -58,4 +60,12 @@ export interface BidDataType {
       risk: RiskType; // Risk metrics
     };
   }
-  
+
+export type BidTypeArray = BidType[];
+
+export interface DataTabProps {
+  open: boolean;
+  setopen: React.Dispatch<React.SetStateAction<boolean>>;
+  entry: BidType | null;
+  detailedView: boolean;
+}
