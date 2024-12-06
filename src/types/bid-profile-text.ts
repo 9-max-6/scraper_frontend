@@ -245,7 +245,7 @@ export const BidProfileText = {
     Risk: [
         {
             name: "Scope of Work",
-            tag: 'scopeOfWork',
+            tag: 'scope',
             levels: [
                 { label: "Project scope is unclear and expectations on deliverables are unclear", value: 0 },
                 { label: "Project scope is clear but expectations on deliverables are not realistic", value: 1 },
@@ -255,7 +255,7 @@ export const BidProfileText = {
         },
         {
             name: "Ease of Doing Business",
-            tag: 'easeOfDoingBusiness',
+            tag: 'ease',
             levels: [
                 { label: "We don't know if the client is difficult to work with OR the client is extremely difficult to work with", value: 0 },
                 { label: "Whilst the client is difficult to work with, we can still work with them", value: 1 },
@@ -277,7 +277,7 @@ export const BidProfileText = {
         },
         {
             name: "Reputational risk",
-            tag: 'reputationalRisk',
+            tag: 'reputational',
             levels: [
                 { label: "Project's reputational risks are considered high", value: 0 },
                 { label: "Project's reputational risks are considered medium", value: 1 },

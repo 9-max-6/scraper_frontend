@@ -19,34 +19,33 @@ import Capabilities from "./cap-tab"
 import Competitiveness from "./comp-tab"
 import Commercials from "./comm-tab"
 import Risk from "./risk-tab"
-import Overview from "./overview-tab"
-import DataTab from "./data-tab"
 import { DataTabProps } from "@/types/types"
+import Overview from "./overview-tab"
 
 export default function DrawerTabs({ props }: { props: DataTabProps }) {
     return (
-        <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid top-5 w-full grid-cols-5">
-                <TabsTrigger value="overview">Datasheet</TabsTrigger>
+        <Tabs defaultValue="overview" className="p-8">
+            <TabsList className="grid sticky z-20 top-0 grid-cols-5">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="cap">Capabilities</TabsTrigger>
                 <TabsTrigger value="comp">Competitiveness</TabsTrigger>
                 <TabsTrigger value="comm">Commercials</TabsTrigger>
                 <TabsTrigger value="risk">Risk</TabsTrigger>
             </TabsList>
-            <TabsContent className="overflow-scroll " value="overview">
-                <DataTab {...props} />
+            <TabsContent value="cap" className="z-0">
+                <Capabilities props={props} />
             </TabsContent>
-            <TabsContent value="cap">
-                <Capabilities />
+            <TabsContent value="overview">
+                <Overview props={props} />
             </TabsContent>
             <TabsContent value="comp">
-                <Competitiveness />
+                <Competitiveness props={props} />
             </TabsContent>
             <TabsContent value="comm">
-                <Commercials />
+                <Commercials props={props} />
             </TabsContent>
             <TabsContent value="risk">
-                <Risk />
+                <Risk props={props} />
             </TabsContent>
         </Tabs>
     )

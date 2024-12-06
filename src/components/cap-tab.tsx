@@ -3,17 +3,16 @@
 import { useState, useEffect } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-
+import { DataTabProps } from "@/types/types";
 // Sample categories with levels and descriptions
 
 const categories = BidProfileText.Capabilities
 
-export default function Capabilities() {
+export default function Capabilities({ props }: { props: DataTabProps }) {
     const [selectedValues, setSelectedValues] = useState({
-        competence: 0,
-        country: 0,
-        clients: 0,
+        competence: props.entry?.metrics.capabilities.competence,
+        country: props.entry?.metrics.capabilities.country,
+        clients: props.entry?.metrics.capabilities.clients,
     });
 
 
@@ -27,16 +26,6 @@ export default function Capabilities() {
         setcapScore(overallScore)
     }
 
-    // Load stored data from localStorage when the component mounts
-    useEffect(() => {
-        const savedData = localStorage.getItem("Capabilities");
-        if (savedData) {
-            setSelectedValues(JSON.parse(savedData));
-        }
-    }, []);
-
-    // have to call updatescore when selectedvalues change
-    // setState is async
     useEffect(() => {
         updateScore()
     }, [selectedValues])

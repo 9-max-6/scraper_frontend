@@ -1,9 +1,9 @@
-import { BidType } from '@/types/types'
+import { DataTabProps } from '@/types/types'
 import React from 'react'
 
-function Overview({ props }: { props: BidType }) {
+function Overview({ props }: { props: DataTabProps }) {
     return (
-        <div className="p-2">
+        <div className="min-h-[100vh] p-2">
 
         </div>
     )
