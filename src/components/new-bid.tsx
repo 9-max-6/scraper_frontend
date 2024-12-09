@@ -5,7 +5,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DataTab from "./data-tab";
 import { DataTabProps } from "@/types/types";
 

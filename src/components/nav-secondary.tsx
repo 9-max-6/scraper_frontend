@@ -1,5 +1,4 @@
 import * as React from "react"
-import { type LucideIcon } from "lucide-react"
 import { Button } from "./ui/button"
 
 export function NavSecondary({ items }) {

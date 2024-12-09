@@ -1,4 +1,3 @@
-import process from "process"
 
 export const BidProfileText = {
     Capabilities: [

@@ -13,15 +13,21 @@ import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
 import { DollarSign, Clock, Target, User, Bookmark } from "lucide-react";
 import { BidType } from "@/types/types";
+import { useRouter } from 'next/navigation'; // Import the router for navigation
 import { Button } from "./ui/button";
 
 export default function DataCard({ entry }: { entry: BidType }) {
+    const router = useRouter();
+    // Initialize the router for navigation
     // Do the math to determine if the deadline is passed or not.
     // const deadlinePassed = (new Date() - entry.deadline) < 0
     return (
 
         <Card className="box-content">
-            <CardHeader>
+            <CardHeader className="cursor-pointer" onClick={() => {
+                router.push(`/bids/${entry.bidData.id}`); // Navigate to the opportunity details page
+            }
+            }>
                 <div className="flex gap-2 justify-between w-full">
                     <div className="grow-0">
                         <Image
@@ -72,7 +78,11 @@ export default function DataCard({ entry }: { entry: BidType }) {
 
                         </CardDescription>
                         <CardDescription>
-                            <Badge className="my-2 self-start">
+                            <Badge className={`my-2 hover:${entry.bidData.phase === 'Capture' ?
+                                "bg-yellow-500" : (entry.bidData.phase === "Expression of Interest" ?
+                                    "bg-green-400" : "")} self-start ${entry.bidData.phase === 'Capture' ?
+                                        "bg-yellow-500" : (entry.bidData.phase === "Expression of Interest" ?
+                                            "bg-green-400" : "")}`} >
                                 {entry.bidData.phase}
                             </Badge>
                         </CardDescription>
@@ -90,7 +100,7 @@ export default function DataCard({ entry }: { entry: BidType }) {
                         Updated at:{" "}{entry.bidData.date}
                     </CardDescription>
                 </div>
-                <div className="ml-auto flex gap-2">
+                <div className="ml-auto flex ">
                     <Button variant="link">
                         <Bookmark size={48} />
                     </Button>

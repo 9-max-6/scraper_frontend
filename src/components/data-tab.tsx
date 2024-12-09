@@ -45,7 +45,6 @@ const FormSchema = z.object({
 const countryNames = ["Kenya", "Uganda", "Tanzania"];
 
 
-
 // Main form component
 export default function DataTab(props: DataTabProps) {
     // Load the form data from localStorage if available
@@ -57,6 +56,13 @@ export default function DataTab(props: DataTabProps) {
 
     const detailedView = props.detailedView;
 
+    // Utility function to format a Date object to a string
+    function formatDateToString(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
     const loadFormData = () => {
         const value = localStorage.getItem("formData");
         if (value === null) {
@@ -95,7 +101,7 @@ export default function DataTab(props: DataTabProps) {
 
             try {
                 setloading(true)
-                const response = await axios.post('/api/bid/', parsedData);
+                await axios.post('/api/bids/', parsedData);
                 toast({
                     title: "Success!",
                     description: "Bid added successfully",
@@ -277,7 +283,7 @@ export default function DataTab(props: DataTabProps) {
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project's deadline.</FormDescription>
+                                        <FormDescription>Select the project&apos;s deadline.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}

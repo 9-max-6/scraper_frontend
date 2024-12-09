@@ -1,7 +1,7 @@
 import { BidType, DataTabProps } from '@/types/types'
 import React from 'react'
 
-function OverviewTab({ props }: { props: DataTabProps }) {
+function Overview({ props }: { props: BidType }) {
     return (
         <div className="min-h-[100vh] p-2">
             {JSON.stringify(props)}
@@ -9,4 +9,4 @@ function OverviewTab({ props }: { props: DataTabProps }) {
     )
 }
 
-export default OverviewTab
+export default Overview

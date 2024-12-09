@@ -1,4 +1,5 @@
-
+import axios from "axios";
+import { AggregatedBidArrayType } from "@/types/types";
 /**
  * Bid Store
  * Handles the list of bids and allows initialization and adding new bids.
@@ -19,3 +20,26 @@ export const bidStore = create<{
   getBidCount: () => get().bidCount, // Retrieve the current count
 }));
 
+
+
+export const aggregatedBidsStore = create<{
+  aggregatedBids: AggregatedBidArrayType;
+  getAggregatedBids: () => AggregatedBidArrayType;
+  aggregatedBidsInit: () => Promise<void>;
+}>((set, get) => ({
+  // Initial state
+  aggregatedBids: [],
+
+  // Getter to return the current state of aggregatedBids
+  getAggregatedBids: () => get().aggregatedBids,
+
+  // Function to initialize and fetch aggregated bids from the API
+  aggregatedBidsInit: async () => {
+    try {
+      const response = await axios.get('/api/search');
+      set({ aggregatedBids: response.data.data }); // Set the fetched bids to the store
+    } catch (error) {
+      console.error('Error fetching aggregated bids:', error);
+    }
+  },
+}));

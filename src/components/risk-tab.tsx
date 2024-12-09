@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { bidStore } from '@/store/bid-store'; // Assuming this is your Zustand store
 import { BidProfileText } from '@/types/bid-profile-text';
 import { DataTabProps } from '@/types/types';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 // Sample categories with levels and descriptions for Risk and other metrics
 const categories = BidProfileText.Risk
 
@@ -17,17 +17,18 @@ export default function Risk({ props }: { props: DataTabProps }) {
     });
     const [score, setScore] = useState<number | null>(null);
 
-    const calculateScore = () => {
+    const calculateScore = useCallback(() => {
         const totalScore = categories.reduce((sum, category) => {
             const selectedLevel = category.levels.find((level) => level.value === selectedValues[category.tag]);
             return sum + (selectedLevel ? selectedLevel.value * category.weight : 0);
         }, 0);
         setScore(totalScore);
-    };
+    }, [selectedValues]);
 
     useEffect(() => {
         calculateScore();
-    }, [selectedValues]);
+    }, [selectedValues, calculateScore]);
+
 
     const handleSelect = (category: string, value: number) => {
         const updatedValues = { ...selectedValues, [category]: value };
@@ -42,11 +43,16 @@ export default function Risk({ props }: { props: DataTabProps }) {
                 <Button variant="secondary">Score: {score}</Button>
             </div>
             {categories.map((category) => (
-                <div key={category.name} className="mb-8 overflow-scroll">
+                <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
                     {/* Category Title */}
-                    <h3 className="text-xl font-bold mb-4">{category.name} </h3>
+                    <CardHeader>
+                        <CardTitle>
+                            {category.name}
+                        </CardTitle>
+                    </CardHeader>
 
-                    <div className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <CardContent className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
                             const categoryKey = category.tag;
                             const isSelected = selectedValues[categoryKey] === level.value;
@@ -54,14 +60,14 @@ export default function Risk({ props }: { props: DataTabProps }) {
                                 <div
                                     key={index}
                                     onClick={() => handleSelect(categoryKey, level.value)}
-                                    className={`cursor-pointer p-6 rounded-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
+                                    className={`cursor-pointer p-6  rounded-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-muted'}`}
                                 >
                                     {level.label}
                                 </div>
                             );
                         })}
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
             ))}
         </div>
     );

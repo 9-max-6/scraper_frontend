@@ -2,7 +2,6 @@
 
 import {
   Folder,
-  MoreHorizontal,
   Share,
   Trash2,
   type LucideIcon,

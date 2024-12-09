@@ -5,11 +5,8 @@ import Image from 'next/image'
 import {
   BookOpen,
   Bot,
-  Command,
   Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Send,
   Settings2,
   SquareTerminal,
@@ -22,9 +19,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
@@ -37,8 +32,8 @@ const data = {
   navMain: [
     {
       title: "Bids",
-      url: "#",
-      icon: SquareTerminal,
+      url: "/",
+      icon: BookOpen,
       isActive: true,
     },
     {

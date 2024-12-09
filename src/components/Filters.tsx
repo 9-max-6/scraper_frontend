@@ -1,5 +1,4 @@
 import React from 'react'
-import { Card, CardContent, CardDescription, CardTitle, CardFooter, CardHeader } from './ui/card'
 import { Button } from './ui/button'
 import { FilterIcon } from 'lucide-react'
 import { Dialog, DialogHeader, DialogContent, DialogDescription, DialogTrigger, DialogTitle } from './ui/dialog'
@@ -7,7 +6,7 @@ function Filters() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="secondary" className='ml-auto'>
+                <Button variant="link" className='ml-auto'>
                     <FilterIcon />
                 </Button>
             </DialogTrigger>

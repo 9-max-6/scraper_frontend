@@ -69,3 +69,47 @@ export interface DataTabProps {
   entry: BidType | null;
   detailedView: boolean;
 }
+
+// Backend bid type
+export interface BackendBidType {
+  title: string;
+  id: number;
+  des: string;
+  phase: string;
+  date: string;
+  author: string;
+  client: string;
+  country: string;
+  biddingEntity: string;
+  technicalUnit: string;
+  consortiumRole: string;
+  deadline: string;
+  competence: number;
+  country_experience: number;
+  clients: number;
+  number_of_bidders: number;
+  competitor_profile: number;
+  partner_capacity: number;
+  client_preference: number;
+  client_intelligence: number;
+  client_procurement: number;
+  availability_of_resources: number;
+  contract_value: number;
+  expert_loe: number;
+  project_duration: number;
+  bd_input: number;
+  historical_net_margin: number;
+  future_revenue: number;
+  scope_of_work: number;
+  ease_of_doing_business: number;
+  security: number;
+  reputational_risk: number;
+}
+
+export interface AggregatedBid {
+  title: string;
+  id: number;
+  des: string;
+}
+
+export type AggregatedBidArrayType = AggregatedBid[]

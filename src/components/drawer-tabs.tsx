@@ -1,14 +1,3 @@
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
     Tabs,
     TabsContent,
@@ -20,7 +9,7 @@ import Competitiveness from "./comp-tab"
 import Commercials from "./comm-tab"
 import Risk from "./risk-tab"
 import { DataTabProps } from "@/types/types"
-import Overview from "./overview-tab"
+import OverviewTab from "./overview-tab"
 
 export default function DrawerTabs({ props }: { props: DataTabProps }) {
     return (
@@ -36,7 +25,7 @@ export default function DrawerTabs({ props }: { props: DataTabProps }) {
                 <Capabilities props={props} />
             </TabsContent>
             <TabsContent value="overview">
-                <Overview props={props} />
+                <OverviewTab props={props} />
             </TabsContent>
             <TabsContent value="comp">
                 <Competitiveness props={props} />

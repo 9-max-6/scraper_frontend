@@ -4,16 +4,21 @@ import {
     DialogContent,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import { useToast } from "@/hooks/use-toast"
 import { useState } from "react";
 import { Button } from "./ui/button";
 import DrawerTabs from "./drawer-tabs";
 import { BidType } from "@/types/types";
 import { DataTabProps } from "@/types/types";
 import _ from 'lodash';
-import { CardContent, Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "./ui/card";
+import { bidStore } from "@/store/bid-store";
+import axios from "axios";
 export default function DataCardFooter({ entry }: { entry: BidType }) {
     // this needs to be the stored state of the bids
     const [open, setopen] = useState(false)
+
+    const incrementBid = bidStore((state) => state.incrementBid);
 
     const props: DataTabProps = {
         open,
@@ -21,9 +26,20 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
         entry,
         detailedView: true
     }
+    const { toast } = useToast()
 
+    function setKeys() {
+        localStorage.setItem('Capabilities', JSON.stringify(entry.metrics.capabilities))
+        localStorage.setItem('Commercials', JSON.stringify(entry.metrics.commercials))
+        localStorage.setItem('Competitiveness', JSON.stringify(entry.metrics.competitiveness))
+        localStorage.setItem('Risk', JSON.stringify(entry.metrics.risk))
+    }
+    const undoChanges = async () => {
+        await axios.patch(`/api/bid/${entry.bidData.id}`, entry)
+        incrementBid();
+    }
     // function to be called when the tab closes
-    function checkChanges(newOpen: boolean) {
+    async function checkChanges(newOpen: boolean) {
         if (!newOpen) {
             const newBid: BidType = {
                 bidData: {
@@ -36,11 +52,22 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
                 }
             }
             if (!_.isEqual(newBid, entry)) {
-                console.log('Changes were made');
-                console.log(newBid);
-                console.log(entry);
+                toast({
+                    title: "Submitting",
+                    description: "Uploading your changes",
+                    variant: "default",
+                    action: (
+                        <Button variant="destructive" onClick={undoChanges}>
+                            Undo
+                        </Button>
+                    )
+                })
+                await axios.patch(`/api/bid/${entry.bidData.id}`, newBid)
+                incrementBid();
+
             }
-            localStorage.clear()
+            localStorage.clear();
+
         }
     }
 
@@ -50,7 +77,7 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
             setopen(newOpen)
         }}>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant="link" onClick={setKeys}>
                     Edit
                 </Button>
             </DialogTrigger>
