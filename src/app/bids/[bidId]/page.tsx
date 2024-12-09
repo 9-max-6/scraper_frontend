@@ -43,28 +43,24 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
     }
 
     return (
-        <SidebarProvider>
-            <div className="grid grid-cols-12 w-full auto-rows-min">
-                <div className="col-span-3 relative w-full">
-                    <AppSidebar />
-                </div>
-                <SidebarInset className="ml-6 min-w-full z-20 col-span-6 overflow-scroll relative scrollbar-hide h-[100vh]">
-                    {/* Render bid details here */}
-                    {bid && (
-                        <Overview props={bid} />
-                    )
-                    }
-                </SidebarInset>
-                <div className="pl-12 col-span-3 relative min-h-[100vh] max-h-[100vh]">
-                    <div className="pt-8 flex flex-col w-full">
-                        <div className="flex gap-2 ml-auto mr-12">
-                            <ModeToggle />
-                            <NavSecondary items={navSecondary} />
-                        </div>
-                        <Separator className="my-2" />
+        <div className="grid grid-cols-9 w-full auto-rows-min">
+
+            <SidebarInset className="ml-6 min-w-full z-20 col-span-6 overflow-scroll relative scrollbar-hide h-[100vh]">
+                {/* Render bid details here */}
+                {bid && (
+                    <Overview props={bid} />
+                )
+                }
+            </SidebarInset>
+            <div className="pl-12 col-span-3 relative min-h-[100vh] max-h-[100vh]">
+                <div className="pt-8 flex flex-col w-full">
+                    <div className="flex gap-2 ml-auto mr-12">
+                        <ModeToggle />
+                        <NavSecondary items={navSecondary} />
                     </div>
+                    <Separator className="my-2" />
                 </div>
             </div>
-        </SidebarProvider>
+        </div>
     );
 }

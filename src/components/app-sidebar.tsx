@@ -85,7 +85,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="persistent" className="items-center border-none ml-36 bg-background" {...props}>
+    <Sidebar variant="sidebar" className="items-center border-none ml-36 bg-background" {...props}>
       <SidebarMenu >
         <SidebarMenuItem className="bg-background">
           <Image
