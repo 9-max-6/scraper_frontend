@@ -1,4 +1,4 @@
-import { BidType, BackendBidType } from "@/types/types";
+import { BidType, BackendBidType, CommercialsTabType } from "@/types/types";
 import { revalidateTag } from "next/cache";
 
 const API_URL = "http://localhost:8000/profiler"; // Replace with your backend API URL
@@ -184,7 +184,7 @@ export async function getCommercials(bidId: number) {
     return response.json();
 }
 
-export async function patchCommercials(bidId: string, commData: number[]) {
+export async function patchCommercials(bidId: string, commData: CommercialsTabType) {
     const response = await fetch(`${API_URL}/${bidId}/comm/`, {
         method: 'POST',
         body: JSON.stringify(commData),

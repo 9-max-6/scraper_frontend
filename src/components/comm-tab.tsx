@@ -1,7 +1,6 @@
 "use client";
-// find out why the file automatically submits even when there is no change that was made.
 import { useRouter } from "next/navigation";
-import { BidType } from "@/types/types";
+import { BidType, CommercialsTabType } from "@/types/types";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from "./ui/button";
@@ -19,10 +18,9 @@ import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import Loading from "@/app/bids/[bidId]/loading";
 import { useToast } from "@/hooks/use-toast";
 
-// Sample categories with levels and descriptions for Commercials
 
 export default function Commercials({ props }: { props: BidType }) {
-    const [commData, setCommData] = useState({
+    const [commData, setCommData] = useState<CommercialsTabType>({
         budget: 0,
         duration: 0,
         bid_director_capture: 0,
@@ -66,10 +64,11 @@ export default function Commercials({ props }: { props: BidType }) {
         translator_tender: 0,
     });
 
-    const [initialCommData, setInitialCommData] = useState(commData);
+    const [initialCommData, setInitialCommData] = useState<CommercialsTabType>(commData);
     const [loading, setLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
     const [bd_input, setbd_input] = useState(0);
+    const [prevOpened, setprevOpened] = useState(false)
 
     const { toast } = useToast();
     const router = useRouter();
@@ -136,6 +135,7 @@ export default function Commercials({ props }: { props: BidType }) {
             updatedBudgetScore = 5
         }
 
+        // use lodash to compare these two objects
         if (updatedDurationScore !== currentDurationScore || updatedBudgetScore !== currentBudgetScore) {
             const response = fetch(`/api/bid/${props.bidData.id}`,
                 {
@@ -162,27 +162,33 @@ export default function Commercials({ props }: { props: BidType }) {
 
 
     const onExit = async (isOpen: boolean): Promise<void> => {
-        if (!isOpen) {
-            setIsOpen(false);
+        // Add a check to see if the Drawer is opening for the first time.
+        if (!isOpen && prevOpened) {
+
+            setIsOpen(false)
             if (JSON.stringify(commData) !== JSON.stringify(initialCommData)) {
                 try {
-                    await fetch(`/api/comm/${props.bidData.id}`, {
+                    const response = await fetch(`/api/comm/${props.bidData.id}`, {
                         method: 'PATCH',
                         body: JSON.stringify(commData),
                     }
                     )
                     await postUpdates()
-                    toast({
-                        title: "Commercials updated",
-                        description: "Commercials have been successfully updated.",
-                        variant: "default",
-                        action: (
-                            <Button>
-                                Undo
-                            </Button>
-                        )
+                    if (response.status === 200) {
+                        toast({
+                            title: "Commercials updated",
+                            description: "Commercials have been successfully updated.",
+                            variant: "default",
+                            action: (
+                                <Button>
+                                    Undo
+                                </Button>
+                            )
 
-                    })
+                        })
+                    } else {
+                        throw new Error("Failed to update commercials")
+                    }
                 } catch (error) {
                     console.error("Error patching commercials:", error);
                     toast({
@@ -207,23 +213,27 @@ export default function Commercials({ props }: { props: BidType }) {
     useEffect(() => {
         const fetchCommData = async () => {
             try {
-                const data = await fetch(`/api/comm/${props.bidData.id}`, {
-                    method: 'GET'
-                }).then(response => response.json())
-                    .catch(error => {
-                        throw new Error(error);
-                    });
-                setCommData(data);
-                setInitialCommData(data);
-                setLoading(false);
+                const bidId = props.bidData.id;
+                if (bidId) {
+
+                    const data = await fetch(`/api/comm/${props.bidData.id}`, {
+                        method: 'GET'
+                    }).then(response => response.json())
+                        .catch(error => {
+                            throw new Error(error);
+                        });
+                    setCommData(data.data);
+                    setInitialCommData(data.data);
+                    setLoading(false);
+                }
             } catch (error) {
-                console.log(error)
-                setLoading(false);
+                console.log("Comms down", error)
+                setLoading(true);
             }
         };
 
         fetchCommData();
-    }, []);
+    }, [props.bidData.id]);
 
     useEffect(() => {
         setbd_input(Object.entries(commData).reduce((acc, [key, value]) => {
@@ -239,7 +249,10 @@ export default function Commercials({ props }: { props: BidType }) {
     return (
         <Drawer open={isOpen} onOpenChange={(isOpen) => onExit(isOpen)}>
             <DrawerTrigger asChild>
-                <Button onClick={() => setIsOpen(true)}>
+                <Button onClick={() => {
+                    setIsOpen(true);
+                    setprevOpened(true);
+                }}>
                     Commercials
                 </Button>
             </DrawerTrigger>

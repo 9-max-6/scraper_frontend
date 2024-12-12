@@ -129,6 +129,46 @@ export interface AggregatedBid {
 
 export type AggregatedBidArrayType = AggregatedBid[]
 
-// export interface CommercialsTabType {
-
-// }
+export interface CommercialsTabType {
+  budget: number;
+  duration: number;
+  bid_director_capture: number;
+  bid_director_eoi: number;
+  bid_director_tender: number;
+  bid_manager_capture: number;
+  bid_manager_eoi: number;
+  bid_manager_tender: number;
+  technical_lead_capture: number;
+  technical_lead_eoi: number;
+  technical_lead_tender: number;
+  rec_lead_capture: number;
+  rec_lead_eoi: number;
+  rec_lead_tender: number;
+  proposal_write_capture: number;
+  proposal_write_eoi: number;
+  proposal_write_tender: number;
+  analyst_capture: number;
+  analyst_eoi: number;
+  analyst_tender: number;
+  reviewer_capture: number;
+  reviewer_eoi: number;
+  reviewer_tender: number;
+  copy_writer_capture: number;
+  copy_writer_eoi: number;
+  copy_writer_tender: number;
+  recruiter_admin_capture: number;
+  recruiter_admin_eoi: number;
+  recruiter_admin_tender: number;
+  comm_lead_capture: number;
+  comm_lead_eoi: number;
+  comm_lead_tender: number;
+  pm_capture: number;
+  pm_eoi: number;
+  pm_tender: number;
+  graphic_des_capture: number;
+  graphic_des_eoi: number;
+  graphic_des_tender: number;
+  translator_capture: number;
+  translator_eoi: number;
+  translator_tender: number;
+}

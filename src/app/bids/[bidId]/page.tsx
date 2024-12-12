@@ -11,6 +11,7 @@ import { BidProfileText } from '@/types/bid-profile-text'
 import Commercials from "@/components/comm-tab";
 import DataCardFooter from "@/components/data-card-footer";
 import { BidType } from "@/types/types";
+import { Suspense } from "react";
 
 interface BadgeProperties {
     text: string;
@@ -41,6 +42,9 @@ const navSecondary = [
 
 async function getDetailedBid(bidId: number) {
     try {
+        if (Number.isNaN(bidId)) {
+            throw new Error("Bid ID is required")
+        }
         const response = await getBidById(bidId)
         return response
     } catch (e) {
@@ -144,7 +148,7 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
             for (const cat of category) {
                 catWeights.push(cat.weight)
             }
-            return catWeights.reverse()
+            return catWeights
         }
         return {
             capabilities: getScore(Object.values((bid.metrics.capabilities)), getWeights(BidProfileText.Capabilities)),
@@ -158,6 +162,7 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
     const text = badge ? badge.text : "";
     const color = badge ? badge.color : "";
     const scores = calculateScores()
+    console.log(scores)
 
 
     if (!bid) {
@@ -167,6 +172,7 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
             </div>
         );
     }
+    console.log(bid.metrics.capabilities);
 
 
     const props: OverviewProperties = {
@@ -230,7 +236,11 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
                     </div>
                     <Separator className="my-2" />
                     <div>
-                        <Commercials props={bid} />
+                        <Suspense fallback={<div>
+                            Loading...
+                        </div>}>
+                            <Commercials props={bid} />
+                        </Suspense>
                         <DataCardFooter entry={bid} />
                     </div>
                 </div>
