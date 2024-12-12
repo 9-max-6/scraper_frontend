@@ -8,7 +8,6 @@ import {
     CardDescription
 } from "./ui/card";
 import Image from 'next/image'
-import DataCardFooter from "./data-card-footer";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
 import { DollarSign, Clock, Target, User, Bookmark } from "lucide-react";
@@ -104,7 +103,7 @@ export default function DataCard({ entry }: { entry: BidType }) {
                     <Button variant="link">
                         <Bookmark size={48} />
                     </Button>
-                    <DataCardFooter entry={entry} />
+                    {/* <DataCardFooter entry={entry} /> */}
                 </div>
             </CardFooter>
         </Card>

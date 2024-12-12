@@ -26,7 +26,7 @@ export default function Competitiveness({ props }: { props: DataTabProps }) {
     const updateScore = useCallback(() => {
         const scores = Object.keys(selectedValues).map((key, index) => {
             const category = categories[index];
-            const level = category.levels.find((lvl) => lvl.value === selectedValues[key]);
+            const level = category.levels.find((lvl) => lvl.value === selectedValues[key as keyof typeof selectedValues]);
             return level ? level.value * category.weight : 0;
         });
         const overallScore = scores.reduce((acc, score) => acc + score, 0);
@@ -64,7 +64,7 @@ export default function Competitiveness({ props }: { props: DataTabProps }) {
                     <CardContent className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
                             const categoryKey = category.tag;
-                            const isSelected = selectedValues[categoryKey] === level.value;
+                            const isSelected = selectedValues[categoryKey as keyof typeof selectedValues] === level.value;
                             return (
                                 <div
                                     key={index}

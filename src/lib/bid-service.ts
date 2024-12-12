@@ -1,4 +1,5 @@
 import { BidType, BackendBidType } from "@/types/types";
+import { revalidateTag } from "next/cache";
 
 const API_URL = "http://localhost:8000/profiler"; // Replace with your backend API URL
 
@@ -17,7 +18,7 @@ export async function updateBidById(bidId: string, updateData: BidType) {
     if (!response.ok) {
         throw new Error(`Failed to update opportunity: ${response.statusText}`);
     }
-
+    revalidateTag(`bids_${bidId}`)
     return response.json(); // Return the updated opportunity
 }
 
@@ -26,6 +27,7 @@ export async function getBidById(bidId: number) {
     try {
         const response = await fetch(`${API_URL}/${bidId}/`, {
             method: 'GET',
+            next: { tags: [`bids_${bidId}`] },
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -42,6 +44,29 @@ export async function getBidById(bidId: number) {
         throw error;
     }
 }
+
+export async function getBidVersionsById(bidId: number) {
+
+    try {
+        const response = await fetch(`${API_URL}/${bidId}/versions`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch bid: ${response.statusText}`);
+        }
+
+        const bid = await response.json()
+        return bid
+    } catch (error) {
+        console.error('Error fetching bid:', error);
+        throw error;
+    }
+}
+
 
 export function formatForBackend(bid: BidType): BackendBidType {
     return {
@@ -77,6 +102,13 @@ export function formatForBackend(bid: BidType): BackendBidType {
         ease_of_doing_business: bid.metrics.risk.ease,
         security: bid.metrics.risk.security,
         reputational_risk: bid.metrics.risk.reputational,
+        go_capture: bid.bidData.go_capture,
+        go_eoi: bid.bidData.go_eoi,
+        go_tender: bid.bidData.go_tender,
+        tent_capture: bid.bidData.tent_capture,
+        tent_eoi: bid.bidData.tent_eoi,
+        tent_tender: bid.bidData.tent_tender,
+        urgent: bid.bidData.urgent,
     };
 }
 
@@ -95,6 +127,13 @@ export function formatForFrontend(responseItem: BackendBidType): BidType {
             consortiumRole: responseItem.consortiumRole,
             deadline: responseItem.deadline,
             des: responseItem.des,
+            go_capture: responseItem.go_capture,
+            go_eoi: responseItem.go_eoi,
+            go_tender: responseItem.go_tender,
+            tent_capture: responseItem.tent_capture,
+            tent_eoi: responseItem.tent_eoi,
+            tent_tender: responseItem.tent_tender,
+            urgent: responseItem.urgent,
         },
         metrics: {
             capabilities: {
@@ -129,4 +168,36 @@ export function formatForFrontend(responseItem: BackendBidType): BidType {
     };
 }
 
-  
+
+export async function getCommercials(bidId: number) {
+    const response = await fetch(`${API_URL}/${bidId}/comm/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch bids')
+    }
+
+    return response.json();
+}
+
+export async function patchCommercials(bidId: string, commData: number[]) {
+    const response = await fetch(`${API_URL}/${bidId}/comm/`, {
+        method: 'POST',
+        body: JSON.stringify(commData),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch bids')
+    }
+
+    return response.json();
+
+}

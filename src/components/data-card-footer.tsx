@@ -3,8 +3,9 @@ import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { useToast } from "@/hooks/use-toast"
+} from "@/components/ui/dialog";
+import { useRouter } from 'next/navigation';
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import DrawerTabs from "./drawer-tabs";
@@ -17,7 +18,7 @@ import axios from "axios";
 export default function DataCardFooter({ entry }: { entry: BidType }) {
     // this needs to be the stored state of the bids
     const [open, setopen] = useState(false)
-
+    const router = useRouter();
     const incrementBid = bidStore((state) => state.incrementBid);
 
     const props: DataTabProps = {
@@ -63,6 +64,7 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
                     )
                 })
                 await axios.patch(`/api/bid/${entry.bidData.id}`, newBid)
+                router.refresh()
                 incrementBid();
 
             }

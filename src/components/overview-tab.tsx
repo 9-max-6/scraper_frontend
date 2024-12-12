@@ -1,4 +1,4 @@
-import { BidType, DataTabProps } from '@/types/types'
+import { DataTabProps } from '@/types/types'
 import React from 'react'
 
 function OverviewTab({ props }: { props: DataTabProps }) {

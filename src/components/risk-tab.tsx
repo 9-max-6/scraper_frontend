@@ -19,7 +19,7 @@ export default function Risk({ props }: { props: DataTabProps }) {
 
     const calculateScore = useCallback(() => {
         const totalScore = categories.reduce((sum, category) => {
-            const selectedLevel = category.levels.find((level) => level.value === selectedValues[category.tag]);
+            const selectedLevel = category.levels.find((level) => level.value === selectedValues[category.tag as keyof typeof selectedValues]);
             return sum + (selectedLevel ? selectedLevel.value * category.weight : 0);
         }, 0);
         setScore(totalScore);
@@ -55,7 +55,7 @@ export default function Risk({ props }: { props: DataTabProps }) {
                     <CardContent className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
                             const categoryKey = category.tag;
-                            const isSelected = selectedValues[categoryKey] === level.value;
+                            const isSelected = selectedValues[categoryKey as keyof typeof selectedValues] === level.value;
                             return (
                                 <div
                                     key={index}

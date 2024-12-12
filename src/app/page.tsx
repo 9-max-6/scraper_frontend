@@ -1,4 +1,3 @@
-import { AppSidebar } from "@/components/app-sidebar"
 import NewBid from "@/components/new-bid"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -7,7 +6,6 @@ import {
 } from "lucide-react"
 import {
   SidebarInset,
-  SidebarProvider,
 } from "@/components/ui/sidebar"
 import Bids from "@/components/bids"
 import ModeToggle from "@/components/toggle-mode"

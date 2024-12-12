@@ -79,6 +79,13 @@ export default function DataTab(props: DataTabProps) {
                 technicalUnit: "",
                 consortiumRole: "",
                 deadline: formatDateToString(new Date()),
+                go_capture: false,
+                go_eoi: false,
+                go_tender: false,
+                tent_capture: false,
+                tent_eoi: false,
+                tent_tender: false,
+                urgent: false,
             };
         };
     }
@@ -121,7 +128,7 @@ export default function DataTab(props: DataTabProps) {
                     description: "There was an error submitting the bid",
                     variant: "destructive",
                     action: (
-                        <Button onClick={onSubmit} variant="muted">
+                        <Button onClick={onSubmit} variant="link">
                             Try again
                         </Button>
                     )
@@ -152,7 +159,7 @@ export default function DataTab(props: DataTabProps) {
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
-                                                handleFieldChange("title", e.target.value);
+                                                handleFieldChange();
                                             }}
                                         />
                                     </FormControl>
@@ -174,7 +181,7 @@ export default function DataTab(props: DataTabProps) {
                                 <FormField
                                     key={fieldName}
                                     control={form.control}
-                                    name={fieldName}
+                                    name={fieldName as keyof z.infer<typeof FormSchema>}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{label}</FormLabel>
@@ -184,7 +191,7 @@ export default function DataTab(props: DataTabProps) {
                                                     {...field}
                                                     onChange={(e) => {
                                                         field.onChange(e);
-                                                        handleFieldChange(fieldName as keyof z.infer<typeof FormSchema>, e.target.value);
+                                                        handleFieldChange();
                                                     }}
                                                 />
                                             </FormControl>
@@ -204,7 +211,7 @@ export default function DataTab(props: DataTabProps) {
                                         <Select
                                             onValueChange={(value) => {
                                                 field.onChange(value);
-                                                handleFieldChange("phase", value);
+                                                handleFieldChange();
                                             }}
                                             value={field.value}
                                         >
@@ -232,7 +239,7 @@ export default function DataTab(props: DataTabProps) {
                                         <Select
                                             onValueChange={(value) => {
                                                 field.onChange(value);
-                                                handleFieldChange("country", value);
+                                                handleFieldChange();
                                             }}
                                             value={field.value}
                                         >
@@ -303,7 +310,7 @@ export default function DataTab(props: DataTabProps) {
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
-                                                handleFieldChange("des", e.target.value);
+                                                handleFieldChange();
                                             }}
                                         />
                                     </FormControl>
