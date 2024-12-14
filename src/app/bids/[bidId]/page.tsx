@@ -180,7 +180,7 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
 
 
     return (
-        <div className="grid grid-cols-9 w-full main-container overflow-hidden">
+        <div className="grid grid-cols-9 my-2 w-full main-container overflow-hidden">
 
             <Card className="shadow-none border-none min-w-full col-span-6 relative main-container">
                 {/* Render bid details here */}
@@ -228,13 +228,8 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
             </Card>
             <div className="pl-12 col-span-3 relative">
                 <div className="flex flex-col w-full">
-                    <div className="flex gap-2 ml-auto mr-12">
-
-                        <Suspense fallback={<div>
-                            Loading...
-                        </div>}>
-                            <Commercials props={bid} />
-                        </Suspense>
+                    <div className="flex gap-2 ">
+                        <Commercials props={bid} />
                         <DataCardFooter entry={bid} />
                     </div>
                 </div>

@@ -87,7 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter className="bg-background">
+      <SidebarFooter className="bg-background mb-24">
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>

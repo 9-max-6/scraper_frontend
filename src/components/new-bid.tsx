@@ -31,7 +31,7 @@ export default function NewBid() {
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="w-[90%] p-[26px] overflow-scroll max-w-[1024px]">
+            <DialogContent className="w-[90%] p-[26px] h-[2/3] overflow-scroll md:max-w-[600px]  lg:max-w-[900px] 2xl:max-w-[1024px]">
                 {/* My custom tabs */}
                 <DataTab {...props} />
                 {/* My custom tabs */}

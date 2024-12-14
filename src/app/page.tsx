@@ -2,11 +2,12 @@ import NewBid from "@/components/new-bid"
 import Bids from "@/components/bids"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import SearchBar from "@/components/search-bar"
+import { SidebarInset } from "@/components/ui/sidebar"
 
 
 export default function Page() {
   return (
-    <div className="grid grid-cols-9 w-full main_containerauto-rows-min">
+    <SidebarInset className="max-w-full grid grid-cols-9 w-full main_containerauto-rows-min">
       <div className="ml-6 min-w-full z-20 col-span-6 overflow-scroll relative scrollbar-hide main_container">
         <div className="sticky bg-card mb-4 top-0 z-30 w-full ">
           <Card className="w-full shadow-none rounded-none border-l-4 border-r-4 border-l-blue-500 border-r-blue-500">
@@ -37,7 +38,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-    </div>
+    </SidebarInset>
 
 
   )

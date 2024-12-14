@@ -46,15 +46,15 @@ export default function RootLayout({
             <Topbar />
           </div>
           <div className="relative main_container overflow-hidden grid grid-cols-12">
-            <div className="col-span-1">
+            <div className="xl:col-span-1">
 
             </div>
-            <div className="relative col-span-2">
+            <div className="relative z-10 col-span-2 xl:col-span-2">
               <SidebarProvider>
                 <AppSidebar />
               </SidebarProvider>
             </div>
-            <div className="h-full p-2 col-span-9">
+            <div className="h-full p-2 z-50 col-span-9">
               {children}
             </div>
           </div>

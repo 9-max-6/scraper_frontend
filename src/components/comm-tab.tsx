@@ -294,7 +294,7 @@ export default function Commercials({ props }: { props: BidType }) {
                     Commercials
                 </Button>
             </DrawerTrigger>
-            <DrawerContent className="min-h-[50vh] max-h-[90vh]">
+            <DrawerContent className="min-h-[70vh] max-h-[90vh]">
                 {loading ? (
                     <Loading />
                 ) : (
