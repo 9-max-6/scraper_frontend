@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList } from "recharts"
 import { OverviewProperties } from "@/app/bids/[bidId]/page"
 import {
     Card,
@@ -19,15 +19,13 @@ import { ReverseBidProfileText, Thresholds } from "@/types/bid-profile-text"
 import { Button } from "./ui/button"
 import { Separator } from "./ui/separator"
 
-
-
 export default function Overview({ props }: { props: OverviewProperties }) {
     function getTextCard(innerValue: [string, number]) {
         const genericName = innerValue[0];
         const genericValue = innerValue[1];
         const bufferTemp = ReverseBidProfileText[genericName as keyof typeof ReverseBidProfileText]
         if (bufferTemp) {
-            return Object.values(bufferTemp)[genericValue]
+            return bufferTemp[genericValue as unknown as keyof typeof bufferTemp]
         }
     }
 
@@ -39,7 +37,6 @@ export default function Overview({ props }: { props: OverviewProperties }) {
         { metric: "Risk", threshold: Thresholds[props.entry.bidData.phase as keyof typeof Thresholds].risk, score: props.scores.risk },
     ]
 
-
     function getCardColor(value: number) {
         const metric = chartData[value]
         if (metric.score >= metric.threshold) {
@@ -48,7 +45,6 @@ export default function Overview({ props }: { props: OverviewProperties }) {
             return "bg-red-100"
         }
     }
-
 
     const chartConfig = {
         threshold: {
@@ -63,16 +59,14 @@ export default function Overview({ props }: { props: OverviewProperties }) {
 
     const categories = ["Capabilities", "Competitiveness", "Commercials", "Risk"]
 
-
-
     return (
-        <Card className="shadow-none border-none">
-            <CardHeader>
+        <Card className="shadow-none mb-20 border-none">
+            <CardHeader className="p-0 mb-2">
                 <CardTitle>Overview</CardTitle>
                 <CardDescription>Quick view of how the bid is performing in different metrics</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ChartContainer config={chartConfig}>
+            <CardContent className="p-0">
+                <ChartContainer className="m-0 p-0" config={chartConfig}>
                     <BarChart accessibilityLayer data={chartData}>
                         <CartesianGrid vertical={true} />
                         <XAxis
@@ -82,16 +76,20 @@ export default function Overview({ props }: { props: OverviewProperties }) {
                             axisLine={false}
                             tickFormatter={(value) => value}
                         />
+                        <YAxis domain={[0, 200]} />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dashed" />}
                         />
-                        <Bar dataKey="threshold" fill="var(--color-threshold)" radius={4} />
-                        <Bar dataKey="score" fill="var(--color-score)" radius={4} />
+                        <Bar dataKey="threshold" fill="var(--color-threshold)" radius={4}>
+                            <LabelList dataKey="threshold" position="top" />
+                        </Bar>
+                        <Bar dataKey="score" fill="var(--color-score)" radius={4}>
+                            <LabelList dataKey="score" position="top" />
+                        </Bar>
                     </BarChart>
                 </ChartContainer>
             </CardContent>
-
 
             <div className="flex flex-col gap-8">
                 {Object.values(props.entry.metrics).map((value, index) => {
@@ -122,9 +120,6 @@ export default function Overview({ props }: { props: OverviewProperties }) {
                                                     }
                                                 </CardDescription>
                                             </CardHeader>
-
-
-
                                         </Card>
                                     )
                                 })}

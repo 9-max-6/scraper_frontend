@@ -6,6 +6,8 @@ import "./custom.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Card } from "@/components/ui/card";
+import Topbar from "@/components/topbar";
 
 
 const geistSans = localFont({
@@ -32,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative min-w-[800px] antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -40,14 +42,19 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="grid grid-cols-12">
-            <div className="col-span-3">
+          <div className="z-50 sticky top-0">
+            <Topbar />
+          </div>
+          <div className="relative main_container overflow-hidden grid grid-cols-12">
+            <div className="col-span-1">
+
+            </div>
+            <div className="relative col-span-2">
               <SidebarProvider>
                 <AppSidebar />
               </SidebarProvider>
-
             </div>
-            <div className="col-span-9">
+            <div className="h-full p-2 col-span-9">
               {children}
             </div>
           </div>

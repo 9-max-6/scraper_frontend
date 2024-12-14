@@ -186,7 +186,7 @@ export async function getCommercials(bidId: number) {
 
 export async function patchCommercials(bidId: string, commData: CommercialsTabType) {
     const response = await fetch(`${API_URL}/${bidId}/comm/`, {
-        method: 'POST',
+        method: 'PATCH',
         body: JSON.stringify(commData),
         headers: {
             'Content-Type': 'application/json'

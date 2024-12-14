@@ -162,7 +162,6 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
     const text = badge ? badge.text : "";
     const color = badge ? badge.color : "";
     const scores = calculateScores()
-    console.log(scores)
 
 
     if (!bid) {
@@ -172,7 +171,6 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
             </div>
         );
     }
-    console.log(bid.metrics.capabilities);
 
 
     const props: OverviewProperties = {
@@ -182,9 +180,9 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
 
 
     return (
-        <div className="grid grid-cols-9 w-full h-screen overflow-hidden auto-rows-min">
+        <div className="grid grid-cols-9 w-full main-container overflow-hidden">
 
-            <Card className="mt-[128px] shadow-none border-none min-w-full z-20 col-span-6 relative h-[100vh]">
+            <Card className="shadow-none border-none min-w-full col-span-6 relative main-container">
                 {/* Render bid details here */}
                 {/* <Separator /> */}
                 <div className="flex gap-3">
@@ -228,14 +226,10 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
                 </div>
 
             </Card>
-            <div className="pl-12 col-span-3 relative min-h-[100vh] max-h-[100vh]">
-                <div className="pt-8 flex flex-col w-full">
+            <div className="pl-12 col-span-3 relative">
+                <div className="flex flex-col w-full">
                     <div className="flex gap-2 ml-auto mr-12">
-                        <ModeToggle />
-                        <NavSecondary items={navSecondary} />
-                    </div>
-                    <Separator className="my-2" />
-                    <div>
+
                         <Suspense fallback={<div>
                             Loading...
                         </div>}>

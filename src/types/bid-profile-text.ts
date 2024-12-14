@@ -102,8 +102,8 @@ export const BidProfileText = {
             tag: 'competitor',
             levels: [
                 { label: "Competitor has strong technical and financial competition and high likelihood of price dumping from competitors", value: 0 },
-                { label: "Strong technical and financial competition but low likelihood of price dumping from competitors", value: 1 },
-                { label: "Low technical and financial competition OR low likelihood of price dumping from competitors", value: 2 }
+                { label: "Strong technical and financial competition but low likelihood of price dumping from competitors", value: 2 },
+                { label: "Low technical and financial competition OR low likelihood of price dumping from competitors", value: 4 }
             ],
             weight: 7
         },
@@ -125,8 +125,8 @@ export const BidProfileText = {
             levels: [
                 { label: "Client favours the competitor who is a clear leader (likes the incumbent) OR has a negative view towards DT Global or its consortium", value: 0 },
                 { label: "We are in the dark if the client has favourites", value: 1 },
-                { label: "Client has no supplier preference and has no bias view towards DT Global or its consortium", value: 2 },
-                { label: "Client favours DT Global", value: 3 }
+                { label: "Client has no supplier preference and has no bias view towards DT Global or its consortium", value: 3 },
+                { label: "Client favours DT Global", value: 4 }
             ],
             weight: 5
         },
@@ -149,7 +149,7 @@ export const BidProfileText = {
                 { label: "Low likelihood that the procurement process is transparent and/or fair, no knowledge of decision makers, may or may not have a mechanism for appeal", value: 0 },
                 { label: "Lack of understanding of how the procurement process will be executed", value: 1 },
                 { label: "Medium likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal", value: 2 },
-                { label: "High likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal", value: 3 }
+                { label: "High likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal", value: 4 }
             ],
             weight: 4
         },
@@ -158,8 +158,8 @@ export const BidProfileText = {
             tag: 'availability',
             levels: [
                 { label: "Lack in-house technical resources with proven experiences in similar bids", value: 0 },
-                { label: "Have in-house technical resources with proven experiences in similar bids, but are not available, and we lack access to strong external resources that have developed similar bids", value: 1 },
-                { label: "Have strong in-house technical resources with proven experiences in similar bids, are available, and we have access to strong external resources to complement the bid team", value: 2 }
+                { label: "Have in-house technical resources with proven experiences in similar bids, but are not available, and we lack access to strong external resources that have developed similar bids", value: 2 },
+                { label: "Have strong in-house technical resources with proven experiences in similar bids, are available, and we have access to strong external resources to complement the bid team", value: 4 }
             ],
             weight: 8
         }
@@ -219,7 +219,7 @@ export const BidProfileText = {
         },
         {
             name: "Historical Net Margin (%)",
-            tag: 'historical',
+            tag: 'historicals',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "< 15%", value: 1 },
@@ -235,8 +235,8 @@ export const BidProfileText = {
             tag: 'future',
             levels: [
                 { label: "No idea OR 0% chance of extension or future business", value: 0 },
-                { label: "Rumour from reliable sources of a possible cost extension OR follow up phase", value: 1 },
-                { label: "100% chance of cost extension OR follow up phase", value: 2 }
+                { label: "Rumour from reliable sources of a possible cost extension OR follow up phase", value: 3 },
+                { label: "100% chance of cost extension OR follow up phase", value: 5 }
             ],
             weight: 6
         }
@@ -247,8 +247,8 @@ export const BidProfileText = {
             tag: 'scope',
             levels: [
                 { label: "Project scope is unclear and expectations on deliverables are unclear", value: 0 },
-                { label: "Project scope is clear but expectations on deliverables are not realistic", value: 1 },
-                { label: "Project scope is clear and expectations on deliverables are realistic", value: 2 }
+                { label: "Project scope is clear but expectations on deliverables are not realistic", value: 2 },
+                { label: "Project scope is clear and expectations on deliverables are realistic", value: 3 }
             ],
             weight: 8
         },
@@ -280,7 +280,7 @@ export const BidProfileText = {
             levels: [
                 { label: "Project's reputational risks are considered high", value: 0 },
                 { label: "Project's reputational risks are considered medium", value: 1 },
-                { label: "Project's reputational risks are considered low", value: 2 }
+                { label: "Project's reputational risks are considered low", value: 3 }
             ],
             weight: 4
         }
@@ -318,8 +318,8 @@ export const ReverseBidProfileText = {
     },
     "competitor": {
         "0": "Competitor has strong technical and financial competition and high likelihood of price dumping from competitors",
-        "1": "Strong technical and financial competition but low likelihood of price dumping from competitors",
-        "2": "Low technical and financial competition OR low likelihood of price dumping from competitors"
+        "2": "Strong technical and financial competition but low likelihood of price dumping from competitors",
+        "4": "Low technical and financial competition OR low likelihood of price dumping from competitors"
     },
     "partner": {
         "0": "Partner(s) is/are not yet secured but is necessary to meet the requirements",
@@ -331,8 +331,8 @@ export const ReverseBidProfileText = {
     "preference": {
         "0": "Client favours the competitor who is a clear leader (likes the incumbent) OR has a negative view towards DT Global or its consortium",
         "1": "We are in the dark if the client has favourites",
-        "2": "Client has no supplier preference and has no bias view towards DT Global or its consortium",
-        "3": "Client favours DT Global"
+        "3": "Client has no supplier preference and has no bias view towards DT Global or its consortium",
+        "4": "Client favours DT Global"
     },
     "intelligence": {
         "0": "DT Global lacks intelligence and is late in the bid process whilst the competitor clearly has intelligence and is active in the bid process",
@@ -345,12 +345,12 @@ export const ReverseBidProfileText = {
         "0": "Low likelihood that the procurement process is transparent and/or fair, no knowledge of decision makers, may or may not have a mechanism for appeal",
         "1": "Lack of understanding of how the procurement process will be executed",
         "2": "Medium likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal",
-        "3": "High likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal"
+        "4": "High likelihood that the procurement process is transparent and/or fair, some knowledge of decision makers, mechanisms exists for appeal"
     },
     "availability": {
         "0": "Lack in-house technical resources with proven experiences in similar bids",
-        "1": "Have in-house technical resources with proven experiences in similar bids, but are not available, and we lack access to strong external resources that have developed similar bids",
-        "2": "Have strong in-house technical resources with proven experiences in similar bids, are available, and we have access to strong external resources to complement the bid team"
+        "2": "Have in-house technical resources with proven experiences in similar bids, but are not available, and we lack access to strong external resources that have developed similar bids",
+        "4": "Have strong in-house technical resources with proven experiences in similar bids, are available, and we have access to strong external resources to complement the bid team"
     },
     "contract": {
         "0": "Unknown",
@@ -384,7 +384,7 @@ export const ReverseBidProfileText = {
         "4": "100 - 150 days",
         "5": ">150 days"
     },
-    "historical": {
+    "historicals": {
         "0": "Unknown",
         "1": "< 15%",
         "2": "15-20%",
@@ -394,13 +394,13 @@ export const ReverseBidProfileText = {
     },
     "future": {
         "0": "No idea OR 0% chance of extension or future business",
-        "1": "Rumour from reliable sources of a possible cost extension OR follow up phase",
-        "2": "100% chance of cost extension OR follow up phase"
+        "3": "Rumour from reliable sources of a possible cost extension OR follow up phase",
+        "5": "100% chance of cost extension OR follow up phase"
     },
     "scope": {
         "0": "Project scope is unclear and expectations on deliverables are unclear",
-        "1": "Project scope is clear but expectations on deliverables are not realistic",
-        "2": "Project scope is clear and expectations on deliverables are realistic"
+        "2": "Project scope is clear but expectations on deliverables are not realistic",
+        "3": "Project scope is clear and expectations on deliverables are realistic"
     },
     "ease": {
         "0": "We don't know if the client is difficult to work with OR the client is extremely difficult to work with",
@@ -417,7 +417,7 @@ export const ReverseBidProfileText = {
     "reputational": {
         "0": "Project's reputational risks are considered high",
         "1": "Project's reputational risks are considered medium",
-        "2": "Project's reputational risks are considered low"
+        "3": "Project's reputational risks are considered low"
     }
 }
 

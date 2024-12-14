@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import Image from 'next/image'
 import {
   BookOpen,
   Bot,
@@ -19,8 +18,6 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarMenu,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -85,24 +82,12 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="sidebar" className="items-center border-none ml-36 bg-background" {...props}>
-      <SidebarMenu >
-        <SidebarMenuItem className="bg-background">
-          <Image
-            src="/dt.png"
-            layout="responsive" // Reference the image from the public directory
-            height={100}// Original height of the imag
-            width={100}
-            alt="DT Global Logo"
-          />
-
-        </SidebarMenuItem>
-      </SidebarMenu>
-      <SidebarContent className="pl-6 bg-background">
+    <Sidebar variant="sidebar" className="absolute border-r-2 border-r-gray-100 justify-center border-none main-container z-30 bg-background" {...props}>
+      <SidebarContent className="bg-background">
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
-      <SidebarFooter className="pl-6 bg-background h-[1/8]">
+      <SidebarFooter className="bg-background">
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>

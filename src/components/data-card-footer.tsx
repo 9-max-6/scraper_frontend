@@ -86,9 +86,9 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
             <DialogContent className="h-[90vh] p-0 max-w-[1024px]">
                 {/* My custom tabs */}
 
-                <div className="sticky text-center  top-0 relative">
+                <div className="sticky  top-0 relative">
                     <Card className="shadow-none border-none h-[72px] max-h-[100ppx]">
-                        <CardHeader>
+                        <CardHeader className="ml-2">
                             <CardTitle>
                                 {entry.bidData.title}
                             </CardTitle>
@@ -98,7 +98,7 @@ export default function DataCardFooter({ entry }: { entry: BidType }) {
                         </CardHeader>
                     </Card>
                 </div>
-                <div className="overflow-scroll scrollbar-hide">
+                <div className="overflow-scroll scrollbar-hide ">
                     <DrawerTabs props={props} />
                 </div>
 
