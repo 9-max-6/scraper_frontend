@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 export async function GET(): Promise<Response> {
     try {
         // Make the API request
-        const response = await axios.get("https://scraper-backend-891b1b931de6.herokuapp.com//profiler/custom-search");
+        const response = await axios.get("https://scraper-backend-891b1b931de6.herokuapp.com/profiler/custom-search");
         // Log and return only the data part of the response
         return new Response(
             JSON.stringify({ message: "Data successfully fetched", data: response.data }),
