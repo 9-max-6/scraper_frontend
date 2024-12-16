@@ -159,7 +159,6 @@ export default function Commercials({ props }: { props: BidType }) {
         } else {
             updatedBudgetScore = 0
         }
-        console.log(updatedBdInput)
 
         const bidUpdate = JSON.stringify({
             bidData: props.bidData,

@@ -19,7 +19,6 @@ export async function GET(request: NextRequest, { params }: RequestParams) {
             return new NextResponse(JSON.stringify({ error: 'Bid ID is required' }), { status: 400 });
         }
         const bid = await getCommercials(parseInt(bidId));
-        console.log(bid)
 
         if (bid) {
             return new NextResponse(JSON.stringify({ data: bid }), { status: 200 });
@@ -44,7 +43,6 @@ export async function PATCH(req: Request, { params }: RequestParams) {
         // Parse the incoming request body
         const body: CommercialsTabType = await req.json();
 
-        console.log(body)
 
         // Call the backend service to update the opportunity
         const updatedBid = await patchCommercials(bidId, body);

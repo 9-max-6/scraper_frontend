@@ -6,7 +6,7 @@ export async function POST(request: Request) {
         const body = await request.json();
 
         // API endpoint for the Django backend
-        const backendUrl = "http://localhost:8000/profiler/"; // Replace with your actual backend URL
+        const backendUrl = "https://scraper-backend-891b1b931de6.herokuapp.com//profiler/"; // Replace with your actual backend URL
 
         // Make the POST request to the backend
         const response = await fetch(backendUrl, {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 export async function GET() {
     try {
         // API endpoint for the Django backend
-        const backendUrl = "http://localhost:8000/profiler/"; // Replace with your actual backend URL
+        const backendUrl = "https://scraper-backend-891b1b931de6.herokuapp.com//profiler/"; // Replace with your actual backend URL
 
         // Make the GET request to the backend
         const response = await fetch(backendUrl, {
@@ -72,7 +72,7 @@ export async function GET() {
             bidArray.push(bid)
         }
 
-        
+
 
         return new Response(JSON.stringify({ message: "Data successfully fetched", data: bidArray }), {
             status: 200,
