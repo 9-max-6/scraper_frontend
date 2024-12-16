@@ -1,7 +1,7 @@
 import { BidType, BackendBidType, CommercialsTabType } from "@/types/types";
 import { revalidateTag } from "next/cache";
 
-const API_URL = "https://scraper-backend-891b1b931de6.herokuapp.com/profiler/"; // Replace with your backend API URL
+const API_URL = "https://scraper-backend-891b1b931de6.herokuapp.com/profiler"; // Replace with your backend API URL
 
 
 export async function updateBidById(bidId: string, updateData: BidType) {
