@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardContent } from "./ui/card";
+import { Card } from "./ui/card";
 import { NavSecondary } from "@/components/nav-secondary"
 import ModeToggle from "@/components/toggle-mode"
 import {

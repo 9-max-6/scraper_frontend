@@ -6,7 +6,6 @@ import "./custom.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { Card } from "@/components/ui/card";
 import Topbar from "@/components/topbar";
 
 

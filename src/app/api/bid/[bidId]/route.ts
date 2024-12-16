@@ -9,7 +9,7 @@ interface RequestParams {
 }
 
 
-export async function GET(
+export async function GET(request: Request,
     { params }: RequestParams) {
 
     try {

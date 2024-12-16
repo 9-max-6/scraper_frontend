@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -118,10 +117,6 @@ export default function Commercials({ props }: { props: BidType }) {
     };
 
     const postUpdates = async () => {
-        const currentDurationScore = props.metrics.commercials.project
-        const currentBudgetScore = props.metrics.commercials.contract
-
-
         let updatedDurationScore = 0;
         let updatedBudgetScore = 0;
         let updatedBdInput = 0;

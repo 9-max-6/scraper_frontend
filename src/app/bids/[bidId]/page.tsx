@@ -1,7 +1,4 @@
-import { Separator } from "@/components/ui/separator";
-import { LifeBuoy, Send, OctagonAlert } from "lucide-react";
-import ModeToggle from "@/components/toggle-mode";
-import { NavSecondary } from "@/components/nav-secondary";
+import { OctagonAlert } from "lucide-react";
 import { getBidById } from "@/lib/bid-service";
 import Overview from "@/components/overview";
 import { Button } from "@/components/ui/button";
@@ -11,7 +8,6 @@ import { BidProfileText } from '@/types/bid-profile-text'
 import Commercials from "@/components/comm-tab";
 import DataCardFooter from "@/components/data-card-footer";
 import { BidType } from "@/types/types";
-import { Suspense } from "react";
 
 interface BadgeProperties {
     text: string;
@@ -27,18 +23,7 @@ export interface OverviewProperties {
     entry: BidType;
     scores: ScoresProperties;
 }
-const navSecondary = [
-    {
-        title: "Support",
-        url: "#",
-        icon: LifeBuoy,
-    },
-    {
-        title: "Feedback",
-        url: "#",
-        icon: Send,
-    },
-];
+
 
 async function getDetailedBid(bidId: number) {
     try {
