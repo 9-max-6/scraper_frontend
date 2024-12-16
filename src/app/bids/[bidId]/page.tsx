@@ -180,7 +180,7 @@ export default async function Page({ params }: { params: Promise<{ bidId: string
 
 
     return (
-        <div className="grid grid-cols-9 my-2 w-full main-container overflow-hidden">
+        <div className="px-4 grid grid-cols-9 my-2 w-full main-container overflow-hidden">
 
             <Card className="shadow-none border-none min-w-full col-span-6 relative main-container">
                 {/* Render bid details here */}

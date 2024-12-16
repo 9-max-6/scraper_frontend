@@ -7,7 +7,7 @@ import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 
 export default function Page() {
     return (
-        <SidebarInset className="max-w-full grid grid-cols-9 w-full main_containerauto-rows-min">
+        <div className="max-w-full grid grid-cols-9 w-full auto-rows-min">
 
             <div className="ml-6 min-w-full z-20 col-span-6 overflow-scroll relative scrollbar-hide main_container">
                 <div className="sticky bg-card mb-4 top-0 z-30 w-full ">
@@ -39,7 +39,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-        </SidebarInset>
+        </div>
 
 
     )

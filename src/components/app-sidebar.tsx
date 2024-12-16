@@ -10,6 +10,7 @@ import {
   Frame,
   GalleryVerticalEnd,
   HandHeart,
+  Home,
   Lightbulb,
   Map,
   PieChart,
@@ -29,18 +30,27 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useSidebar } from "@/components/ui/sidebar"
+import { url } from "inspector"
+import { NavTertiary } from "./nav-tertiary"
 
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Ahmed Juma",
+    email: "ahmed.juma@dt-global.com",
     avatar: "/avatars/shadcn.jpg",
   },
+  dash: [
+    {
+      name: "Dashboard",
+      url: "/",
+      icon: Home
+    }
+  ],
   navMain: [
     {
       name: "Bids",
-      url: "#",
+      url: "/bids",
       icon: BadgeDollarSign,
     },
     {
@@ -76,11 +86,20 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { open } = useSidebar()
   const { theme } = useTheme()
+
+  const getLogo = () => {
+    if (theme) {
+      return theme
+    } else {
+      return "light"
+    }
+  }
+
   return (
     <Sidebar className="bg-background py-2" collapsible="icon" {...props}>
       <SidebarHeader className="pb-2 bg-background text-center">
         <Image
-          src={`/dt-${theme}.svg`}
+          src={`/dt-${getLogo()}.svg`}
           alt="Logo"
           width={120}
           height={40}
@@ -88,6 +107,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarHeader>
       <SidebarContent className="bg-background">
+        <NavTertiary items={data.dash} />
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
