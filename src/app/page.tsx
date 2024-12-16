@@ -1,42 +1,45 @@
-import { AppSidebar } from "@/components/app-sidebar"
 import NewBid from "@/components/new-bid"
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
 import Bids from "@/components/bids"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import SearchBar from "@/components/search-bar"
+import { SidebarInset } from "@/components/ui/sidebar"
+
 
 export default function Page() {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset className="relative">
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-            <div className="flex flex-col gap-2">
-              <div>
-                <Bids />
+    <SidebarInset className="max-w-full grid grid-cols-9 w-full main_containerauto-rows-min">
+      <div className="ml-6 min-w-full z-20 col-span-6 overflow-scroll relative scrollbar-hide main_container">
+        <div className="sticky bg-card mb-4 top-0 z-30 w-full ">
+          <Card className="w-full shadow-none rounded-none border-l-4 border-r-4 border-l-blue-500 border-r-blue-500">
+            <CardHeader>
+              <CardTitle>
+                Seeker
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="relative flex gap-2 items-center">
+              <div className="w-full">
+                <SearchBar />
               </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="z-10">
+          <Bids />
+        </div>
 
-            </div>
+      </div>
+
+      <div className="px-12 col-span-3 relative">
+        <div className="flex flex-col w-full">
+
+          <div>
+            {/* Add more here */}
+            <NewBid />
           </div>
         </div>
+      </div>
+    </SidebarInset>
 
-        <div className="absolute bottom-2 right-2">
-          {/* The plus icon */}
-          <NewBid />
-        </div>
-      </SidebarInset>
 
-    </SidebarProvider>
   )
 }

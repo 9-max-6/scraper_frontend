@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css";
+import "./custom.css"
+import { ThemeProvider } from "@/components/theme-provider"
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import Topbar from "@/components/topbar";
 
 
 const geistSans = localFont({
@@ -28,9 +33,31 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative min-w-[800px] antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="z-50 sticky top-0">
+            <Topbar />
+          </div>
+          <div className="relative main_container overflow-hidden grid grid-cols-12">
+            <div className="xl:col-span-1">
+
+            </div>
+            <div className="relative z-10 col-span-2 xl:col-span-2">
+              <SidebarProvider>
+                <AppSidebar />
+              </SidebarProvider>
+            </div>
+            <div className="h-full p-2 z-50 col-span-9">
+              {children}
+            </div>
+          </div>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

@@ -1,45 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { DataTabProps } from "@/types/types";
 // Sample categories with levels and descriptions
 
 const categories = BidProfileText.Capabilities
 
-export default function Capabilities() {
+export default function Capabilities({ props }: { props: DataTabProps }) {
     const [selectedValues, setSelectedValues] = useState({
-        competence: 0,
-        country: 0,
-        clients: 0,
+        competence: props.entry?.metrics.capabilities.competence,
+        country: props.entry?.metrics.capabilities.country,
+        clients: props.entry?.metrics.capabilities.clients,
     });
 
 
     // Dynamically calculated score of the Capabilities tab
     const [capScore, setcapScore] = useState<number | null>(null)
-    const updateScore = () => {
-        const competenceScore = selectedValues.competence * categories[0].weight
-        const countryScore = selectedValues.country * categories[1].weight
-        const clientScore = selectedValues.clients * categories[2].weight
+    const updateScore = useCallback(() => {
+        const competenceScore = (selectedValues.competence || 0) * categories[0].weight
+        const countryScore = (selectedValues.country || 0) * categories[1].weight
+        const clientScore = (selectedValues.clients || 0) * categories[2].weight
         const overallScore = competenceScore + countryScore + clientScore
         setcapScore(overallScore)
-    }
+    }, [selectedValues]);
 
-    // Load stored data from localStorage when the component mounts
-    useEffect(() => {
-        const savedData = localStorage.getItem("Capabilities");
-        if (savedData) {
-            setSelectedValues(JSON.parse(savedData));
-        }
-    }, []);
-
-    // have to call updatescore when selectedvalues change
-    // setState is async
     useEffect(() => {
         updateScore()
-    }, [selectedValues])
+    }, [selectedValues, updateScore])
+
 
     const handleSelect = (category: string, value: number) => {
         const updatedValues = { ...selectedValues, [category]: value };
@@ -48,33 +39,38 @@ export default function Capabilities() {
     };
 
     return (
-        <div>
+        <div className="overflow-scroll">
             <div className="flex">
                 <Button variant="secondary" className="ml-auto">
                     Score: {capScore}
                 </Button>
             </div>
             {categories.map((category) => (
-                <div key={category.name} className="mb-8">
+                <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
                     {/* Category Title */}
-                    <h3 className="text-xl font-bold mb-4">{category.name} </h3>
+                    <CardHeader>
+                        <CardTitle>
+                            {category.name}
+                        </CardTitle>
+                    </CardHeader>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    <CardContent className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
-                            const categoryKey = category.tag; // e.g., 'competence', 'country', 'clients'
-                            const isSelected = selectedValues[categoryKey] === level.value;
+                            const categoryKey = category.tag;
+                            const isSelected = selectedValues[categoryKey as keyof typeof selectedValues] === level.value;
                             return (
                                 <div
                                     key={index}
                                     onClick={() => handleSelect(categoryKey, level.value)}
-                                    className={`cursor-pointer p-6 rounded-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-gray-100 text-black'}`}
+                                    className={`cursor-pointer p-6  rounded-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-muted'}`}
                                 >
                                     {level.label}
                                 </div>
                             );
                         })}
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
             ))}
         </div>
     );

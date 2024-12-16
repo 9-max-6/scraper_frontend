@@ -3,8 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useState } from "react";
+import { DataTabProps } from "@/types/types";
 import { useToast } from "@/hooks/use-toast"
-import { DataTabProps } from "./new-bid";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -26,6 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { format } from "date-fns";
 import axios from "axios";
 import { Textarea } from "./ui/textarea";
+import { bidStore } from "@/store/bid-store";
 // Validation schema
 const FormSchema = z.object({
     title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -44,33 +45,50 @@ const FormSchema = z.object({
 const countryNames = ["Kenya", "Uganda", "Tanzania"];
 
 
-
 // Main form component
 export default function DataTab(props: DataTabProps) {
     // Load the form data from localStorage if available
 
-    const { open, setopen } = props
+    const { setopen } = props
     const [loading, setloading] = useState(false)
     const { toast } = useToast()
+    const incrementBid = bidStore((state) => state.incrementBid);
 
+    const detailedView = props.detailedView;
 
+    // Utility function to format a Date object to a string
+    function formatDateToString(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
     const loadFormData = () => {
-        const savedData = localStorage.getItem("formData");
-        return savedData ? JSON.parse(savedData) : {
-            title: "",
-            des: "",
-            phase: "",
-            date: formatDateToString(new Date()),
-            author: "",
-            client: "",
-            country: "",
-            biddingEntity: "",
-            technicalUnit: "",
-            consortiumRole: "",
-            deadline: formatDateToString(new Date()),
+        const value = localStorage.getItem("formData");
+        if (value === null) {
+            const savedData = localStorage.getItem("formData");
+            return savedData ? JSON.parse(savedData) : {
+                title: "",
+                des: "",
+                phase: "",
+                date: formatDateToString(new Date()),
+                author: "",
+                client: "",
+                country: "",
+                biddingEntity: "",
+                technicalUnit: "",
+                consortiumRole: "",
+                deadline: formatDateToString(new Date()),
+                go_capture: false,
+                go_eoi: false,
+                go_tender: false,
+                tent_capture: false,
+                tent_eoi: false,
+                tent_tender: false,
+                urgent: false,
+            };
         };
-    };
-
+    }
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: loadFormData(), // Load initial state from localStorage
@@ -87,9 +105,10 @@ export default function DataTab(props: DataTabProps) {
         const formData = localStorage.getItem("formData");
         if (formData) {
             const parsedData = JSON.parse(formData);
+
             try {
                 setloading(true)
-                const response = await axios.post('/api/bid/', parsedData);
+                await axios.post('/api/bids/', parsedData);
                 toast({
                     title: "Success!",
                     description: "Bid added successfully",
@@ -101,6 +120,7 @@ export default function DataTab(props: DataTabProps) {
                     )
                 })
                 setopen(false);
+                incrementBid();
             } catch (error) {
                 console.error("Error submitting form data:", error);
                 toast({
@@ -108,7 +128,7 @@ export default function DataTab(props: DataTabProps) {
                     description: "There was an error submitting the bid",
                     variant: "destructive",
                     action: (
-                        <Button onClick={onSubmit} variant="muted">
+                        <Button onClick={onSubmit} variant="link">
                             Try again
                         </Button>
                     )
@@ -139,7 +159,7 @@ export default function DataTab(props: DataTabProps) {
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
-                                                handleFieldChange("title", e.target.value);
+                                                handleFieldChange();
                                             }}
                                         />
                                     </FormControl>
@@ -161,7 +181,7 @@ export default function DataTab(props: DataTabProps) {
                                 <FormField
                                     key={fieldName}
                                     control={form.control}
-                                    name={fieldName}
+                                    name={fieldName as keyof z.infer<typeof FormSchema>}
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{label}</FormLabel>
@@ -171,7 +191,7 @@ export default function DataTab(props: DataTabProps) {
                                                     {...field}
                                                     onChange={(e) => {
                                                         field.onChange(e);
-                                                        handleFieldChange(fieldName as keyof z.infer<typeof FormSchema>, e.target.value);
+                                                        handleFieldChange();
                                                     }}
                                                 />
                                             </FormControl>
@@ -191,7 +211,7 @@ export default function DataTab(props: DataTabProps) {
                                         <Select
                                             onValueChange={(value) => {
                                                 field.onChange(value);
-                                                handleFieldChange("phase", value);
+                                                handleFieldChange();
                                             }}
                                             value={field.value}
                                         >
@@ -219,7 +239,7 @@ export default function DataTab(props: DataTabProps) {
                                         <Select
                                             onValueChange={(value) => {
                                                 field.onChange(value);
-                                                handleFieldChange("country", value);
+                                                handleFieldChange();
                                             }}
                                             value={field.value}
                                         >
@@ -270,7 +290,7 @@ export default function DataTab(props: DataTabProps) {
                                                 />
                                             </PopoverContent>
                                         </Popover>
-                                        <FormDescription>Select the project's deadline.</FormDescription>
+                                        <FormDescription>Select the project&apos;s deadline.</FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -290,7 +310,7 @@ export default function DataTab(props: DataTabProps) {
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
-                                                handleFieldChange("des", e.target.value);
+                                                handleFieldChange();
                                             }}
                                         />
                                     </FormControl>
@@ -299,18 +319,22 @@ export default function DataTab(props: DataTabProps) {
                             )}
                         />
                         <div className="w-full flex">
-                            <Button type="submit" className="ml-auto">
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
-                                        {" "} Loading
-                                    </>
-                                ) : (
-                                    <>
-                                        Submit
-                                    </>
-                                )}
-                            </Button>
+                            {
+                                !detailedView && (
+                                    <Button type="submit" className="ml-auto">
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
+                                                {" "} Loading
+                                            </>
+                                        ) : (
+                                            <>
+                                                Submit
+                                            </>
+                                        )}
+                                    </Button>
+                                )
+                            }
                         </div>
                     </form>
                 </CardContent>

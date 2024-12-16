@@ -1,15 +1,11 @@
 "use client"
 
 import * as React from "react"
-import Image from 'next/image'
 import {
   BookOpen,
   Bot,
-  Command,
   Frame,
   LifeBuoy,
-  Map,
-  PieChart,
   Send,
   Settings2,
   SquareTerminal,
@@ -17,16 +13,11 @@ import {
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -38,8 +29,8 @@ const data = {
   navMain: [
     {
       title: "Bids",
-      url: "#",
-      icon: SquareTerminal,
+      url: "/",
+      icon: BookOpen,
       isActive: true,
     },
     {
@@ -91,29 +82,12 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            {/* <SidebarMenuButton size="lg" asChild>
-              <Image
-                src="/dt_global_logo.jpeg" // Reference the image from the public directory
-                layout="responsive" // Maintain aspect ratio
-                width={50} // Original width of the image
-                height={50} // Original height of the image
-                alt="DT Global Logo"
-              />
-
-            </SidebarMenuButton> */}
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
+    <Sidebar variant="sidebar" className="absolute border-r-2 border-r-gray-100 justify-center border-none main-container z-30 bg-background" {...props}>
+      <SidebarContent className="bg-background">
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="bg-background mb-24">
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>

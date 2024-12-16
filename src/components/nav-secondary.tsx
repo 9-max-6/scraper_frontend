@@ -1,40 +1,20 @@
 import * as React from "react"
-import { type LucideIcon } from "lucide-react"
+import { Button } from "./ui/button"
 
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
-
-export function NavSecondary({
-  items,
-  ...props
-}: {
-  items: {
-    title: string
-    url: string
-    icon: LucideIcon
-  }[]
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+export function NavSecondary({ items }: { items: { title: string; icon: React.ElementType }[] }) {
   return (
-    <SidebarGroup {...props}>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild size="sm">
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+    <div className="flex gap-2">
+      {items.map((item) => (
+        <div key={item.title}>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Settings"
+          >
+            {<item.icon />}
+          </Button>
+        </div>
+      ))}
+    </div>
   )
 }
