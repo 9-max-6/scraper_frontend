@@ -6,12 +6,14 @@ import {
   BadgeDollarSign,
   BookOpen,
   Bot,
+  ChartColumn,
   Command,
   Frame,
   GalleryVerticalEnd,
   HandHeart,
   Home,
   Lightbulb,
+  LucideGitGraph,
   Map,
   PieChart,
   Settings2,
@@ -40,13 +42,11 @@ const data = {
     email: "ahmed.juma@dt-global.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  dash: [
-    {
-      name: "Dashboard",
-      url: "/",
-      icon: Home
-    }
-  ],
+  dash: [{
+    name: "Home",
+    url: "/",
+    icon: Home
+  }],
   navMain: [
     {
       name: "Bids",
@@ -55,7 +55,7 @@ const data = {
     },
     {
       name: "Donors",
-      url: "#",
+      url: "/donors",
       icon: HandHeart,
     },
     {
@@ -65,9 +65,10 @@ const data = {
     },
   ],
   projects: [
+
     {
       name: "Opportunities",
-      url: "#",
+      url: "/opportunities",
       icon: Frame,
     },
     {
@@ -96,7 +97,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar className="bg-background py-2" collapsible="icon" {...props}>
+    <Sidebar className="bg-background py-2 pl-12" collapsible="icon" {...props}>
       <SidebarHeader className="pb-2 bg-background text-center">
         <Image
           src={`/dt-${getLogo()}.svg`}

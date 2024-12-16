@@ -1,6 +1,6 @@
 import NewBid from "@/components/new-bid"
 import Bids from "@/components/bids"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SearchBar from "@/components/search-bar"
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { Stats } from "node:fs"
@@ -12,36 +12,35 @@ import StatsOne from "@/components/stats-one"
 
 export default function Page() {
   return (
-    <div className="flex dash-container mx-4 flex-1 flex-col gap-4 pt-0">
-      <div className="grid auto-rows-min gap-4 w-full grid-cols-12">
-        <div className="col-span-10 flex flex-wrap gap-4">
-          <div className=" rounded-xl bg-muted/50">
-            <StatsTwo />
-          </div>
-          <div className=" rounded-xl bg-muted/50">
-            <StatsTwo />
-          </div>
-          <div className=" rounded-xl bg-muted/50">
-            <StatsTwo />
-          </div>
-          <div className=" rounded-xl bg-muted/50">
-            <StatsTwo />
-          </div>
-        </div>
+    <div className="grid dash_container grid-cols-12 mx-4 gap-4 pt-0">
+      <Card className="col-span-8 flex flex-col gap-4 shadow-none border-none  min-h-full h-full">
 
-        <div className=" col-span-2 h-full rounded-xl bg-muted/50">
+        <div className="grid grid-cols-4 gap-4">
+
+          <StatsTwo />
+          <StatsTwo />
+          <StatsTwo />
+          <StatsTwo />
+        </div>
+        <div className="aspect-video">
+          <Card className=" shadow-none mx-2 mb-2 border-none">
+            <CardDescription>
+              Overview
+            </CardDescription>
+          </Card>
+          <StatsThree />
+
+        </div>
+      </Card>
+      <Card className=" border-none shadow-none  flex flex-col gap-2 col-span-4 min-h-full h-full overflow-scroll scrollbar-hide">
+        <div>
           <StatsThree />
         </div>
-      </div>
-      {/* <div className="flex gap-4 col-span-3">
-        <div className="flex-1 rounded-xl bg-muted/50">
-          <StatsFour />
+        <div>
+          <StatsThree />
         </div>
-        <div className="flex-1 rounded-xl bg-muted/50">
-          <StatsFour />
-        </div>
-      </div> */}
 
+      </Card>
     </div>
   )
 }
