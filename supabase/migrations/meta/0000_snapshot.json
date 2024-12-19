@@ -1,0 +1,589 @@
+{
+  "id": "bafffcf5-5df1-4d09-ae09-e04df9eeedda",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.bids": {
+      "name": "bids",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deadline": {
+          "name": "deadline",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phase": {
+          "name": "phase",
+          "type": "phases",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'Capture stage'"
+        },
+        "author": {
+          "name": "author",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client": {
+          "name": "client",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "biddingEntity": {
+          "name": "biddingEntity",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technicalUnit": {
+          "name": "technicalUnit",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consortiumRole": {
+          "name": "consortiumRole",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "competence": {
+          "name": "competence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "countryExperience": {
+          "name": "countryExperience",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clients": {
+          "name": "clients",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "numberOfBidders": {
+          "name": "numberOfBidders",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "competitorProfile": {
+          "name": "competitorProfile",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "partnerCapacity": {
+          "name": "partnerCapacity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clientPreference": {
+          "name": "clientPreference",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clientIntelligence": {
+          "name": "clientIntelligence",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "clientProcurement": {
+          "name": "clientProcurement",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "availabilityOfResources": {
+          "name": "availabilityOfResources",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "contractValue": {
+          "name": "contractValue",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expertLoe": {
+          "name": "expertLoe",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "projectDuration": {
+          "name": "projectDuration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bdInput": {
+          "name": "bdInput",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "historicalNetMargin": {
+          "name": "historicalNetMargin",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "futureRevenue": {
+          "name": "futureRevenue",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "scopeOfWork": {
+          "name": "scopeOfWork",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "easeOfDoingBusiness": {
+          "name": "easeOfDoingBusiness",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "security": {
+          "name": "security",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reputationalRisk": {
+          "name": "reputationalRisk",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goCapture": {
+          "name": "goCapture",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goEoi": {
+          "name": "goEoi",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "goTender": {
+          "name": "goTender",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tentCapture": {
+          "name": "tentCapture",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tentEoi": {
+          "name": "tentEoi",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tentTender": {
+          "name": "tentTender",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "urgent": {
+          "name": "urgent",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "budget": {
+          "name": "budget",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "duration": {
+          "name": "duration",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidDirectorCapture": {
+          "name": "bidDirectorCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidDirectorEoi": {
+          "name": "bidDirectorEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidDirectorTender": {
+          "name": "bidDirectorTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidManagerCapture": {
+          "name": "bidManagerCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidManagerEoi": {
+          "name": "bidManagerEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bidManagerTender": {
+          "name": "bidManagerTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technicalLeadCapture": {
+          "name": "technicalLeadCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technicalLeadEoi": {
+          "name": "technicalLeadEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technicalLeadTender": {
+          "name": "technicalLeadTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recLeadCapture": {
+          "name": "recLeadCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recLeadEoi": {
+          "name": "recLeadEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recLeadTender": {
+          "name": "recLeadTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proposalWriteCapture": {
+          "name": "proposalWriteCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proposalWriteEoi": {
+          "name": "proposalWriteEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proposalWriteTender": {
+          "name": "proposalWriteTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analystCapture": {
+          "name": "analystCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analystEoi": {
+          "name": "analystEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "analystTender": {
+          "name": "analystTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reviewerCapture": {
+          "name": "reviewerCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reviewerEoi": {
+          "name": "reviewerEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reviewerTender": {
+          "name": "reviewerTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "copyWriterCapture": {
+          "name": "copyWriterCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "copyWriterEoi": {
+          "name": "copyWriterEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "copyWriterTender": {
+          "name": "copyWriterTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recruiterAdminCapture": {
+          "name": "recruiterAdminCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recruiterAdminEoi": {
+          "name": "recruiterAdminEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recruiterAdminTender": {
+          "name": "recruiterAdminTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commLeadCapture": {
+          "name": "commLeadCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commLeadEoi": {
+          "name": "commLeadEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commLeadTender": {
+          "name": "commLeadTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pmCapture": {
+          "name": "pmCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pmEoi": {
+          "name": "pmEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pmTender": {
+          "name": "pmTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "graphicDesCapture": {
+          "name": "graphicDesCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "graphicDesEoi": {
+          "name": "graphicDesEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "graphicDesTender": {
+          "name": "graphicDesTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "translatorCapture": {
+          "name": "translatorCapture",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "translatorEoi": {
+          "name": "translatorEoi",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "translatorTender": {
+          "name": "translatorTender",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bids_client_clients_id_fk": {
+          "name": "bids_client_clients_id_fk",
+          "tableFrom": "bids",
+          "tableTo": "clients",
+          "columnsFrom": [
+            "client"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.clients": {
+      "name": "clients",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.phases": {
+      "name": "phases",
+      "schema": "public",
+      "values": [
+        "Capture stage",
+        "Expression of Interest",
+        "Tender stage"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
