@@ -32,8 +32,9 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useSidebar } from "@/components/ui/sidebar"
-import { url } from "inspector"
 import { NavTertiary } from "./nav-tertiary"
+import clsx from "clsx"
+import { Separator } from "./ui/separator"
 
 // This is sample data.
 const data = {
@@ -97,8 +98,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }
 
   return (
-    <Sidebar className="bg-background py-2 pl-12" collapsible="icon" {...props}>
-      <SidebarHeader className="pb-2 bg-background text-center">
+    <Sidebar className="bg-background py-4" collapsible="icon" {...props}>
+      <SidebarHeader className={
+        clsx(
+          "pb-2 bg-background text-center",
+          { "pl-12": open }
+        )
+      }>
         <Image
           src={`/dt-${getLogo()}.svg`}
           alt="Logo"
@@ -107,7 +113,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           className={!open ? "hidden" : ""}
         />
       </SidebarHeader>
-      <SidebarContent className="bg-background">
+      <Separator />
+      <SidebarContent className={clsx(
+        "bg-background",
+        { "pl-12": open }
+      )}>
         <NavTertiary items={data.dash} />
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />

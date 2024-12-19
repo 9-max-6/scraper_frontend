@@ -4,17 +4,8 @@ import { Toaster } from "@/components/ui/toaster"
 import "./globals.css";
 import "./custom.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Card } from "@/components/ui/card";
 import Topbar from "@/components/topbar";
 import { AppSidebar } from "@/components/app-sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,

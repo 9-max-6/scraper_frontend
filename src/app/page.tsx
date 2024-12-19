@@ -1,46 +1,48 @@
-import NewBid from "@/components/new-bid"
-import Bids from "@/components/bids"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import SearchBar from "@/components/search-bar"
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import { Stats } from "node:fs"
-import StatsThree from "@/components/stats-three"
-import StatsTwo from "@/components/stats-two"
-import StatsFour from "@/components/stats-fours"
+import { Suspense } from "react"
 import StatsOne from "@/components/stats-one"
+import CardWrapper from "./_components/card-wrapper"
+import { CardWrapperFallback, OverviewFallback } from "./_components/fallbacks"
+import OverviewGraph from "@/app/_components/overview-graph"
 
 
 export default function Page() {
   return (
-    <div className="grid dash_container grid-cols-12 mx-4 gap-4 pt-0">
-      <Card className="col-span-8 flex flex-col gap-4 shadow-none border-none  min-h-full h-full">
-
-        <div className="grid grid-cols-4 gap-4">
-
-          <StatsTwo />
-          <StatsTwo />
-          <StatsTwo />
-          <StatsTwo />
+    <div className="grid dash_container grid-cols-12 gap-4 px-4 ">
+      <div className="col-span-8 h-full">
+        <div className="h-full min-h-full max-h-full gap-4 flex flex-col">
+          <div className="">
+            <div className="w-full h-full border-box min-h-full">
+              <Suspense fallback={<CardWrapperFallback />}>
+                <CardWrapper />
+              </Suspense>
+            </div>
+          </div>
+          <div>
+            <Card className="px-4 shadow-none border-none">
+              <CardDescription>
+                Overview
+              </CardDescription>
+            </Card>
+          </div>
+          <div className="flex-grow">
+            <div className="h-full min-h-full w-full">
+              <Suspense fallback={<OverviewFallback />}>
+                <OverviewGraph />
+              </Suspense>
+            </div>
+          </div>
         </div>
-        <div className="aspect-video">
-          <Card className=" shadow-none mx-2 mb-2 border-none">
-            <CardDescription>
-              Overview
-            </CardDescription>
-          </Card>
-          <StatsThree />
-
-        </div>
-      </Card>
-      <Card className=" border-none shadow-none  flex flex-col gap-2 col-span-4 min-h-full h-full overflow-scroll scrollbar-hide">
+      </div>
+      <div className="flex flex-col gap-2 col-span-4 min-h-full h-full overflow-scroll scrollbar-hide">
         <div>
-          <StatsThree />
+          <StatsOne />
         </div>
         <div>
-          <StatsThree />
+          <StatsOne />
         </div>
 
-      </Card>
-    </div>
+      </div>
+    </div >
   )
 }

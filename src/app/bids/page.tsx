@@ -4,9 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import SearchBar from "@/components/search-bar"
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import StatsFour from "@/components/stats-fours"
+import { getBids } from "@/lib/bid-service"
 
+export default async function Page() {
 
-export default function Page() {
     return (
         <div className="dash_container mx-12">
             <StatsFour />

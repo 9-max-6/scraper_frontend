@@ -9,6 +9,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
+import clsx from "clsx"
 
 export function NavMain({
   items,
@@ -28,7 +30,12 @@ export function NavMain({
         {items.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <Link href={item.url}>
+              <Link href={item.url} className={clsx(
+                "hover:text-blue-600",
+                {
+                  "text-blue-500": usePathname() === item.url,
+                }
+              )}>
                 <item.icon />
                 <span>{item.name}</span>
               </Link>

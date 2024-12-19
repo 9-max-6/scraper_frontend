@@ -34,9 +34,11 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export default function StatsThree() {
+
+export default async function OverviewGraph() {
+
     return (
-        <Card>
+        <Card className="shadow-none">
             <CardHeader>
                 <CardTitle>Bar Chart - Multiple</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>

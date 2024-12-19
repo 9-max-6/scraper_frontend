@@ -201,3 +201,18 @@ export async function patchCommercials(bidId: string, commData: CommercialsTabTy
     return response.json();
 
 }
+
+export async function getBids() {
+    const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch bids')
+    }
+
+    return response.json();
+}

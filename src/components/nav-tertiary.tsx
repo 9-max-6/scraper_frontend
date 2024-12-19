@@ -9,6 +9,8 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import clsx from "clsx"
+import { usePathname } from "next/navigation"
 
 export function NavTertiary({
     items,
@@ -22,21 +24,25 @@ export function NavTertiary({
     const { isMobile } = useSidebar()
 
     return (
-        <SidebarGroup>
+        <SidebarGroup >
             <SidebarGroupLabel></SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => (
                     <SidebarMenuItem key={item.name}>
                         <SidebarMenuButton asChild>
-                            <Link href={item.url}>
+                            <Link href={item.url} className={clsx(
+                                "hover:text-blue-600",
+                                {
+                                    "text-blue-500": usePathname() === item.url,
+                                }
+                            )}>
                                 <item.icon />
                                 <span>{item.name}</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 ))}
-                <SidebarMenuItem>
-                </SidebarMenuItem>
+
             </SidebarMenu>
         </SidebarGroup>
     )
