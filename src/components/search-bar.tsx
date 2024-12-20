@@ -12,7 +12,7 @@ import { AggregatedBid, AggregatedBidArrayType } from '@/types/types';
 import { useRouter } from 'next/navigation'; // Import the router for navigation
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 
-export default function SearchBar() {
+export default function SearchBarDeprecated() {
   const getAggregatedBids = aggregatedBidsStore((state) => state.getAggregatedBids);
   const aggregatedBids = aggregatedBidsStore((state) => state.aggregatedBids);
   const router = useRouter(); // Initialize the router for navigation

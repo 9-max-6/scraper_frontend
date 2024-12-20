@@ -15,6 +15,13 @@
       "when": 1734625301435,
       "tag": "0001_fast_wallop",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1734634469266,
+      "tag": "0002_superb_baron_strucker",
+      "breakpoints": true
     }
   ]
 }
