@@ -32,3 +32,16 @@ export const bidsTable = t.pgTable("bids", {
 
 export type InsertBid = typeof bidsTable.$inferInsert
 export type SelectBid = typeof bidsTable.$inferSelect
+
+/**
+ * columns for the paginated table
+ * status / /
+ * title / /
+ * deadline / /
+ * client / /
+ * createdat / /
+ * phase / /
+ * author /
+ * country
+ * urgent /
+ */

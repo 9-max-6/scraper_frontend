@@ -1,28 +1,50 @@
-import NewBid from "@/components/new-bid"
-import Bids from "@/components/bids"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
-import StatsFour from "@/components/stats-fours"
 import { getBids } from "@/db/queries/get"
 import SearchBar from "./_components/search-bar"
 import Link from "next/link"
+import BidsTable, { BidsTableFallback } from "./_components/bids-table";
+import { Suspense } from "react";
+import Pagination from "./_components/paginator";
 
 
-export default async function Page({ searchParams }: {
-    searchParams: {
-        page: string | undefined
-    }
+export default async function Page(props: {
+    searchParams?: Promise<{
+        title?: string;
+        page?: string;
+    }>;
 }) {
-    const bids = await getBids()
+    const searchParams = await props.searchParams;
+    const title = searchParams?.title || '';
+    const page = Number(searchParams?.page) || 1;
+
+    const bids = await getBids({
+        page: page,
+        title: title,
+    })
+
+    const paginatorProps = {
+        page: bids?.currentPage,
+        totalPages: bids?.totalPages,
+        totalItems: bids?.totalItems,
+
+    }
     return (
         <div className="dash_container mx-12">
-            {/* <SearchBar /> */}
-            <Link href="/bids/create/">
-                New bid
-            </Link>
+            <div className="w-full grid grid-rows-12 relative h-full">
+                <div className="sticky row-span-1 w-full z-20 top-0 flex items-center py-4">
+                    <SearchBar />
+                </div>
+                <div className="row-span-11 h-full grid grid-rows-12">
+                    <div className="row-span-11 overflow-scroll">
+                        <Suspense fallback={<BidsTableFallback />}>
+                            <BidsTable bids={bids} />
+                        </Suspense>
+                    </div>
+                    <div className="row-span-1">
+                        <Pagination {...paginatorProps} />
+                    </div>
+                </div>
+            </div>
         </div>
-
-
     )
 }
 

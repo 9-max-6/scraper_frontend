@@ -2,7 +2,6 @@ import { Separator } from "@/components/ui/separator";
 import { LifeBuoy, Send, OctagonAlert } from "lucide-react";
 import ModeToggle from "@/components/toggle-mode";
 import { NavSecondary } from "@/components/nav-secondary";
-import { getBidById } from "@/lib/bid-service";
 import Overview from "@/components/overview";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
