@@ -1,10 +1,11 @@
 import * as t from 'drizzle-orm/pg-core';
-const contractValueEnum = t.pgEnum("contractValue", ["0", "1", "2", "3", "4", "5"])
-const expertLoeEnum = t.pgEnum("expertLoe", ["0", "1", "2", "3", "4", "5"])
-const projectDurationEnum = t.pgEnum("projectDuration", ["0", "1", "2", "3", "4", "5"])
-const bdInputEnum = t.pgEnum("bdInput", ["0", "1", "2", "3", "4", "5"])
-const historicalNetMarginEnum = t.pgEnum("historicalNetMargin", ["0", "1", "2", "3", "4", "5"])
-const futureRevenueEnum = t.pgEnum("futureRevenue", ["0", "3", "5"])
+
+export const contractValueEnum = t.pgEnum("contractValue", ["0", "1", "2", "3", "4", "5"])
+export const expertLoeEnum = t.pgEnum("expertLoe", ["0", "1", "2", "3", "4", "5"])
+export const projectDurationEnum = t.pgEnum("projectDuration", ["0", "1", "2", "3", "4", "5"])
+export const bdInputEnum = t.pgEnum("bdInput", ["0", "1", "2", "3", "4", "5"])
+export const historicalNetMarginEnum = t.pgEnum("historicalNetMargin", ["0", "1", "2", "3", "4", "5"])
+export const futureRevenueEnum = t.pgEnum("futureRevenue", ["0", "3", "5"])
 
 
 export const commercialsTable = t.pgTable('commercials', {
@@ -62,3 +63,10 @@ export const bidInputTable = t.pgTable('bdinput', {
     translatorEoi: t.integer('translatorEoi').notNull().default(0),
     translatorTender: t.integer('translatorTender').notNull().default(0),
 })
+
+
+export type InsertCommercials = typeof commercialsTable.$inferInsert;
+export type SelectCommercials = typeof commercialsTable.$inferSelect;
+
+export type InsertBdInput = typeof bidInputTable.$inferInsert;
+export type SelectBdInput = typeof bidInputTable.$inferSelect;

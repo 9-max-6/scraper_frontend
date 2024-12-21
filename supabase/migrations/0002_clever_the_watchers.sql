@@ -1,0 +1,1 @@
+ALTER TABLE "risk" ALTER COLUMN "scopeOfWork" SET NOT NULL;

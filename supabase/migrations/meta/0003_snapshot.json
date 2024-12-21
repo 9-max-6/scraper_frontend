@@ -1,6 +1,6 @@
 {
-  "id": "248a6f4a-084a-4c38-a1d2-cecd02e3291d",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "4c2a99f4-cb39-4ca5-9278-b673f2296180",
+  "prevId": "d32c17c9-3ce3-46e9-9bb3-1eee2f593a4b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -22,7 +22,7 @@
         },
         "des": {
           "name": "des",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
@@ -161,7 +161,15 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "bids_metrics_unique": {
+          "name": "bids_metrics_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "metrics"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -853,7 +861,7 @@
           "type": "scopeOfWork",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'0'"
         },
         "easeOfDoingBusiness": {

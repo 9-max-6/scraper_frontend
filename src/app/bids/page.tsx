@@ -5,6 +5,7 @@ import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import StatsFour from "@/components/stats-fours"
 import { getBids } from "@/db/queries/get"
 import SearchBar from "./_components/search-bar"
+import Link from "next/link"
 
 
 export default async function Page({ searchParams }: {
@@ -15,7 +16,10 @@ export default async function Page({ searchParams }: {
     const bids = await getBids()
     return (
         <div className="dash_container mx-12">
-            <SearchBar />
+            {/* <SearchBar /> */}
+            <Link href="/bids/create/">
+                New bid
+            </Link>
         </div>
 
 

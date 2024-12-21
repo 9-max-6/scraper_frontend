@@ -11,3 +11,6 @@ export const metricsTable = t.pgTable('metrics', {
     capabilitiesId: t.integer('capabilitiesId').references(() => capabilitiesTable.id).unique(),
     commercialsId: t.integer('commercialsId').references(() => commercialsTable.id).unique(),
 })
+
+export type InsertMetric = typeof metricsTable.$inferInsert
+export type SelectMetric = typeof metricsTable.$inferSelect

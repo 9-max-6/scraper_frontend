@@ -1,5 +1,5 @@
 import * as t from 'drizzle-orm/pg-core';
-import { clientsTable } from './clients';
+import { clientsTable } from './donors';
 import { metricsTable } from './metrics';
 
 export const phasesEnum = t.pgEnum('phases', ["capture", "eoi", "tender"])
@@ -8,7 +8,7 @@ export const statusEnum = t.pgEnum('status', ["undec", "go_cap", "tent_eoi", "te
 export const bidsTable = t.pgTable("bids", {
     id: t.serial("id").primaryKey(),
     title: t.varchar("title", { length: 255 }).notNull(),
-    des: t.varchar("des", { length: 255 }).notNull(),
+    des: t.text("des").notNull(),
     createdAt: t.timestamp().defaultNow().notNull(),
     deletedAt: t.timestamp(),
     updatedAt: t.timestamp(),
@@ -25,8 +25,8 @@ export const bidsTable = t.pgTable("bids", {
     duration: t.integer('duration').notNull().default(0),
     status: statusEnum().default("undec"),
 
-    // metrics
-    metrics: t.integer('metrics').references(() => metricsTable.id)
+    // metrics - can be null
+    metrics: t.integer('metrics').references(() => metricsTable.id).unique(),
 });
 
 
