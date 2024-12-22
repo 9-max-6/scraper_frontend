@@ -10,6 +10,7 @@ import { Fallback } from "./_components/fallback";
 import Commercials from "./_components/commercials";
 import { OverviewGraphFallback } from "./_components/overview-graph";
 import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
+import { ShieldAlertIcon } from "lucide-react";
 
 export default async function Page({ params }: {
     params: Promise<{
@@ -40,7 +41,6 @@ export default async function Page({ params }: {
     if (!metrics) {
         throw new Error("Metrics not found");
     }
-
     // getting scores
     const scoresArray = await getScoresByBidId(id)
 
@@ -53,6 +53,14 @@ export default async function Page({ params }: {
     }
     const latestScore = scoresArray[0]
 
+    if (!latestScore) {
+        return (
+            <div className="mx-4 dash_container">
+                Missing scores
+            </div>
+        )
+    }
+
     // getting phase
     const phase = bidData.phase
 
@@ -62,18 +70,27 @@ export default async function Page({ params }: {
         >
             <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full mx-auto max-w-[1080px]">
                 {/* {JSON.stringify(bidData)} */}
-                <CardHeader className="">
+                <CardHeader className="relative text-xl">
                     <CardTitle>
                         {bidData.title}
                     </CardTitle>
-                    <CardDescription>
-                        {bidData.des}
-                    </CardDescription>
+
+                    {/* urgent */}
+                    <div className="top-4 right-8 absolute">
+                        {
+                            !bidData.urgent && (
+                                <ShieldAlertIcon className="text-red-800" size={20} />
+                            )
+                        }
+                    </div>
                 </CardHeader>
 
                 <CardContent className="flex flex-col gap-12">
                     {/* bid data */}
-                    <BidData />
+                    <BidData
+                        score={latestScore.overallScore}
+                        bidData={bidData}
+                    />
 
                     {/* overview */}
                     <Suspense fallback={<OverviewGraphFallback />}>
@@ -86,9 +103,9 @@ export default async function Page({ params }: {
                             id={metrics[0].capabilitiesId}
                             score={latestScore.capabilitiesScore}
                             phase={phase}
+                            bidId={bidData.id}
                         />
                     </Suspense>
-
 
                     {/* commercials */}
                     <Suspense fallback={<Fallback />}>
@@ -96,6 +113,7 @@ export default async function Page({ params }: {
                             id={metrics[0].commercialsId}
                             score={latestScore.commercialsScore}
                             phase={phase}
+                            bidId={bidData.id}
                         />
                     </Suspense>
 
@@ -105,6 +123,7 @@ export default async function Page({ params }: {
                             id={metrics[0].competitivenessId}
                             score={latestScore.competitivenessScore}
                             phase={phase}
+                            bidId={bidData.id}
                         />
                     </Suspense>
 
@@ -113,7 +132,9 @@ export default async function Page({ params }: {
                         <Risk
                             id={metrics[0].riskId}
                             score={latestScore.riskScore}
-                            phase={phase} />
+                            phase={phase}
+                            bidId={bidData.id}
+                        />
                     </Suspense>
                 </CardContent>
                 <CardFooter>

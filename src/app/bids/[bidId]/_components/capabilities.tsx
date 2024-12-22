@@ -2,11 +2,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button";
 import { getCapabilitiesById } from "@/db/queries/metrics/get";
 import { ThumbsDown, ThumbsUp } from "lucide-react";
-
 /**
  * text imports
  */
-import { CapabilitiesText } from "./bid-profile-text";
+import { CapabilitiesText, Thresholds } from "./bid-profile-text";
+import { getTime } from "./utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const getText = (key: string, value: string): {
     text: string,
@@ -37,7 +39,8 @@ const getText = (key: string, value: string): {
  * @returns 
  */
 const getStatus = (score: number, phase: string | null) => {
-    return true;
+    const entry = Thresholds[phase as keyof typeof Thresholds]
+    return score >= entry[phase as keyof typeof entry]
 }
 
 /**
@@ -45,10 +48,11 @@ const getStatus = (score: number, phase: string | null) => {
  * @param param0 
  * @returns 
  */
-export default async function Capabilities({ id, score, phase }: {
+export default async function Capabilities({ id, score, phase, bidId }: {
     id: number | null,
     score: number,
     phase: string | null,
+    bidId: number,
 }) {
 
     if (!id) {
@@ -80,12 +84,17 @@ export default async function Capabilities({ id, score, phase }: {
                 </CardDescription>
                 {/* status indicator */}
                 <div className="absolute top-4 right-8">
+
                     {
                         getStatus(score, phase) ? (
                             // above threshold
-                            <ThumbsUp color="#26a269" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score}{" "}<ThumbsUp color="#26a269" />
+                            </Button>
                         ) : (
-                            <ThumbsDown color="#a51d2d" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score} {" "}<ThumbsDown color="#a51d2d" />
+                            </Button>
                         )
                     }
                 </div>
@@ -126,9 +135,14 @@ export default async function Capabilities({ id, score, phase }: {
                 )}
             </CardContent>
             <CardFooter className="flex">
-                <Button className="ml-auto">
-                    Edit
-                </Button>
+                <CardDescription className="text-sm">
+                    {getTime(data.updatedAt, data.createdAt)}
+                </CardDescription>
+                <Link className="ml-auto" href={`/bids/${bidId}/edit/capability`}>
+                    <Button>
+                        Edit
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     )

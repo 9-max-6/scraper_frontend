@@ -6,8 +6,16 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 /**
  * text imports
  */
-import { CompetitivenessText } from "./bid-profile-text";
+import { CompetitivenessText, Thresholds } from "./bid-profile-text";
+import { getTime } from "./utils";
+import Link from "next/link";
 
+/**
+ * 
+ * @param key 
+ * @param value 
+ * @returns 
+ */
 const getText = (key: string, value: string): {
     text: string,
     tag: string,
@@ -36,14 +44,15 @@ const getText = (key: string, value: string): {
  * @returns 
  */
 const getStatus = (score: number, phase: string | null) => {
-    return true;
+    const entry = Thresholds[phase as keyof typeof Thresholds]
+    return score >= entry[phase as keyof typeof entry]
 }
 
-export default async function Competitiveness({ id, score, phase }: {
+export default async function Competitiveness({ id, score, phase, bidId }: {
     id: number | null,
     score: number,
     phase: string | null,
-
+    bidId: number,
 }) {
 
     if (!id) {
@@ -76,10 +85,13 @@ export default async function Competitiveness({ id, score, phase }: {
                 <div className="absolute top-4 right-8">
                     {
                         getStatus(score, phase) ? (
-                            // above threshold
-                            <ThumbsUp color="#26a269" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score}{" "}<ThumbsUp color="#26a269" />
+                            </Button>
                         ) : (
-                            <ThumbsDown color="#a51d2d" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score} {" "}<ThumbsDown color="#a51d2d" />
+                            </Button>
                         )
                     }
                 </div>
@@ -122,12 +134,14 @@ export default async function Competitiveness({ id, score, phase }: {
                 )}
             </CardContent>
             <CardFooter className="flex">
-                <CardDescription>
-                    Current score: {score}
+                <CardDescription className="text-sm">
+                    {getTime(data.updatedAt, data.createdAt)}
                 </CardDescription>
-                <Button className="ml-auto">
-                    Edit
-                </Button>
+                <Link className="ml-auto" href={`/bids/${bidId}/edit/competitiveness`}>
+                    <Button>
+                        Edit
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     )

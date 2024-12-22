@@ -6,7 +6,9 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 /**
  * text imports
  */
-import { RiskText } from "./bid-profile-text";
+import { RiskText, Thresholds } from "./bid-profile-text";
+import { getTime } from "./utils";
+import Link from "next/link";
 
 const getText = (key: string, value: string): {
     text: string,
@@ -37,7 +39,8 @@ const getText = (key: string, value: string): {
  * @returns 
  */
 const getStatus = (score: number, phase: string | null) => {
-    return true;
+    const entry = Thresholds[phase as keyof typeof Thresholds]
+    return score >= entry[phase as keyof typeof entry]
 }
 
 
@@ -46,10 +49,11 @@ const getStatus = (score: number, phase: string | null) => {
  * @param param0 
  * @returns 
  */
-export default async function Risk({ id, score, phase }: {
+export default async function Risk({ id, score, phase, bidId }: {
     id: number | null,
     score: number,
     phase: string | null,
+    bidId: number,
 }) {
 
     if (!id) {
@@ -82,9 +86,13 @@ export default async function Risk({ id, score, phase }: {
                     {
                         getStatus(score, phase) ? (
                             // above threshold
-                            <ThumbsUp color="#26a269" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score}{" "}<ThumbsUp color="#26a269" />
+                            </Button>
                         ) : (
-                            <ThumbsDown color="#a51d2d" />
+                            <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
+                                {score} {" "}<ThumbsDown color="#a51d2d" />
+                            </Button>
                         )
                     }
                 </div>
@@ -126,9 +134,14 @@ export default async function Risk({ id, score, phase }: {
                 )}
             </CardContent>
             <CardFooter className="flex">
-                <Button className="ml-auto">
-                    Edit
-                </Button>
+                <CardDescription className="text-sm">
+                    {getTime(data.updatedAt, data.createdAt)}
+                </CardDescription>
+                <Link className="ml-auto" href={`/bids/${bidId}/edit/risk`}>
+                    <Button>
+                        Edit
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     )

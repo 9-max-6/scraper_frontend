@@ -203,3 +203,23 @@ export const RiskText = {
 
     }
 }
+export const Thresholds = {
+    "capture": {
+        capabilities: 60,
+        competitiveness: 0,
+        commercials: 0,
+        risk: 0,
+    },
+    "eoi": {
+        capabilities: 60,
+        competitiveness: 90,
+        commercials: 80,
+        risk: 35,
+    },
+    "tender": {
+        capabilities: 60,
+        competitiveness: 120,
+        commercials: 100,
+        risk: 55,
+    }
+}

@@ -9,9 +9,8 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import MiniClient from "./mini-client";
-import { Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
-import { CircleCheckBig, ShieldAlert, ShieldAlertIcon, User2 } from "lucide-react";
+import { CircleCheckBig, ShieldAlertIcon, User2 } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -146,7 +145,7 @@ export default async function BidsTable({ bids }: {
 
                                 {/* Author */}
                                 <TableCell className="" >
-                                    <Button variant="ghost" className="pl-0 border-none">
+                                    <Button variant="ghost" className="hover:bg-inherit cursor-default pl-0 border-none">
                                         <User2 /> {bid.author}
                                     </Button>
                                 </TableCell>

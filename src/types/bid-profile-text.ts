@@ -421,23 +421,3 @@ export const ReverseBidProfileText = {
     }
 }
 
-export const Thresholds = {
-    "Capture": {
-        capabilities: 60,
-        competitiveness: 0,
-        commercials: 0,
-        risk: 0,
-    },
-    "Expression of Interest": {
-        capabilities: 60,
-        competitiveness: 90,
-        commercials: 80,
-        risk: 35,
-    },
-    "Tender stage": {
-        capabilities: 60,
-        competitiveness: 120,
-        commercials: 100,
-        risk: 55,
-    }
-}

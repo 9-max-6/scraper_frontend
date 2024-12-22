@@ -95,7 +95,7 @@ export const getScoresByBidId = unstable_cache(
                 .where(eq(scoresTable.bid, id))
                 .orderBy(desc(scoresTable.createdAt))
 
-            if (!result) {
+            if (result.length === 0) {
                 // adding default values
                 const defaultScores = {
                     bid: id,
@@ -109,7 +109,6 @@ export const getScoresByBidId = unstable_cache(
                 if (!scoreId) {
                     console.log("Error inserting default scores");
                 }
-                revalidateTag("scores");
                 return [defaultScores];
             }
             return result;

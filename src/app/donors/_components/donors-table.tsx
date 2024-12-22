@@ -67,7 +67,7 @@ export default async function DonorsTable({ donors }: {
                             <TableRow className="relative rounded-lg h-24" key={client.id}>
                                 {/* icon */}
                                 <TableCell className="w-24">
-                                    <Button variant="ghost" className="hover:cursor-default">
+                                    <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
                                         <HeartHandshake color="#a51d2d" /> {getClientInitials(client.name)}
                                     </Button>
                                 </TableCell>
