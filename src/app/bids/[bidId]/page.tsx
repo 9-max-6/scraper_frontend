@@ -45,7 +45,7 @@ export default async function Page({ params }: {
     }
 
     return (
-        <div className="dash_container text-wrap break-all max-w-full"
+        <div className="dash_container max-w-full"
         // remove the break-all text-wrap classes at the end.
         >
             <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full mx-auto max-w-[1080px]">
