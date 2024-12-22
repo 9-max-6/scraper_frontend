@@ -16,12 +16,11 @@ import { reformatBid } from "@/lib/bid-service";
  * @returns 
  */
 export async function postBid(data: z.infer<typeof FormSchema>): Promise<number | undefined> {
-    const reformattedBid = reformatBid(data); 
+    const reformattedBid = reformatBid(data);
     if (!reformattedBid) {
         return undefined;
     }
     const id = await insertBid(reformattedBid);
-    console.log('id', id);
     if (!id) {
         return undefined;
     }
@@ -33,6 +32,5 @@ export async function undoBid(id: number | undefined): Promise<number | undefine
     if (!id) {
         return undefined;
     }
-    console.log('undoBid', id);
     return id;
 }

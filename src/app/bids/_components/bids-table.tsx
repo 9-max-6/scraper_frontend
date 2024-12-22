@@ -1,5 +1,5 @@
 import * as React from "react"
-import { PaginatedResponseType } from "@/db/queries/get";
+import { PaginatedResponseType } from "@/db/queries/bids/get";
 import {
     Table,
     TableBody,
@@ -68,7 +68,6 @@ export default async function BidsTable({ bids }: {
 }) {
 
     const data = bids?.items || [];
-    console.log(data[0])
     return (
         <Table className="relative h-full overflow-scroll">
             <TableHeader className="sticky top-0">

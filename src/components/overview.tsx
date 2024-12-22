@@ -1,7 +1,7 @@
 "use client"
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList } from "recharts"
-import { OverviewProperties } from "@/app/bids/[bidId]/page"
+import { OverviewProperties } from "@/app/bids/[bidId]/oldpage"
 import {
     Card,
     CardContent,

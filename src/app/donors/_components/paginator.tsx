@@ -23,7 +23,9 @@ export default function Pagination({ page, totalItems, totalPages }: {
                 newparams.set('page', String(page - 1));
                 router.push(`${pathname}?${newparams.toString()}`);
 
-            }}>
+
+            }}
+                className="w-24 h-8 bg-red-800 hover:bg-red-700">
                 prev <ChevronLeft size={72} />
             </Button>
             <span className="text-gray-400 text-sm">{page} of {totalPages}</span>
@@ -34,7 +36,8 @@ export default function Pagination({ page, totalItems, totalPages }: {
                 newparams.set('page', String(page + 1));
                 router.push(`${pathname}?${newparams.toString()}`);
 
-            }}>
+            }}
+                className="w-24 h-8 bg-red-800 hover:bg-red-700">
                 next <ChevronRight size={72} />
             </Button>
 

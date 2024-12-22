@@ -1,4 +1,4 @@
-import { getBids } from "@/db/queries/get"
+import { getBids } from "@/db/queries/bids/get"
 import SearchBar from "./_components/search-bar"
 import Link from "next/link"
 import BidsTable, { BidsTableFallback } from "./_components/bids-table";

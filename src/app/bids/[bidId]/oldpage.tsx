@@ -39,20 +39,6 @@ const navSecondary = [
     },
 ];
 
-async function getDetailedBid(bidId: number) {
-    try {
-        if (Number.isNaN(bidId)) {
-            throw new Error("Bid ID is required")
-        }
-        const response = await getBidById(bidId)
-        return response
-    } catch (e) {
-        const error = e as Error
-        console.error("Error when fetching detailed biid", error.toString());
-        return null;
-    }
-}
-
 export default async function Page({ params }: { params: Promise<{ bidId: string }> }) {
     const bidId = (await params).bidId
     const optimisticBid = await getDetailedBid(parseInt(bidId))

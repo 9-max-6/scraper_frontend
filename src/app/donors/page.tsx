@@ -1,7 +1,7 @@
-import { getBids } from "@/db/queries/get"
+"use cache";
+import { getClientsPaginated } from "@/db/queries/donors/get"
 import SearchBar from "./_components/search-bar"
-import Link from "next/link"
-import BidsTable, { BidsTableFallback } from "./_components/donors-table";
+import DonorsTable, { DonorsTableFallback } from "./_components/donors-table";
 import { Suspense } from "react";
 import Pagination from "./_components/paginator";
 
@@ -16,15 +16,15 @@ export default async function Page(props: {
     const title = searchParams?.title || '';
     const page = Number(searchParams?.page) || 1;
 
-    const bids = await getBids({
+    const donors = await getClientsPaginated({
         page: page,
         title: title,
     })
 
     const paginatorProps = {
-        page: bids?.currentPage,
-        totalPages: bids?.totalPages,
-        totalItems: bids?.totalItems,
+        page: donors?.currentPage,
+        totalPages: donors?.totalPages,
+        totalItems: donors?.totalItems,
 
     }
     return (
@@ -35,8 +35,8 @@ export default async function Page(props: {
                 </div>
                 <div className="row-span-11 h-full grid grid-rows-12">
                     <div className="row-span-11 overflow-scroll">
-                        <Suspense fallback={<BidsTableFallback />}>
-                            <BidsTable bids={bids} />
+                        <Suspense fallback={<DonorsTableFallback />}>
+                            <DonorsTable donors={donors} />
                         </Suspense>
                     </div>
                     <div className="row-span-1">
@@ -62,4 +62,10 @@ export default async function Page(props: {
  * for filtering but then have a higher layer that has the pagination, filters
  * and one layer between this layer and the table to perform the actual
  * data fetching?
+ */
+
+/**
+ * so there are some implementations not yet made
+ * these include
+ * the undo button
  */

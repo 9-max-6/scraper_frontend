@@ -27,7 +27,7 @@ export default function SearchBar() {
         <div className="w-full grid grid-rows-12 relative h-full">
             <div className="row-span-1 h-full w-full flex">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="Find bids by title..."
                     defaultValue={params.get("title") || ""}
                     onChange={(event) =>
                         handleSearch(event.target.value)

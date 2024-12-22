@@ -2,11 +2,9 @@
 
 import { usePathname, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { CircleFadingPlus } from "lucide-react"
 import { useDebouncedCallback } from 'use-debounce';
 import { useRouter } from "next/navigation";
+import NewClientDialog from "../create/_components/new-client-dialog"
 
 export default function SearchBar() {
     const params = useSearchParams();
@@ -27,7 +25,7 @@ export default function SearchBar() {
         <div className="w-full grid grid-rows-12 relative h-full">
             <div className="row-span-1 h-full w-full flex">
                 <Input
-                    placeholder="Filter emails..."
+                    placeholder="Find clients by title..."
                     defaultValue={params.get("title") || ""}
                     onChange={(event) =>
                         handleSearch(event.target.value)
@@ -35,11 +33,7 @@ export default function SearchBar() {
                     className="max-w-2xl"
                 />
                 <div className="ml-auto mr-2">
-                    <Link href="/bids/create">
-                        <Button className="w-24 h-8">
-                            Create <CircleFadingPlus />
-                        </Button>
-                    </Link>
+                    <NewClientDialog />
                 </div>
             </div>
 

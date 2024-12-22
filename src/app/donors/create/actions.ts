@@ -1,38 +1,36 @@
 'use server'
 import { z } from "zod";
-import { FormSchema } from "./_components/new-bid-form";
+import { FormSchema } from "./_components/new-client-form";
 /**
  * mutation function imports
  */
-import { insertBid } from "@/db/queries/insert";
-/**
- * reformat function imports
- */
-import { reformatBid } from "@/lib/bid-service";
+import { insertClient } from "@/db/queries/insert";
 
 /**
  * 
  * @param data 
  * @returns 
  */
-export async function postBid(data: z.infer<typeof FormSchema>): Promise<number | undefined> {
-    const reformattedBid = reformatBid(data); 
-    if (!reformattedBid) {
-        return undefined;
-    }
-    const id = await insertBid(reformattedBid);
-    console.log('id', id);
+export async function postClient(data: z.infer<typeof FormSchema>): Promise<number | undefined> {
+
+    const id = await insertClient(
+        {
+            name: data.name,
+            des: data.des
+        }
+    );
     if (!id) {
         return undefined;
     }
+
     return id;
 }
 
 
-export async function undoBid(id: number | undefined): Promise<number | undefined> {
+export async function undoClient(id: number | undefined): Promise<number | undefined> {
     if (!id) {
         return undefined;
     }
-    console.log('undoBid', id);
+    console.log('undoClient', id);
     return id;
 }

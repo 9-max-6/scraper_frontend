@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import { getClientsById } from "@/db/queries/get"
+import { getClientsById } from "@/db/queries/donors/get"
 import Link from "next/link"
 
 /**
