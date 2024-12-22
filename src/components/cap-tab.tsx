@@ -9,7 +9,7 @@ import { DataTabProps } from "@/types/types";
 
 const categories = BidProfileText.Capabilities
 
-export default function Capabilities({ props }: { props: DataTabProps }) {
+export default function Capabilitiess({ props }: { props: DataTabProps }) {
     const [selectedValues, setSelectedValues] = useState({
         competence: props.entry?.metrics.capabilities.competence,
         country: props.entry?.metrics.capabilities.country,
