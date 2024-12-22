@@ -11,6 +11,9 @@ export const riskTable = t.pgTable('risk', {
     easeOfDoingBusiness: easeOfDoingBusinessEnum().default("0"),
     security: securityEnum().default("0"),
     reputationalRisk: reputationalRiskEnum().default("0"),
+    createdAt: t.timestamp().defaultNow().notNull(),
+    updatedAt: t.timestamp(),
+
 })
 
 export type InsertRisk = typeof riskTable.$inferInsert;

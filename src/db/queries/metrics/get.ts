@@ -1,11 +1,13 @@
 import { db } from "@/db";
 import { metricsTable } from "@/db/schema/metrics";
-import { unstable_cache } from "next/cache";
-import { eq } from "drizzle-orm";
+import { revalidateTag, unstable_cache } from "next/cache";
+import { eq, desc } from "drizzle-orm";
 import { capabilitiesTable } from "@/db/schema/capabilities";
 import { commercialsTable } from "@/db/schema/commercials";
 import { riskTable } from "@/db/schema/risk";
 import { competitivenessTable } from "@/db/schema/competitiveness";
+import { scoresTable } from "@/db/schema/scores";
+import { insertScore } from "../insert";
 
 export const getMetricsById = unstable_cache(
     async (id: number) => {
@@ -81,5 +83,37 @@ export const getCompetitivenessById = unstable_cache(
     ['competitiveness'],
     {
         tags: ['competitiveness'],
+    }
+)
+
+export const getScoresByBidId = unstable_cache(
+    async (id: number) => {
+        try {
+            const result = db.select().from(scoresTable).where(eq(scoresTable, id)).orderBy(
+                desc(scoresTable.createdAt)
+            )
+            if (!result) {
+                // adding default values
+                const defaultScores = {
+                    bid: id,
+                    overallScore: 0,
+                    capabilitiesScore: 0,
+                    competitivenessScore: 0,
+                    commercialsScore: 0,
+                    riskScore: 0
+                }
+                await insertScore(defaultScores);
+                revalidateTag("scores")
+                console.log("Running")
+                return [defaultScores];
+            }
+        }
+        catch (e: any) {
+            console.log("Error fetching scores by id", e.toString());
+        }
+    },
+    ['scores'],
+    {
+        tags: ['scores'],
     }
 )

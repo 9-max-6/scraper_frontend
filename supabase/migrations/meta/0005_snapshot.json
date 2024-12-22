@@ -1,0 +1,1279 @@
+{
+  "id": "e6c0774d-0109-4fac-a86a-2399d7f8aa2f",
+  "prevId": "940782e3-ef1a-4aa9-83d0-e144a8bbb1d5",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.bids": {
+      "name": "bids",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "des": {
+          "name": "des",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deadline": {
+          "name": "deadline",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phase": {
+          "name": "phase",
+          "type": "phases",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'capture'"
+        },
+        "author": {
+          "name": "author",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "client": {
+          "name": "client",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "country": {
+          "name": "country",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "biddingEntity": {
+          "name": "biddingEntity",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technicalUnit": {
+          "name": "technicalUnit",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consortiumRole": {
+          "name": "consortiumRole",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "urgent": {
+          "name": "urgent",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "budget": {
+          "name": "budget",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'undec'"
+        },
+        "metrics": {
+          "name": "metrics",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "bids_client_clientsTable_id_fk": {
+          "name": "bids_client_clientsTable_id_fk",
+          "tableFrom": "bids",
+          "tableTo": "clientsTable",
+          "columnsFrom": [
+            "client"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "bids_metrics_metrics_id_fk": {
+          "name": "bids_metrics_metrics_id_fk",
+          "tableFrom": "bids",
+          "tableTo": "metrics",
+          "columnsFrom": [
+            "metrics"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "bids_metrics_unique": {
+          "name": "bids_metrics_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "metrics"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.capabilities": {
+      "name": "capabilities",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "competence": {
+          "name": "competence",
+          "type": "competence",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "countryExperience": {
+          "name": "countryExperience",
+          "type": "countryExperience",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "clients": {
+          "name": "clients",
+          "type": "clients",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.bdinput": {
+      "name": "bdinput",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "bidDirectorCapture": {
+          "name": "bidDirectorCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bidDirectorEoi": {
+          "name": "bidDirectorEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bidDirectorTender": {
+          "name": "bidDirectorTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bidManagerCapture": {
+          "name": "bidManagerCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bidManagerEoi": {
+          "name": "bidManagerEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "bidManagerTender": {
+          "name": "bidManagerTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "technicalLeadCapture": {
+          "name": "technicalLeadCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "technicalLeadEoi": {
+          "name": "technicalLeadEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "technicalLeadTender": {
+          "name": "technicalLeadTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recLeadCapture": {
+          "name": "recLeadCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recLeadEoi": {
+          "name": "recLeadEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recLeadTender": {
+          "name": "recLeadTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "proposalWriteCapture": {
+          "name": "proposalWriteCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "proposalWriteEoi": {
+          "name": "proposalWriteEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "proposalWriteTender": {
+          "name": "proposalWriteTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "analystCapture": {
+          "name": "analystCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "analystEoi": {
+          "name": "analystEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "analystTender": {
+          "name": "analystTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "reviewerCapture": {
+          "name": "reviewerCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "reviewerEoi": {
+          "name": "reviewerEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "reviewerTender": {
+          "name": "reviewerTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "copyWriterCapture": {
+          "name": "copyWriterCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "copyWriterEoi": {
+          "name": "copyWriterEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "copyWriterTender": {
+          "name": "copyWriterTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recruiterAdminCapture": {
+          "name": "recruiterAdminCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recruiterAdminEoi": {
+          "name": "recruiterAdminEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "recruiterAdminTender": {
+          "name": "recruiterAdminTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "commLeadCapture": {
+          "name": "commLeadCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "commLeadEoi": {
+          "name": "commLeadEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "commLeadTender": {
+          "name": "commLeadTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "pmCapture": {
+          "name": "pmCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "pmEoi": {
+          "name": "pmEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "pmTender": {
+          "name": "pmTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "graphicDesCapture": {
+          "name": "graphicDesCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "graphicDesEoi": {
+          "name": "graphicDesEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "graphicDesTender": {
+          "name": "graphicDesTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "translatorCapture": {
+          "name": "translatorCapture",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "translatorEoi": {
+          "name": "translatorEoi",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "translatorTender": {
+          "name": "translatorTender",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.commercials": {
+      "name": "commercials",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "contractValue": {
+          "name": "contractValue",
+          "type": "contractValue",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "expertLoe": {
+          "name": "expertLoe",
+          "type": "expertLoe",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "projectDuration": {
+          "name": "projectDuration",
+          "type": "projectDuration",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "bdInput": {
+          "name": "bdInput",
+          "type": "bdInput",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "historicalNetMargin": {
+          "name": "historicalNetMargin",
+          "type": "historicalNetMargin",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "futureRevenue": {
+          "name": "futureRevenue",
+          "type": "futureRevenue",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bdInputId": {
+          "name": "bdInputId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "commercials_bdInputId_bdinput_id_fk": {
+          "name": "commercials_bdInputId_bdinput_id_fk",
+          "tableFrom": "commercials",
+          "tableTo": "bdinput",
+          "columnsFrom": [
+            "bdInputId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.competitiveness": {
+      "name": "competitiveness",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "numberOfBidders": {
+          "name": "numberOfBidders",
+          "type": "numberOfBidders",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "competitorProfile": {
+          "name": "competitorProfile",
+          "type": "competitorProfile",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "partnerCapacity": {
+          "name": "partnerCapacity",
+          "type": "partnerCapacity",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "clientPreference": {
+          "name": "clientPreference",
+          "type": "clientPreference",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "clientIntelligence": {
+          "name": "clientIntelligence",
+          "type": "clientIntelligence",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "clientProcurement": {
+          "name": "clientProcurement",
+          "type": "clientProcurement",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "availabilityOfResources": {
+          "name": "availabilityOfResources",
+          "type": "availabilityOfResources",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.clientsTable": {
+      "name": "clientsTable",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "des": {
+          "name": "des",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deletedAt": {
+          "name": "deletedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.metrics": {
+      "name": "metrics",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "riskId": {
+          "name": "riskId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "competitivenessId": {
+          "name": "competitivenessId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "capabilitiesId": {
+          "name": "capabilitiesId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "commercialsId": {
+          "name": "commercialsId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "metrics_riskId_risk_id_fk": {
+          "name": "metrics_riskId_risk_id_fk",
+          "tableFrom": "metrics",
+          "tableTo": "risk",
+          "columnsFrom": [
+            "riskId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "metrics_competitivenessId_competitiveness_id_fk": {
+          "name": "metrics_competitivenessId_competitiveness_id_fk",
+          "tableFrom": "metrics",
+          "tableTo": "competitiveness",
+          "columnsFrom": [
+            "competitivenessId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "metrics_capabilitiesId_capabilities_id_fk": {
+          "name": "metrics_capabilitiesId_capabilities_id_fk",
+          "tableFrom": "metrics",
+          "tableTo": "capabilities",
+          "columnsFrom": [
+            "capabilitiesId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "metrics_commercialsId_commercials_id_fk": {
+          "name": "metrics_commercialsId_commercials_id_fk",
+          "tableFrom": "metrics",
+          "tableTo": "commercials",
+          "columnsFrom": [
+            "commercialsId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "metrics_riskId_unique": {
+          "name": "metrics_riskId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "riskId"
+          ]
+        },
+        "metrics_competitivenessId_unique": {
+          "name": "metrics_competitivenessId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "competitivenessId"
+          ]
+        },
+        "metrics_capabilitiesId_unique": {
+          "name": "metrics_capabilitiesId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "capabilitiesId"
+          ]
+        },
+        "metrics_commercialsId_unique": {
+          "name": "metrics_commercialsId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "commercialsId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.risk": {
+      "name": "risk",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "scopeOfWork": {
+          "name": "scopeOfWork",
+          "type": "scopeOfWork",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'0'"
+        },
+        "easeOfDoingBusiness": {
+          "name": "easeOfDoingBusiness",
+          "type": "easeOfDoingBusiness",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "security": {
+          "name": "security",
+          "type": "security",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "reputationalRisk": {
+          "name": "reputationalRisk",
+          "type": "reputationalRisk",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'0'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.scores": {
+      "name": "scores",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "bid": {
+          "name": "bid",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "overallScore": {
+          "name": "overallScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "capabilitiesScore": {
+          "name": "capabilitiesScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "competitivenessScore": {
+          "name": "competitivenessScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "commercialsScore": {
+          "name": "commercialsScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "riskScore": {
+          "name": "riskScore",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "scores_bid_bids_id_fk": {
+          "name": "scores_bid_bids_id_fk",
+          "tableFrom": "scores",
+          "tableTo": "bids",
+          "columnsFrom": [
+            "bid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.phases": {
+      "name": "phases",
+      "schema": "public",
+      "values": [
+        "capture",
+        "eoi",
+        "tender"
+      ]
+    },
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "undec",
+        "go_cap",
+        "tent_eoi",
+        "tent_cap",
+        "go_eoi",
+        "go_tender",
+        "tent_tender"
+      ]
+    },
+    "public.clients": {
+      "name": "clients",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.competence": {
+      "name": "competence",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.countryExperience": {
+      "name": "countryExperience",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.bdInput": {
+      "name": "bdInput",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "public.contractValue": {
+      "name": "contractValue",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "public.expertLoe": {
+      "name": "expertLoe",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "public.futureRevenue": {
+      "name": "futureRevenue",
+      "schema": "public",
+      "values": [
+        "0",
+        "3",
+        "5"
+      ]
+    },
+    "public.historicalNetMargin": {
+      "name": "historicalNetMargin",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "public.projectDuration": {
+      "name": "projectDuration",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "public.availabilityOfResources": {
+      "name": "availabilityOfResources",
+      "schema": "public",
+      "values": [
+        "0",
+        "2",
+        "4"
+      ]
+    },
+    "public.clientIntelligence": {
+      "name": "clientIntelligence",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.clientPreference": {
+      "name": "clientPreference",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "3",
+        "4"
+      ]
+    },
+    "public.clientProcurement": {
+      "name": "clientProcurement",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "4"
+      ]
+    },
+    "public.competitorProfile": {
+      "name": "competitorProfile",
+      "schema": "public",
+      "values": [
+        "0",
+        "2",
+        "4"
+      ]
+    },
+    "public.numberOfBidders": {
+      "name": "numberOfBidders",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.partnerCapacity": {
+      "name": "partnerCapacity",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "public.easeOfDoingBusiness": {
+      "name": "easeOfDoingBusiness",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "public.reputationalRisk": {
+      "name": "reputationalRisk",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "3"
+      ]
+    },
+    "public.scopeOfWork": {
+      "name": "scopeOfWork",
+      "schema": "public",
+      "values": [
+        "0",
+        "2",
+        "3"
+      ]
+    },
+    "public.security": {
+      "name": "security",
+      "schema": "public",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

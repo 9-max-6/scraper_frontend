@@ -16,6 +16,9 @@ export const commercialsTable = t.pgTable('commercials', {
     bdInput: bdInputEnum().default("0"),
     historicalNetMargin: historicalNetMarginEnum().default("0"),
     futureRevenue: futureRevenueEnum().default("0"),
+    createdAt: t.timestamp().defaultNow().notNull(),
+    updatedAt: t.timestamp(),
+
 
     // a one to one relationship with the bd_input table here.
     bdInputId: t.integer("bdInputId").references(() => bidInputTable.id)

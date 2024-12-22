@@ -17,6 +17,9 @@ export const competitivenessTable = t.pgTable('competitiveness', {
     clientIntelligence: clientIntelligenceEnum().default("0"),
     clientProcurement: clientProcurementEnum().default("0"),
     availabilityOfResources: availabilityOfResourcesEnum().default("0"),
+    createdAt: t.timestamp().defaultNow().notNull(),
+    updatedAt: t.timestamp(),
+
 })
 
 

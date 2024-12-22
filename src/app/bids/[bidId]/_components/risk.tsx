@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRiskById } from "@/db/queries/metrics/get";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 /**
  * text imports
@@ -11,21 +12,45 @@ const getText = (key: string, value: string): {
     text: string,
     tag: string,
 } => {
-    const entry = RiskText[key as keyof typeof RiskText];
-    entry.scores[value as keyof typeof entry.scores];
+    try {
+        const entry = RiskText[key as keyof typeof RiskText];
+        entry.scores[value as keyof typeof entry.scores];
 
-    return {
-        text: entry.scores[value as keyof typeof entry.scores],
-        tag: entry.tag
+        return {
+            text: entry.scores[value as keyof typeof entry.scores],
+            tag: entry.tag
+        }
     }
+    catch (error: any) {
+        console.log(error.toString())
+        return {
+            text: "Invalid key",
+            tag: "Error!!"
+        }
+    }
+
 }
+/**
+ * 
+ * @param score 
+ * @param phase 
+ * @returns 
+ */
+const getStatus = (score: number, phase: string | null) => {
+    return true;
+}
+
 
 /**
  * 
  * @param param0 
  * @returns 
  */
-export default async function Risk({ id }: { id: number | null }) {
+export default async function Risk({ id, score, phase }: {
+    id: number | null,
+    score: number,
+    phase: string | null,
+}) {
 
     if (!id) {
         return (
@@ -45,13 +70,24 @@ export default async function Risk({ id }: { id: number | null }) {
     const data = dataArray[0];
     return (
         <Card className="shadow-none">
-            <CardHeader>
+            <CardHeader className="relative">
                 <CardTitle>
                     Risk
                 </CardTitle>
                 <CardDescription>
                     What are the risks associated with this bid?
                 </CardDescription>
+                {/* status indicator */}
+                <div className="absolute top-4 right-8">
+                    {
+                        getStatus(score, phase) ? (
+                            // above threshold
+                            <ThumbsUp color="#26a269" />
+                        ) : (
+                            <ThumbsDown color="#a51d2d" />
+                        )
+                    }
+                </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 {Object.entries(data).map(([key, value]) => {
@@ -68,15 +104,18 @@ export default async function Risk({ id }: { id: number | null }) {
                             </div>
                         )
                     }
+                    const { text, tag } = getText(key, value.toString())
                     return (
                         <Card className="shadow-none bg-muted border-none" key={key}>
-                            <CardHeader>
+                            <CardHeader className="pb-2">
                                 <CardTitle>
-                                    {getText(key, value.toString()).tag}
+                                    {tag}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {getText(key, value.toString()).text}
+                                <CardDescription>
+                                    {text}
+                                </CardDescription>
                             </CardContent>
                         </Card>
                     )

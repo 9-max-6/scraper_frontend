@@ -6,7 +6,7 @@ import { competitivenessTable, InsertCompetitiveness } from "../schema/competiti
 import { clientsTable, InsertClient } from "../schema/donors";
 import { InsertMetric, metricsTable } from "../schema/metrics";
 import { InsertRisk, riskTable } from "../schema/risk";
-import { InsertScore } from "../schema/scores";
+import { InsertScore, scoresTable } from "../schema/scores";
 import { revalidateTag } from "next/cache";
 
 /**
@@ -17,7 +17,7 @@ type GenericInsert = InsertClient | InsertScore | InsertCapabilities |
     InsertCommercials | InsertRisk | InsertCompetitiveness;
 
 type GenericInsertTable = typeof capabilitiesTable | typeof clientsTable |
-    typeof competitivenessTable | typeof bidInputTable |
+    typeof competitivenessTable | typeof bidInputTable | typeof scoresTable |
     typeof riskTable;
 /**
  * 
@@ -52,7 +52,18 @@ export async function insertBid(data: InsertBid): Promise<number | undefined> {
         const result = await db.insert(bidsTable).values(nestedData).returning({ insertedId: bidsTable.id });
         const id = result[0].insertedId;
 
+        /**
+         * setting scores.
+         */
 
+        await insertScore({
+            bid: id,
+            overallScore: 0,
+            capabilitiesScore: 0,
+            competitivenessScore: 0,
+            commercialsScore: 0,
+            riskScore: 0
+        });
         /**
          * revalidate the bids tag
          */
@@ -119,7 +130,7 @@ export async function insertClient(data: InsertClient): Promise<number | undefin
  * @returns 
  */
 export async function insertScore(data: InsertScore = {}): Promise<number | undefined> {
-    const result = await genericInsert(data, clientsTable)
+    const result = await genericInsert(data, scoresTable)
     return result;
 }
 /**

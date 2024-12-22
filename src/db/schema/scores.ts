@@ -9,6 +9,7 @@ export const scoresTable = t.pgTable("scores", {
     competitivenessScore: t.integer('competitivenessScore').notNull().default(0),
     commercialsScore: t.integer('commercialsScore').notNull().default(0),
     riskScore: t.integer('riskScore').notNull().default(0),
+    createdAt: t.timestamp('createdAt').defaultNow().notNull(),
 })
 
 export type InsertScore = typeof scoresTable.$inferInsert

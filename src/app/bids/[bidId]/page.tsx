@@ -11,7 +11,8 @@ import { Suspense } from "react";
 import { Fallback } from "./_components/fallback";
 import Commercials from "./_components/commercials";
 import { OverviewGraphFallback } from "./_components/overview-graph";
-import { getMetricsById } from "@/db/queries/metrics/get";
+import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
+import { revalidateTag } from "next/cache";
 
 export default async function Page({ params }: {
     params: Promise<{
@@ -44,6 +45,17 @@ export default async function Page({ params }: {
         throw new Error("Metrics not found");
     }
 
+    // getting scores
+    const scoresArray = await getScoresByBidId(bidData.id)
+    if (!scoresArray) {
+        console.log(scoresArray)
+        throw new Error("Scores not found")
+    }
+    const latestScore = scoresArray[0]
+
+    // getting phase
+    const phase = bidData.phase
+
     return (
         <div className="dash_container max-w-full"
         // remove the break-all text-wrap classes at the end.
@@ -70,23 +82,38 @@ export default async function Page({ params }: {
 
                     {/* capabilities */}
                     <Suspense fallback={<Fallback />}>
-                        <Capabilities id={metrics[0].capabilitiesId} />
+                        <Capabilities
+                            id={metrics[0].capabilitiesId}
+                            score={latestScore.capabilitiesScore}
+                            phase={phase}
+                        />
                     </Suspense>
 
 
                     {/* commercials */}
                     <Suspense fallback={<Fallback />}>
-                        <Commercials id={metrics[0].commercialsId} />
+                        <Commercials
+                            id={metrics[0].commercialsId}
+                            score={latestScore.commercialsScore}
+                            phase={phase}
+                        />
                     </Suspense>
 
                     {/* competitiveness */}
                     <Suspense fallback={<Fallback />}>
-                        <Competitiveness id={metrics[0].competitivenessId} />
+                        <Competitiveness
+                            id={metrics[0].competitivenessId}
+                            score={latestScore.competitivenessScore}
+                            phase={phase}
+                        />
                     </Suspense>
 
                     {/* risk */}
                     <Suspense fallback={<Fallback />}>
-                        <Risk id={metrics[0].riskId} />
+                        <Risk
+                            id={metrics[0].riskId}
+                            score={latestScore.riskScore}
+                            phase={phase} />
                     </Suspense>
                 </CardContent>
             </Card>

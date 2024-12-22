@@ -1,13 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCommercialsById } from "@/db/queries/metrics/get";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 /**
  * text imports
  */
 import { CommercialsText } from "./bid-profile-text";
 
-
+/**
+ * 
+ * @param key 
+ * @param value 
+ * @returns 
+ */
 const getText = (key: string, value: string): {
     text: string,
     tag: string,
@@ -27,8 +33,16 @@ const getText = (key: string, value: string): {
             tag: "Wrong bid tag",
         }
     }
+}
 
-
+/**
+ * 
+ * @param score 
+ * @param phase 
+ * @returns 
+ */
+const getStatus = (score: number, phase: string | null) => {
+    return true;
 }
 
 /**
@@ -36,7 +50,11 @@ const getText = (key: string, value: string): {
  * @param param0 
  * @returns 
  */
-export default async function Commercials({ id }: { id: number | null }) {
+export default async function Commercials({ id, score, phase }: {
+    id: number | null,
+    score: number,
+    phase: string | null,
+}) {
     if (!id) {
         return (
             <CommmercialsError />
@@ -56,13 +74,24 @@ export default async function Commercials({ id }: { id: number | null }) {
     const data = dataArray[0];
     return (
         <Card className="shadow-none">
-            <CardHeader>
+            <CardHeader className="relative">
                 <CardTitle>
                     Commercials
                 </CardTitle>
                 <CardDescription>
                     What is the margin on this bid?
                 </CardDescription>
+                {/* status indicator */}
+                <div className="absolute top-4 right-8">
+                    {
+                        getStatus(score, phase) ? (
+                            // above threshold
+                            <ThumbsUp color="#26a269" />
+                        ) : (
+                            <ThumbsDown color="#a51d2d" />
+                        )
+                    }
+                </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 {Object.entries(data).map(([key, value]) => {
@@ -82,13 +111,15 @@ export default async function Commercials({ id }: { id: number | null }) {
                     const { text, tag } = getText(key, value.toString())
                     return (
                         <Card className="shadow-none bg-muted border-none" key={key}>
-                            <CardHeader>
+                            <CardHeader className="pb-2">
                                 <CardTitle>
                                     {tag}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {text}
+                                <CardDescription>
+                                    {text}
+                                </CardDescription>
                             </CardContent>
                         </Card>
                     )

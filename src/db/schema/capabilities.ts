@@ -9,6 +9,9 @@ export const capabilitiesTable = t.pgTable('capabilities', {
     competence: competenceEnum().default("0"),
     countryExperience: countryExperienceEnum().default("0"),
     clients: clientsEnum().default("0"),
+    createdAt: t.timestamp().defaultNow().notNull(),
+    updatedAt: t.timestamp(),
+
 })
 
 export type InsertCapabilities = typeof capabilitiesTable.$inferInsert;

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCompetitivenessById } from "@/db/queries/metrics/get";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 /**
  * text imports
@@ -28,7 +29,22 @@ const getText = (key: string, value: string): {
         }
     }
 }
-export default async function Competitiveness({ id }: { id: number | null }) {
+/**
+ * 
+ * @param score 
+ * @param phase 
+ * @returns 
+ */
+const getStatus = (score: number, phase: string | null) => {
+    return true;
+}
+
+export default async function Competitiveness({ id, score, phase }: {
+    id: number | null,
+    score: number,
+    phase: string | null,
+
+}) {
 
     if (!id) {
         return (
@@ -49,13 +65,24 @@ export default async function Competitiveness({ id }: { id: number | null }) {
     const data = dataArray[0];
     return (
         <Card className="shadow-none">
-            <CardHeader>
+            <CardHeader className="relative">
                 <CardTitle>
                     Competitiveness
                 </CardTitle>
                 <CardDescription>
                     How competitive is this bid?
                 </CardDescription>
+                {/* status indicator */}
+                <div className="absolute top-4 right-8">
+                    {
+                        getStatus(score, phase) ? (
+                            // above threshold
+                            <ThumbsUp color="#26a269" />
+                        ) : (
+                            <ThumbsDown color="#a51d2d" />
+                        )
+                    }
+                </div>
             </CardHeader>
             <CardContent className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 {Object.entries(data).map(([key, value]) => {
@@ -72,15 +99,18 @@ export default async function Competitiveness({ id }: { id: number | null }) {
                             </div>
                         )
                     }
+                    const { text, tag } = getText(key, value.toString())
                     return (
                         <Card className="shadow-none bg-muted border-none" key={key}>
-                            <CardHeader>
+                            <CardHeader className="pb-2">
                                 <CardTitle>
-                                    {getText(key, value.toString()).tag}
+                                    {tag}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
-                                {getText(key, value.toString()).text}
+                                <CardDescription>
+                                    {text}
+                                </CardDescription>
                             </CardContent>
                         </Card>
                     )
@@ -89,6 +119,9 @@ export default async function Competitiveness({ id }: { id: number | null }) {
                 )}
             </CardContent>
             <CardFooter className="flex">
+                <CardDescription>
+                    Current score: {score}
+                </CardDescription>
                 <Button className="ml-auto">
                     Edit
                 </Button>
