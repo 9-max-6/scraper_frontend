@@ -12,7 +12,7 @@ import { insertScore } from "../insert";
 export const getMetricsById = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(metricsTable).where(eq(metricsTable.id, id));
+            const result = await db.select().from(metricsTable).where(eq(metricsTable.id, id));
             return result;
         } catch (e: any) {
             console.log("Error fetching metric by id", e.toString());
@@ -27,7 +27,7 @@ export const getMetricsById = unstable_cache(
 export const getCapabilitiesById = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(capabilitiesTable).where(eq(capabilitiesTable.id, id));
+            const result = await db.select().from(capabilitiesTable).where(eq(capabilitiesTable.id, id));
             return result;
         } catch (e: any) {
             console.log("Error fetching capability by id", e.toString());
@@ -42,7 +42,7 @@ export const getCapabilitiesById = unstable_cache(
 export const getCommercialsById = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(commercialsTable).where(eq(commercialsTable.id, id));
+            const result = await db.select().from(commercialsTable).where(eq(commercialsTable.id, id));
             return result;
         }
         catch (e: any) {
@@ -58,7 +58,7 @@ export const getCommercialsById = unstable_cache(
 export const getRiskById = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(riskTable).where(eq(riskTable.id, id));
+            const result = await db.select().from(riskTable).where(eq(riskTable.id, id));
             return result;
         }
         catch (e: any) {
@@ -73,7 +73,7 @@ export const getRiskById = unstable_cache(
 export const getCompetitivenessById = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(competitivenessTable).where(eq(competitivenessTable.id, id));
+            const result = await db.select().from(competitivenessTable).where(eq(competitivenessTable.id, id));
             return result;
         }
         catch (e: any) {
@@ -89,24 +89,30 @@ export const getCompetitivenessById = unstable_cache(
 export const getScoresByBidId = unstable_cache(
     async (id: number) => {
         try {
-            const result = db.select().from(scoresTable).where(eq(scoresTable, id)).orderBy(
-                desc(scoresTable.createdAt)
-            )
+            const result = await db
+                .select()
+                .from(scoresTable)
+                .where(eq(scoresTable.bid, id))
+                .orderBy(desc(scoresTable.createdAt))
+
             if (!result) {
                 // adding default values
                 const defaultScores = {
                     bid: id,
                     overallScore: 0,
-                    capabilitiesScore: 0,
-                    competitivenessScore: 0,
+                    riskScore: 0,
                     commercialsScore: 0,
-                    riskScore: 0
+                    competitivenessScore: 0,
+                    capabilitiesScore: 0
                 }
-                await insertScore(defaultScores);
-                revalidateTag("scores")
-                console.log("Running")
+                const scoreId = await insertScore(defaultScores);
+                if (!scoreId) {
+                    console.log("Error inserting default scores");
+                }
+                revalidateTag("scores");
                 return [defaultScores];
             }
+            return result;
         }
         catch (e: any) {
             console.log("Error fetching scores by id", e.toString());

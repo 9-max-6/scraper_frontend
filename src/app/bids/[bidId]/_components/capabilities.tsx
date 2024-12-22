@@ -94,7 +94,7 @@ export default async function Capabilities({ id, score, phase }: {
             <CardContent className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 {Object.entries(data).map(([key, value]) => {
                     // if key is id return nothing
-                    if (key == "id") {
+                    if (key === "id" || key === "createdAt" || key === "updatedAt") {
                         return;
                     }
 

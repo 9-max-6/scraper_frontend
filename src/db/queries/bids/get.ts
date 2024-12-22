@@ -98,7 +98,7 @@ export const getBidById = unstable_cache(
     async (id: number) => {
         try {
 
-            const result = db.select().from(bidsTable).where(eq(bidsTable.id, id));
+            const result = await db.select().from(bidsTable).where(eq(bidsTable.id, id));
             return result;
         } catch (e: any) {
             console.log("Error fetching client by id", e.toString());

@@ -80,7 +80,7 @@ export const getClientsPaginated = unstable_cache(
 
 export const getClients = unstable_cache(
     async () => {
-        const result = db.select().from(clientsTable).orderBy(desc(clientsTable.createdAt));
+        const result = await db.select().from(clientsTable).orderBy(desc(clientsTable.createdAt));
         if (!result) {
             return undefined;
         }
@@ -101,7 +101,7 @@ export const getClientsById = unstable_cache(
     async (id: number) => {
         try {
 
-            const result = db.select().from(clientsTable).where(eq(clientsTable.id, id));
+            const result = await db.select().from(clientsTable).where(eq(clientsTable.id, id));
             return result;
         } catch (e: any) {
             console.log("Error fetching client by id", e.toString());

@@ -1,6 +1,4 @@
 import OverviewGraph from "@/app/_components/overview-graph";
-import Overview from "@/components/overview";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBidById } from "@/db/queries/bids/get";
 import BidData from "./_components/bid-data";
@@ -12,7 +10,6 @@ import { Fallback } from "./_components/fallback";
 import Commercials from "./_components/commercials";
 import { OverviewGraphFallback } from "./_components/overview-graph";
 import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
-import { revalidateTag } from "next/cache";
 
 export default async function Page({ params }: {
     params: Promise<{
@@ -20,7 +17,6 @@ export default async function Page({ params }: {
     }>;
 }) {
     const idPromise = (await params).bidId
-    console.log(idPromise)
 
     const id = Number(idPromise)
     if (!id) {
@@ -46,10 +42,14 @@ export default async function Page({ params }: {
     }
 
     // getting scores
-    const scoresArray = await getScoresByBidId(bidData.id)
+    const scoresArray = await getScoresByBidId(id)
+
     if (!scoresArray) {
-        console.log(scoresArray)
-        throw new Error("Scores not found")
+        return (
+            <div className="mx-4 dash_container">
+                Missing scores
+            </div>
+        )
     }
     const latestScore = scoresArray[0]
 
@@ -71,7 +71,7 @@ export default async function Page({ params }: {
                     </CardDescription>
                 </CardHeader>
 
-                <CardContent className="flex overflow-scroll flex-col gap-12">
+                <CardContent className="flex flex-col gap-12">
                     {/* bid data */}
                     <BidData />
 
@@ -116,6 +116,9 @@ export default async function Page({ params }: {
                             phase={phase} />
                     </Suspense>
                 </CardContent>
+                <CardFooter>
+                    @max
+                </CardFooter>
             </Card>
         </div>
     )

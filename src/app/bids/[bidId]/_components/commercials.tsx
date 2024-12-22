@@ -99,6 +99,9 @@ export default async function Commercials({ id, score, phase }: {
                     if (key === "id" || key === "bdInputId") {
                         return;
                     }
+                    if (key === "createdAt" || key === "updatedAt") {
+                        return;
+                    }
 
                     // not gonna happen but for typescript
                     if (!value) {

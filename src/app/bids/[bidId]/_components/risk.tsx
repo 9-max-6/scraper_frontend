@@ -95,7 +95,9 @@ export default async function Risk({ id, score, phase }: {
                     if (key == "id") {
                         return;
                     }
-
+                    if (key === "createdAt" || key === "updatedAt") {
+                        return;
+                    }
                     // not gonna happen but for typescript
                     if (!value) {
                         return (
