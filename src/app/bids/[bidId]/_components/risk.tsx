@@ -137,7 +137,7 @@ export default async function Risk({ id, score, phase, bidId }: {
                 <CardDescription className="text-sm">
                     {getTime(data.updatedAt, data.createdAt)}
                 </CardDescription>
-                <Link className="ml-auto" href={`/bids/${bidId}/edit/risk`}>
+                <Link className="ml-auto" href={`/bids/${bidId}/edit/risk/${data.id}`}>
                     <Button>
                         Edit
                     </Button>

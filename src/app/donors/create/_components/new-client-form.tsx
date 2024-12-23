@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
  */
 import { postClient, undoClient } from "../actions";
 import { ToastAction } from "@/components/ui/toast";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 /**
  * type import
@@ -81,7 +82,12 @@ export default function NewClientForm() {
             }
                 // after this just refresh the current page
             )
-            router.refresh()
+            try {
+                revalidateTag("clients")
+            } catch (e: any) {
+                console.error(e.toString())
+            }
+            router.back()
         }
     }
 

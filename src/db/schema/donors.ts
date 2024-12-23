@@ -1,6 +1,7 @@
 import {
     pgTable,
     serial,
+    text,
     timestamp,
     varchar,
 } from 'drizzle-orm/pg-core'
@@ -8,7 +9,7 @@ import {
 export const clientsTable = pgTable("clientsTable", {
     id: serial("id").primaryKey(),
     name: varchar("title", { length: 255 }).notNull(),
-    des: varchar("des", { length: 255 }).notNull(),
+    des: text("des").notNull(),
     createdAt: timestamp().defaultNow().notNull(),
     deletedAt: timestamp(),
     updatedAt: timestamp(),

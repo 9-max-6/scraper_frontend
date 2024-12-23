@@ -1,7 +1,8 @@
-export default function Page() {
+"use client"
+export default function Error() {
     return (
         <div className="dash_container mx-4">
-            Edit commercials
+            Error occured.
         </div>
     )
 }

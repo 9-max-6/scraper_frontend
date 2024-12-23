@@ -1,0 +1,1 @@
+ALTER TABLE "clientsTable" ALTER COLUMN "des" SET DATA TYPE text;

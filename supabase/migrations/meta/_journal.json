@@ -43,6 +43,13 @@
       "when": 1734871118524,
       "tag": "0005_lying_zaladane",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1734926996980,
+      "tag": "0006_sudden_caretaker",
+      "breakpoints": true
     }
   ]
 }

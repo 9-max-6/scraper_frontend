@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 export const columns = [
     {
@@ -124,7 +125,7 @@ export default async function BidsTable({ bids }: {
 
                                 {/* Deadline */}
                                 <TableCell>
-                                    {JSON.stringify(bid.deadline)}
+                                    {bid.deadline ? format(bid.deadline, "dd-mm-yy") : ""}
                                 </TableCell>
 
                                 {/* Phase */}
@@ -155,7 +156,7 @@ export default async function BidsTable({ bids }: {
                                 </TableCell>
                                 {/* Date created */}
                                 <TableCell>
-                                    {JSON.stringify(bid.createdAt)}
+                                    {format(bid.createdAt, 'dd-mm-yy')}
                                 </TableCell>
 
                             </TableRow>
@@ -190,10 +191,8 @@ export function BidsTableFallback() {
                 </TableRow>
             </TableHeader>
             <TableBody className="w-full">
-                <TableRow>
-                    <p className="text-gray-400">
-                        Loading...
-                    </p>
+                <TableRow className="text-gray-400">
+                    Loading...
                 </TableRow>
             </TableBody>
         </Table>

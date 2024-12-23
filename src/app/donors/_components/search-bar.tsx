@@ -4,7 +4,9 @@ import { usePathname, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { useDebouncedCallback } from 'use-debounce';
 import { useRouter } from "next/navigation";
-import NewClientDialog from "../create/_components/new-client-dialog"
+import { CircleFadingPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function SearchBar() {
     const params = useSearchParams();
@@ -33,7 +35,11 @@ export default function SearchBar() {
                     className="max-w-2xl"
                 />
                 <div className="ml-auto mr-2">
-                    <NewClientDialog />
+                    <Link href="/donors/create">
+                        <Button className="w-24 h-8 bg-red-800 hover:bg-red-700">
+                            Create <CircleFadingPlus />
+                        </Button>
+                    </Link>
                 </div>
             </div>
 

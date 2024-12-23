@@ -138,7 +138,7 @@ export default async function Capabilities({ id, score, phase, bidId }: {
                 <CardDescription className="text-sm">
                     {getTime(data.updatedAt, data.createdAt)}
                 </CardDescription>
-                <Link className="ml-auto" href={`/bids/${bidId}/edit/capability`}>
+                <Link className="ml-auto" href={`/bids/${bidId}/edit/cap/${data.id}`}>
                     <Button>
                         Edit
                     </Button>

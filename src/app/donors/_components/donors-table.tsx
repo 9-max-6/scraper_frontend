@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/table"
 import { Card, CardDescription, } from "@/components/ui/card";
 import Link from "next/link";
-import ClientDetailsDialog from "./client-details-dialog";
 import { Button } from "@/components/ui/button";
 import { HeartHandshake } from "lucide-react";
+import { format } from "date-fns";
 
 export const columns = [
     {
@@ -74,7 +74,10 @@ export default async function DonorsTable({ donors }: {
 
                                 {/* Title */}
                                 <TableCell>
-                                    <ClientDetailsDialog client={client} />
+                                    <Link href={`/donors/${client.id}`} className="hover:text-blue-400">
+                                        {client.name}
+                                    </Link>
+
                                 </TableCell>
 
                                 {/* des */}
@@ -84,7 +87,7 @@ export default async function DonorsTable({ donors }: {
 
                                 {/* Deadline */}
                                 <TableCell>
-                                    {JSON.stringify(client.createdAt)}
+                                    {format(client.createdAt, 'dd-mm-yy')}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -118,10 +121,8 @@ export function DonorsTableFallback() {
                 </TableRow>
             </TableHeader>
             <TableBody className="w-full">
-                <TableRow>
-                    <p className="text-gray-400">
-                        Loading...
-                    </p>
+                <TableRow className="text-gray-400">
+                    Loading...
                 </TableRow>
             </TableBody>
         </Table>

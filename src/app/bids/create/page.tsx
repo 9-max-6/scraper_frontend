@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import NewBidForm from "./_components/new-bid-form";
 import { getClients } from "@/db/queries/donors/get";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Page() {
