@@ -1,6 +1,5 @@
 import { db } from "@/db";
 import { metricsTable } from "@/db/schema/metrics";
-import { revalidateTag, unstable_cache } from "next/cache";
 import { eq, desc } from "drizzle-orm";
 import { capabilitiesTable } from "@/db/schema/capabilities";
 import { commercialsTable } from "@/db/schema/commercials";
@@ -9,7 +8,7 @@ import { competitivenessTable } from "@/db/schema/competitiveness";
 import { scoresTable } from "@/db/schema/scores";
 import { insertScore } from "../insert";
 
-export const getMetricsById = unstable_cache(
+export const getMetricsById =
     async (id: number) => {
         try {
             const result = await db.select().from(metricsTable).where(eq(metricsTable.id, id));
@@ -17,14 +16,9 @@ export const getMetricsById = unstable_cache(
         } catch (e: any) {
             console.log("Error fetching metric by id", e.toString());
         }
-    },
-    ['metrics'],
-    {
-        tags: ['metrics'],
     }
-)
 
-export const getCapabilitiesById = unstable_cache(
+export const getCapabilitiesById =
     async (id: number) => {
         try {
             const result = await db.select().from(capabilitiesTable).where(eq(capabilitiesTable.id, id));
@@ -34,14 +28,9 @@ export const getCapabilitiesById = unstable_cache(
         } catch (e: any) {
             console.log("Error fetching capability by id", e.toString());
         }
-    },
-    ['capabilities'],
-    {
-        tags: ['capabilities'],
     }
-)
 
-export const getCommercialsById = unstable_cache(
+export const getCommercialsById =
     async (id: number) => {
         try {
             const result = await db.select().from(commercialsTable).where(eq(commercialsTable.id, id));
@@ -50,14 +39,9 @@ export const getCommercialsById = unstable_cache(
         catch (e: any) {
             console.log("Error fetching commercial by id", e.toString());
         }
-    },
-    ['commercials'],
-    {
-        tags: ['commercials'],
     }
-)
 
-export const getRiskById = unstable_cache(
+export const getRiskById =
     async (id: number) => {
         try {
             const result = await db.select().from(riskTable).where(eq(riskTable.id, id));
@@ -66,13 +50,9 @@ export const getRiskById = unstable_cache(
         catch (e: any) {
             console.log("Error fetching risk by id", e.toString());
         }
-    },
-    ['risks'],
-    {
-        tags: ['risks'],
     }
-)
-export const getCompetitivenessById = unstable_cache(
+
+export const getCompetitivenessById =
     async (id: number) => {
         try {
             const result = await db.select().from(competitivenessTable).where(eq(competitivenessTable.id, id));
@@ -81,14 +61,9 @@ export const getCompetitivenessById = unstable_cache(
         catch (e: any) {
             console.log("Error fetching commercial by id", e.toString());
         }
-    },
-    ['competitiveness'],
-    {
-        tags: ['competitiveness'],
     }
-)
 
-export const getScoresByBidId = unstable_cache(
+export const getScoresByBidId =
     async (id: number) => {
         try {
             const result = await db
@@ -118,9 +93,4 @@ export const getScoresByBidId = unstable_cache(
         catch (e: any) {
             console.log("Error fetching scores by id", e.toString());
         }
-    },
-    ['scores'],
-    {
-        tags: ['scores'],
     }
-)

@@ -1,7 +1,6 @@
 import { db } from "../../";
 import { bidsTable } from "../../schema/bids";
 import { ilike, desc, eq } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
 
 const PAGE_SIZE = 10;
 export interface PaginatedResponseType {
@@ -33,7 +32,7 @@ export interface PaginatedResponseType {
  * @param requestObject 
  * @returns 
  */
-export const getBids = unstable_cache(
+export const getBids =
     async (requestObject: {
         page: number,
         title: string,
@@ -82,19 +81,14 @@ export const getBids = unstable_cache(
         } catch (e: any) {
             console.log("Pagination error", e.toString());
         }
-    },
-    ['bids'],
-    {
-        tags: ['bids'],
-    })
-
+    }
 
 /**
  * 
  * @param id 
  * @returns 
  */
-export const getBidById = unstable_cache(
+export const getBidById =
     async (id: number) => {
         try {
 
@@ -103,8 +97,4 @@ export const getBidById = unstable_cache(
         } catch (e: any) {
             console.log("Error fetching client by id", e.toString());
         }
-    },
-    ['single-bid'],
-    {
-        tags: ['single-bid'],
-    })
+    }

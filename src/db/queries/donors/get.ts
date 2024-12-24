@@ -1,7 +1,6 @@
 import { db } from "../../";
 import { clientsTable } from "../../schema/donors";
 import { ilike, desc, eq } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
 
 const PAGE_SIZE = 10;
 export interface PaginatedDonorResponseType {
@@ -25,7 +24,7 @@ export interface PaginatedDonorResponseType {
  * @param requestObject 
  * @returns 
  */
-export const getClientsPaginated = unstable_cache(
+export const getClientsPaginated =
     async (requestObject: {
         page: number,
         title: string,
@@ -72,32 +71,22 @@ export const getClientsPaginated = unstable_cache(
         } catch (e: any) {
             console.log("Pagination error", e.toString());
         }
-    },
-    ['clients'],
-    {
-        tags: ['clients'],
-    })
-
-export const getClients = unstable_cache(
+    }
+export const getClients =
     async () => {
         const result = await db.select().from(clientsTable).orderBy(desc(clientsTable.createdAt));
         if (!result) {
             return undefined;
         }
         return result;
-    },
-    ['clients'],
-    {
-        tags: ['clients'],
     }
-)
 
 /**
  * 
  * @param id 
  * @returns 
  */
-export const getClientsById = unstable_cache(
+export const getClientsById =
     async (id: number) => {
         try {
 
@@ -106,10 +95,6 @@ export const getClientsById = unstable_cache(
         } catch (e: any) {
             console.log("Error fetching client by id", e.toString());
         }
-    },
-    ['clients'],
-    {
-        tags: ['clients'],
-    })
+    }
 
 
