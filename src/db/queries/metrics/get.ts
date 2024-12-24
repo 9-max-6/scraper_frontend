@@ -28,6 +28,8 @@ export const getCapabilitiesById = unstable_cache(
     async (id: number) => {
         try {
             const result = await db.select().from(capabilitiesTable).where(eq(capabilitiesTable.id, id));
+            // logging database fetch
+            console.log("Fetching capability from the database.")
             return result;
         } catch (e: any) {
             console.log("Error fetching capability by id", e.toString());

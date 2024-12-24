@@ -30,7 +30,7 @@ export const BidProfileText = {
         },
         {
             name: "Country / Regional experience",
-            tag: 'country',
+            tag: 'countryExperience',
             levels: [
                 {
                     label: "No country/ regional track record in the past 5 years",

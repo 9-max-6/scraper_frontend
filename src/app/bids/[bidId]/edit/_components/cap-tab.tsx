@@ -1,40 +1,138 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
 import { SelectCapabilities } from "@/db/schema/capabilities";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-// Sample categories with levels and descriptions
+import _ from "lodash"
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import patchById from "../cap/[capId]/actions";
+import { Badge } from "@/components/ui/badge";
 
 const categories = BidProfileText.Capabilities
 
-export default function EditCapabilitiess({ props }: { props: Array<SelectCapabilities> }) {
+export default function EditCapabilitiess({ props, bid }: { props: Array<SelectCapabilities>, bid: number }) {
+
+    const { toast } = useToast();
+
+
     const [selectedValues, setSelectedValues] = useState({
         competence: Number(props[0].competence),
-        country: Number(props[0].countryExperience),
+        countryExperience: Number(props[0].countryExperience),
         clients: Number(props[0].clients),
     });
 
     const [initialCap, setinitialCap] = useState({
-        competence: props[0].competence,
-        country: props[0].countryExperience,
-        clients: props[0].clients,
+        competence: Number(props[0].competence),
+        countryExperience: Number(props[0].countryExperience),
+        clients: Number(props[0].clients),
     })
     const [pending, setpending] = useState(false);
     const [cancelling, setcancelling] = useState(false);
+    const [response, setresponse] = useState(null)
+
+
+    // Dynamically calculated score of the Competitiveness tab
+    const [capScore, setCapScore] = useState<number | null>(null);
+
+    const updateScore = useCallback(() => {
+        const scores = Object.keys(selectedValues).map((key, index) => {
+            const category = categories[index];
+            const level = category.levels.find((lvl) => lvl.value === selectedValues[key as keyof typeof selectedValues]);
+            return level ? level.value * category.weight : 0;
+        });
+        const overallScore = scores.reduce((acc, score) => acc + score, 0);
+        setCapScore(overallScore);
+    }, [selectedValues]);
+
 
     const handleSelect = (category: string, value: number) => {
         const updatedValues = { ...selectedValues, [category]: value };
         setSelectedValues(updatedValues);
     };
 
+    const handleSubmit = useCallback(() => {
+        // checking if there weere any changes made.
+        if (!_.isEqual(selectedValues, initialCap)) {
+            /**
+             * there was a change made,
+             * have to toast to show a change is made to the 
+             * backend and then let the user that if they want to
+             * undo the action they can also do that
+             */
+            setpending(true);
+
+            patchById(props[0].id, selectedValues, bid, capScore).then(() => {
+                setresponse(true);
+
+            }).catch((error: any) => {
+                toast({
+                    title: "Error",
+                    description: `${error}`,
+                    variant: "destructive",
+                    action: <ToastAction onClick={() => {
+                        router.forward();
+                    }} altText="Cancel">
+                        Keep editing
+                    </ToastAction>
+                })
+            })
+
+        } else {
+            /**
+                    * there was no change made, have to redirect the user to the page back.
+                    * 
+                    */
+            toast({
+                title: "No change",
+                description: "Redirecting to the bid page.",
+                action: <ToastAction onClick={() => {
+                    router.forward();
+                }} altText="Cancel">
+                    Keep editing
+                </ToastAction>
+            })
+            router.back()
+        }
+    }, [selectedValues, capScore])
+
     const router = useRouter();
 
+    // effect for submissions
+    useEffect(() => {
+        if (response) {
+            toast({
+                title: "Success",
+                description: "Changed uploaded successfully",
+                action: <ToastAction altText="Undo">
+                    Undo
+                    {/* For now this does nothing */}
+                </ToastAction>
+            })
+
+            // refetching bid page.
+            router.refresh();
+            router.push(`/bids/${bid}/`);
+        }
+    }, [response, handleSubmit])
+
+    // effect for score
+    // Update score whenever selectedValues changes
+    useEffect(() => {
+        updateScore();
+    }, [selectedValues, updateScore]);
+
     return (
-        <div>
+        <div className="dash_container overflow-scroll scrollbar-hide">
+            <div className="flex mb-2">
+                <Badge className="ml-auto">
+                    {capScore}
+                </Badge>
+            </div>
 
             {categories.map((category) => (
                 <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
@@ -81,7 +179,10 @@ export default function EditCapabilitiess({ props }: { props: Array<SelectCapabi
                             </>
                         )}
                     </Button>
-                    <Button disabled={pending} type="submit">
+                    <Button disabled={pending}
+                        onClick={() => {
+                            handleSubmit()
+                        }}>
                         {pending ? (
                             <>
                                 <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />

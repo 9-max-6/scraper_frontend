@@ -4,11 +4,18 @@ export default async function Page({ params }: {
     params: Promise<{
         riskId: string,
         bidId: string,
+        metricsId: string,
     }>
 }) {
-    const { riskId, bidId } = await params;
+    const { riskId, bidId, metricsId } = await params;
     const id = Number(riskId);
     if (!id) {
+        return (
+            <Error />
+        )
+    }
+    const metrics = Number(metricsId);
+    if (!metrics) {
         return (
             <Error />
         )

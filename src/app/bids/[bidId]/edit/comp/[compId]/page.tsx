@@ -4,9 +4,10 @@ export default async function Page({ params }: {
     params: Promise<{
         compId: string,
         bidId: string,
+        metricsId: string,
     }>
 }) {
-    const { compId, bidId } = await params;
+    const { compId, bidId, metricsId } = await params;
 
     const id = Number(compId);
     if (!id) {
@@ -15,6 +16,13 @@ export default async function Page({ params }: {
         )
     }
 
+
+    const metrics = Number(metricsId);
+    if (!metrics) {
+        return (
+            <Error />
+        )
+    }
 
     const comp = await getCompetitivenessById(id);
     if (!comp || !comp[0]) {

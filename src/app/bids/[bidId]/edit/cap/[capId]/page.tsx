@@ -19,6 +19,13 @@ export default async function Page({ params }: {
         )
     }
 
+    const bid = Number(bidId);
+    if (!bid) {
+        return (
+            <Error />
+        )
+    }
+
 
     const cap = await getCapabilitiesById(id);
     if (!cap || !cap[0]) {
@@ -31,14 +38,16 @@ export default async function Page({ params }: {
     return (
         <div className="mx-4 max-w-[1080px] dash_container">
             Capabilities
-            {capId}
-            {bidId}
-
-            {JSON.stringify(cap)}
             <div>
-                <EditCapabilitiess props={cap} />
+                <EditCapabilitiess props={cap} bid={bid} />
             </div>
         </div>
     )
 }
 
+
+/**
+ * I have to check if these calls I'm making to the backend will be 
+ * cached everytime I visit the page of a particular bid and click
+ * edit to be redirected to this page.
+ */

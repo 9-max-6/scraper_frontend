@@ -6,9 +6,10 @@ export default async function Page({ params }: {
     params: Promise<{
         commId: string,
         bidId: string,
+        metricsId: string,
     }>
 }) {
-    const { commId, bidId } = await params;
+    const { commId, bidId, metricsId } = await params;
 
 
     const id = Number(commId);
@@ -23,6 +24,14 @@ export default async function Page({ params }: {
             <Error />
         )
     }
+
+    const metrics = Number(metricsId);
+    if (!metrics) {
+        return (
+            <Error />
+        )
+    }
+
 
     const comm = await getCommercialsById(id);
     if (!comm || !comm[0]) {
