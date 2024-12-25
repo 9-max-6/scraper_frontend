@@ -6,7 +6,6 @@ import { Button } from "../../../../../components/ui/button";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -19,6 +18,8 @@ import _ from 'lodash';
 import { SelectBdInput, SelectCommercials } from "@/db/schema/commercials";
 import { Tabs } from "@/components/ui/tabs";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loader2 } from "lucide-react";
+
 
 const categoriesBuff = BidProfileText.Commercials
 const categories = categoriesBuff.filter((category, index) => !(index === 0 || index === 2 || index === 3))
@@ -31,6 +32,12 @@ export default function EditCommercials(
         duration: number,
     }
 ) {
+    // submit states
+    const [pending, setpending] = useState(false);
+    const [cancelling, setcancelling] = useState(false);
+    const [response, setresponse] = useState(null);
+
+
     const [commData, setCommData] = useState({
         budget: budget,
         duration: duration,
@@ -88,6 +95,7 @@ export default function EditCommercials(
         const updatedValues = { ...selectedValues, [category]: value };
         setSelectedValues(updatedValues);
     };
+
     const [initialCommData, setInitialCommData] = useState(commData);
     const [bd_input, setbd_input] = useState(0);
 
@@ -219,7 +227,45 @@ export default function EditCommercials(
                             </TableCell>
                         </TableRow>
                     </TableBody>
-                </Table></TabsContent>
+                </Table>
+                    <div className="w-full flex mb-12">
+                        <div className="ml-auto flex gap-2">
+                            <Button variant="secondary" disabled={cancelling} onClick={() => {
+                                setcancelling(true);
+                                router.back();
+                            }}>
+                                {cancelling ? (
+                                    <>
+                                        <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
+                                        {" "} Cancelling
+                                    </>
+                                ) : (
+                                    <>
+                                        Cancel
+                                    </>
+                                )}
+                            </Button>
+                            <Button disabled={pending}
+                                onClick={() => {
+                                    // handleSubmit()
+                                }}>
+                                {pending ? (
+                                    <>
+                                        <Loader2 className="text-blue-500 animate-spin ml-auto" size={48} />
+                                        {" "} Saving
+                                    </>
+                                ) : (
+                                    <>
+                                        Save
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+
+
+                    </div>
+
+                </TabsContent>
                 <TabsContent value="bdInput">
                     <Table>
                         <TableHeader>
@@ -777,10 +823,6 @@ export default function EditCommercials(
                     </Card>
                 </TabsContent>
             </Tabs>
-
-
-
-        </div >
-
+        </div>
     )
 }
