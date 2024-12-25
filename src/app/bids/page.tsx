@@ -4,9 +4,10 @@ import BidsTable, { BidsTableFallback } from "./_components/bids-table";
 import { Suspense } from "react";
 import Pagination from "./_components/paginator";
 import { cookies } from "next/headers";
+import Loading from "./_components/loading";
 
 
-export default async function Page(props: {
+export async function AsyncPage(props: {
     searchParams?: Promise<{
         title?: string;
         page?: string;
@@ -50,6 +51,18 @@ export default async function Page(props: {
     )
 }
 
+export default function Page(props: {
+    searchParams?: Promise<{
+        title?: string;
+        page?: string;
+    }>;
+}) {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AsyncPage {...props} />
+        </Suspense>
+    )
+}
 /**
  * to create a tanstack table, we need a means to 
  * populate the table with data using search Params.

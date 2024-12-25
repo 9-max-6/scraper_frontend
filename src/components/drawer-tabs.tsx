@@ -5,7 +5,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import Capabilities from "../app/bids/[bidId]/edit/_components/cap-tab"
-import Competitiveness from "./comp-tab"
+import Competitiveness from "../app/bids/[bidId]/edit/_components/comp-tab"
 import Risk from "./risk-tab"
 import { DataTabProps } from "@/types/types"
 

@@ -1,13 +1,15 @@
 import { getCompetitivenessById } from "@/db/queries/metrics/get";
 import Error from "../../_components/error";
-export default async function Page({ params }: {
+import { Suspense } from "react";
+import Loading from "@/app/bids/_components/loading";
+import EditCompetitiveness from "../../_components/comp-tab";
+export async function AsyncPage({ params }: {
     params: Promise<{
         compId: string,
         bidId: string,
-        metricsId: string,
     }>
 }) {
-    const { compId, bidId, metricsId } = await params;
+    const { compId, bidId } = await params;
 
     const id = Number(compId);
     if (!id) {
@@ -16,13 +18,14 @@ export default async function Page({ params }: {
         )
     }
 
-
-    const metrics = Number(metricsId);
-    if (!metrics) {
+    const bid = Number(bidId);
+    if (!bid) {
         return (
             <Error />
         )
     }
+
+
 
     const comp = await getCompetitivenessById(id);
     if (!comp || !comp[0]) {
@@ -32,12 +35,24 @@ export default async function Page({ params }: {
     }
 
     return (
-        <div className="dash_container mx-4">
-            Edit competitiveness
-            {compId}
-            {bidId}
-            {JSON.stringify(comp)}
-
+        <div className="mx-4 max-w-[1080px] dash_container">
+            Competitiveness
+            <div>
+                <EditCompetitiveness props={comp} bid={bid} />
+            </div>
         </div>
+    )
+}
+
+export default function Page({ params }: {
+    params: Promise<{
+        compId: string,
+        bidId: string,
+    }>
+}) {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AsyncPage params={params} />
+        </Suspense>
     )
 }

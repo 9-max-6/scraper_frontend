@@ -3,7 +3,7 @@ import { metricsTable } from "@/db/schema/metrics";
 import { unstable_cache } from "next/cache";
 import { eq, desc } from "drizzle-orm";
 import { capabilitiesTable } from "@/db/schema/capabilities";
-import { commercialsTable } from "@/db/schema/commercials";
+import { bidInputTable, commercialsTable } from "@/db/schema/commercials";
 import { riskTable } from "@/db/schema/risk";
 import { competitivenessTable } from "@/db/schema/competitiveness";
 import { scoresTable } from "@/db/schema/scores";
@@ -121,5 +121,20 @@ export const getScoresByBidId = unstable_cache(
     ['scores'],
     {
         tags: ['scores'],
+    }
+)
+
+export const getBdInputBydId = unstable_cache(
+    async (id: number) => {
+        try {
+            const result = await db.select().from(bidInputTable).where(eq(bidInputTable.id, id));
+            return result;
+        } catch (e: any) {
+            console.log("Error fetching bdInput by id", e.toString());
+        }
+    },
+    ['bd_input'],
+    {
+        tags: ['bd_input'],
     }
 )

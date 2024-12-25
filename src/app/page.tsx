@@ -4,8 +4,16 @@ import StatsOne from "@/components/stats-one"
 import CardWrapper from "./_components/card-wrapper"
 import { CardWrapperFallback, OverviewFallback } from "./_components/fallbacks"
 import OverviewGraph from "@/app/_components/overview-graph"
-
-
+/**
+ * web vitals - before changing the structure of the page to
+ * use suspense and lazy loading
+ * FID - 
+ * LCP - 2027
+ */
+/**
+ * 
+ * @returns 
+ */
 export default function Page() {
   return (
     <div className="grid dash_container grid-cols-12 gap-4 px-4 ">

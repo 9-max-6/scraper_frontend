@@ -12,6 +12,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { WebVitals } from "./_components/web-vitals";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -57,6 +58,7 @@ export default function RootLayout({
                   <Topbar />
                 </div>
               </header>
+              <WebVitals />
               {children}
             </SidebarInset>
           </SidebarProvider>

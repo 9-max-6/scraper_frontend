@@ -3,42 +3,51 @@
 import { useCallback, useEffect, useState } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
-import { SelectCapabilities } from "@/db/schema/capabilities";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import _ from "lodash"
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import patchCapabilityById from "../cap/[capId]/actions";
 import { Badge } from "@/components/ui/badge";
+import { SelectCompetitiveness } from "@/db/schema/competitiveness";
+import patchCompetitivenessById from "../comp/[compId]/actions";
 
-const categories = BidProfileText.Capabilities
+// Sample categories with levels and descriptions
+const categories = BidProfileText.Competitiveness;
 
-export default function EditCapabilitiess({ props, bid }: { props: Array<SelectCapabilities>, bid: number }) {
+export default function EditCompetitiveness({ props, bid }: { props: Array<SelectCompetitiveness>, bid: number }) {
 
     const { toast } = useToast();
     const router = useRouter();
 
-
     const [selectedValues, setSelectedValues] = useState({
-        competence: Number(props[0].competence),
-        countryExperience: Number(props[0].countryExperience),
-        clients: Number(props[0].clients),
+        numberOfBidders: Number(props[0].numberOfBidders),
+        competitorProfile: Number(props[0].competitorProfile),
+        partnerCapacity: Number(props[0].partnerCapacity),
+        clientPreference: Number(props[0].clientPreference),
+        clientIntelligence: Number(props[0].clientIntelligence),
+        clientProcurement: Number(props[0].clientProcurement),
+        availabilityOfResources: Number(props[0].availabilityOfResources),
     });
 
-    const [initialCap, setinitialCap] = useState({
-        competence: Number(props[0].competence),
-        countryExperience: Number(props[0].countryExperience),
-        clients: Number(props[0].clients),
-    })
+    const [initialComp, setinitialComp] = useState({
+        numberOfBidders: Number(props[0].numberOfBidders),
+        competitorProfile: Number(props[0].competitorProfile),
+        partnerCapacity: Number(props[0].partnerCapacity),
+        clientPreference: Number(props[0].clientPreference),
+        clientIntelligence: Number(props[0].clientIntelligence),
+        clientProcurement: Number(props[0].clientProcurement),
+        availabilityOfResources: Number(props[0].availabilityOfResources),
+    });
+
+
     const [pending, setpending] = useState(false);
     const [cancelling, setcancelling] = useState(false);
     const [response, setresponse] = useState(null)
 
-
     // Dynamically calculated score of the Competitiveness tab
-    const [capScore, setCapScore] = useState<number | null>(null);
+    const [compScore, setCompScore] = useState<number | null>(null);
 
     const updateScore = useCallback(() => {
         const scores = Object.keys(selectedValues).map((key, index) => {
@@ -47,20 +56,18 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
             return level ? level.value * category.weight : 0;
         });
         const overallScore = scores.reduce((acc, score) => acc + score, 0);
-        setCapScore(overallScore);
+        setCompScore(overallScore);
     }, [selectedValues]);
-
 
     const handleSelect = (category: string, value: number) => {
         const updatedValues = { ...selectedValues, [category]: value };
         setSelectedValues(updatedValues);
     };
-
     // destructure props for more targeted dependencies
     const id = props[0].id;
     const handleSubmit = useCallback(() => {
         // checking if there weere any changes made.
-        if (!_.isEqual(selectedValues, initialCap)) {
+        if (!_.isEqual(selectedValues, initialComp)) {
             /**
              * there was a change made,
              * have to toast to show a change is made to the 
@@ -69,7 +76,7 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
              */
             setpending(true);
 
-            patchCapabilityById(id, selectedValues, bid, capScore).then(() => {
+            patchCompetitivenessById(id, selectedValues, bid, compScore).then(() => {
                 setresponse(true);
 
             }).catch((error: any) => {
@@ -101,8 +108,13 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
             })
             router.back()
         }
-    }, [selectedValues, capScore, id, bid, initialCap, toast, router]);
+    }, [selectedValues, compScore, id, bid, initialComp, toast, router]);
 
+    // effect for score
+    // Update score whenever selectedValues changes
+    useEffect(() => {
+        updateScore();
+    }, [selectedValues, updateScore]);
 
     // effect for submissions
     useEffect(() => {
@@ -122,17 +134,12 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
         }
     }, [response, handleSubmit, router, toast])
 
-    // effect for score
-    // Update score whenever selectedValues changes
-    useEffect(() => {
-        updateScore();
-    }, [selectedValues, updateScore]);
 
     return (
         <div className="dash_container overflow-scroll scrollbar-hide">
             <div className="flex mb-2">
                 <Badge className="ml-auto">
-                    {capScore}
+                    {compScore}
                 </Badge>
             </div>
 
@@ -197,10 +204,7 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
                         )}
                     </Button>
                 </div>
-
-
             </div>
-
         </div>
     );
 }

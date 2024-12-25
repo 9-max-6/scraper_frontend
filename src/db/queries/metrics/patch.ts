@@ -88,16 +88,57 @@ export async function patchCapById(id: number, data: Partial<InsertCapabilities>
 
 }
 
+
 /**
  * 
  * @param id 
  * @param data 
  * @returns 
  */
-export async function patchCommById(id: number, data: Partial<InsertCommercials>) {
-    const result = await genericPatchById(id, data, commercialsTable);
-    // revalidateTag("commercials")
-    return result;
+export async function patchCompById(id: number, data: Partial<InsertCompetitiveness>, bid: number, score: number) {
+    try {
+        await db.transaction(async (trx) => {
+            // patch capabilities.
+            await trx.update(competitivenessTable).set(data).where(eq(competitivenessTable.id, id))
+            // updating scores for capabilties for this id.
+            const currentScore = await trx
+                .select()
+                .from(scoresTable)
+                .where(eq(scoresTable.bid, bid))
+                .orderBy(desc(scoresTable.createdAt))
+
+            if (currentScore.length === 0) {
+                // adding default values
+                const result = {
+                    bid: bid,
+                    overallScore: 0,
+                    riskScore: 0,
+                    commercialsScore: 0,
+                    competitivenessScore: score,
+                    capabilitiesScore: 0,
+                }
+                await trx.insert(scoresTable).values(result)
+            } else {
+                const { id, createdAt, ...withoutId } = currentScore[0]
+
+                const scoreData = {
+                    ...withoutId,
+                    competitivenessScore: score
+                }
+                await trx.insert(scoresTable).values(scoreData)
+            }
+
+            revalidateTag("single-bid")
+            revalidateTag("competitiveness")
+            revalidateTag("scores")
+
+        })
+
+    } catch (error: any) {
+        console.error(error.toString())
+        throw new Error("Error in transaction");
+    }
+
 }
 
 /**
@@ -106,40 +147,56 @@ export async function patchCommById(id: number, data: Partial<InsertCommercials>
  * @param data 
  * @returns 
  */
-export async function patchCompById(id: number, data: Partial<InsertCompetitiveness>) {
-    const result = await genericPatchById(id, data, competitivenessTable);
-    // revalidateTag("competitiveness")
-    return result;
-}
+export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: number, score: number) {
+    try {
+        await db.transaction(async (trx) => {
+            // patch capabilities.
+            await trx.update(riskTable).set(data).where(eq(riskTable.id, id))
+            // updating scores for capabilties for this id.
+            const currentScore = await trx
+                .select()
+                .from(scoresTable)
+                .where(eq(scoresTable.bid, bid))
+                .orderBy(desc(scoresTable.createdAt))
 
+            if (currentScore.length === 0) {
+                // adding default values
+                const result = {
+                    bid: bid,
+                    overallScore: 0,
+                    riskScore: score,
+                    commercialsScore: 0,
+                    competitivenessScore: 0,
+                    capabilitiesScore: 0,
+                }
+                await trx.insert(scoresTable).values(result)
+            } else {
+                const { id, createdAt, ...withoutId } = currentScore[0]
+
+                const scoreData = {
+                    ...withoutId,
+                    riskScore: score
+                }
+                await trx.insert(scoresTable).values(scoreData)
+            }
+
+            revalidateTag("single-bid")
+            revalidateTag("risks")
+            revalidateTag("scores")
+
+        })
+
+    } catch (error: any) {
+        console.error(error.toString())
+        throw new Error("Error in transaction");
+    }
+
+}
 /**
  * 
- * @param id 
- * @param data 
- * @returns 
+ * @param bid
+ * @param partialScore 
  */
-export async function patchRiskById(id: number, data: Partial<InsertRisk>) {
-    const result = await genericPatchById(id, data, riskTable);
-    // revalidateTag("risk")
-    return result;
-}
-
-/**
- * 
- * @param id 
- * @param data 
- * @returns 
- */
-export async function patchInputBdById(id: number, data: Partial<InsertBdInput>, score: {
-    scoreType: string,
-    value: number,
-}
-) {
-    const result = await genericPatchById(id, data, bidInputTable)
-    // revalidateTag("bidInput")
-    return result;
-}
-
 export async function updateScores(
     bid: number,
     partialScore: Partial<InsertScore>

@@ -1,14 +1,15 @@
 "use server"
-import { patchCapById } from "@/db/queries/metrics/patch";
+import { patchRiskById } from "@/db/queries/metrics/patch";
 
-export default async function patchCapabilityById(id: number, data: {
-    competence: number;
-    countryExperience: number;
-    clients: number;
+export default async function patchRisk(id: number, data: {
+    scopeOfWork: number;
+    easeOfDoingBusiness: number;
+    security: number;
+    reputationalRisk: number;
 },
     bid: number, score: number) {
     try {
-        const result = await patchCapById(id, {
+        const result = await patchRiskById(id, {
             ...data,
             updatedAt: new Date()
         }, bid, score)

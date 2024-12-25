@@ -1,25 +1,33 @@
 import { getRiskById } from "@/db/queries/metrics/get";
 import Error from "../../_components/error";
-export default async function Page({ params }: {
+import { Suspense } from "react";
+import Loading from "@/app/bids/_components/loading";
+import EditRisk from "../../_components/risk-tab";
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
+export async function AsyncPage({ params }: {
     params: Promise<{
         riskId: string,
         bidId: string,
-        metricsId: string,
     }>
 }) {
-    const { riskId, bidId, metricsId } = await params;
+    const { riskId, bidId } = await params;
     const id = Number(riskId);
     if (!id) {
         return (
             <Error />
         )
     }
-    const metrics = Number(metricsId);
-    if (!metrics) {
+    const bid = Number(bidId);
+    if (!bid) {
         return (
             <Error />
         )
     }
+
 
     const risk = await getRiskById(id);
     if (!risk || !risk[0]) {
@@ -29,12 +37,24 @@ export default async function Page({ params }: {
     }
 
     return (
-        <div className="dash_container mx-4">
-            Edit capability
-            {riskId}
-            {bidId}
-            {JSON.stringify(risk)}
-
+        <div className="mx-4 max-w-[1080px] dash_container">
+            Risk
+            <div>
+                <EditRisk props={risk} bid={bid} />
+            </div>
         </div>
+    )
+}
+
+export default function Page({ params }: {
+    params: Promise<{
+        riskId: string,
+        bidId: string,
+    }>
+}) {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AsyncPage params={params} />
+        </Suspense>
     )
 }

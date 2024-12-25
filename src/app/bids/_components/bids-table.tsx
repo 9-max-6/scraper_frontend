@@ -178,21 +178,27 @@ export default async function BidsTable({ bids }: {
 
 export function BidsTableFallback() {
     return (
-        <Table className="relative h-full overflow-scroll">
-            <TableHeader className="sticky top-0">
-                <TableRow>
-                    {columns.map((column) => (
-                        <TableHead key={column.key}>
-                            {column.title}
-                        </TableHead>
-                    ))}
-                </TableRow>
-            </TableHeader>
-            <TableBody className="w-full">
-                <TableRow className="text-gray-400">
-                    Loading...
-                </TableRow>
-            </TableBody>
-        </Table>
+        <div>
+            <Table className="relative h-full overflow-scroll">
+                <TableHeader className="sticky top-0">
+                    <TableRow>
+                        {columns.map((column) => (
+                            <TableHead key={column.key}>
+                                {column.title}
+                            </TableHead>
+                        ))}
+                    </TableRow>
+                </TableHeader>
+                <TableBody className="w-full">
+
+                </TableBody>
+            </Table>
+            <div className="h-[500px]">
+                <div className="loader h-12 w-12">
+
+                </div>
+            </div>
+        </div>
+
     )
 }

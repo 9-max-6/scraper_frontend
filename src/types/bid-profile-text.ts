@@ -87,7 +87,7 @@ export const BidProfileText = {
     Competitiveness: [
         {
             name: "Number of Bidders",
-            tag: 'number',
+            tag: 'numberOfBidders',
             levels: [
                 { label: "Very high number of competitive bidders > 8 bids", value: 0 },
                 { label: "High number of competitive bidders (6-8 short-listed bidders)", value: 1 },
@@ -99,7 +99,7 @@ export const BidProfileText = {
         },
         {
             name: "Competitor profile for such bids",
-            tag: 'competitor',
+            tag: 'competitorProfile',
             levels: [
                 { label: "Competitor has strong technical and financial competition and high likelihood of price dumping from competitors", value: 0 },
                 { label: "Strong technical and financial competition but low likelihood of price dumping from competitors", value: 2 },
@@ -109,7 +109,7 @@ export const BidProfileText = {
         },
         {
             name: "Partner Capacity",
-            tag: 'partner',
+            tag: 'partnerCapacity',
             levels: [
                 { label: "Partner(s) is/are not yet secured but is necessary to meet the requirements", value: 0 },
                 { label: "Lack of clarity if a partner(s) is required", value: 1 },
@@ -121,7 +121,7 @@ export const BidProfileText = {
         },
         {
             name: "Client Preference",
-            tag: 'preference',
+            tag: 'clientPreference',
             levels: [
                 { label: "Client favours the competitor who is a clear leader (likes the incumbent) OR has a negative view towards DT Global or its consortium", value: 0 },
                 { label: "We are in the dark if the client has favourites", value: 1 },
@@ -132,7 +132,7 @@ export const BidProfileText = {
         },
         {
             name: "Client Intelligence",
-            tag: 'intelligence',
+            tag: 'clientIntelligence',
             levels: [
                 { label: "DT Global lacks intelligence and is late in the bid process whilst the competitor clearly has intelligence and is active in the bid process", value: 0 },
                 { label: "DT Global lacks intelligence, is late in the bid process, but so does the competition", value: 1 },
@@ -144,7 +144,7 @@ export const BidProfileText = {
         },
         {
             name: "Client Procurement",
-            tag: 'procurement',
+            tag: 'clientProcurement',
             levels: [
                 { label: "Low likelihood that the procurement process is transparent and/or fair, no knowledge of decision makers, may or may not have a mechanism for appeal", value: 0 },
                 { label: "Lack of understanding of how the procurement process will be executed", value: 1 },
@@ -155,7 +155,7 @@ export const BidProfileText = {
         },
         {
             name: "Availability of resources",
-            tag: 'availability',
+            tag: 'availabilityOfResources',
             levels: [
                 { label: "Lack in-house technical resources with proven experiences in similar bids", value: 0 },
                 { label: "Have in-house technical resources with proven experiences in similar bids, but are not available, and we lack access to strong external resources that have developed similar bids", value: 2 },
@@ -244,7 +244,7 @@ export const BidProfileText = {
     Risk: [
         {
             name: "Scope of Work",
-            tag: 'scope',
+            tag: 'scopeOfWork',
             levels: [
                 { label: "Project scope is unclear and expectations on deliverables are unclear", value: 0 },
                 { label: "Project scope is clear but expectations on deliverables are not realistic", value: 2 },
@@ -254,7 +254,7 @@ export const BidProfileText = {
         },
         {
             name: "Ease of Doing Business",
-            tag: 'ease',
+            tag: 'easeOfDoingBusiness',
             levels: [
                 { label: "We don't know if the client is difficult to work with OR the client is extremely difficult to work with", value: 0 },
                 { label: "Whilst the client is difficult to work with, we can still work with them", value: 1 },
@@ -276,7 +276,7 @@ export const BidProfileText = {
         },
         {
             name: "Reputational risk",
-            tag: 'reputational',
+            tag: 'reputationalRisk',
             levels: [
                 { label: "Project's reputational risks are considered high", value: 0 },
                 { label: "Project's reputational risks are considered medium", value: 1 },

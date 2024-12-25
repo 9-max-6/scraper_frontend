@@ -1,8 +1,10 @@
 import { getCapabilitiesById } from "@/db/queries/metrics/get";
 import Error from "../../_components/error";
 import EditCapabilitiess from "../../_components/cap-tab";
+import { Suspense } from "react";
+import Loading from "@/app/bids/_components/loading";
 
-export default async function Page({ params }: {
+export async function AsyncPage({ params }: {
     params: Promise<{
         capId: string,
         bidId: string,
@@ -44,7 +46,18 @@ export default async function Page({ params }: {
         </div>
     )
 }
-
+export default function Page({ params }: {
+    params: Promise<{
+        capId: string,
+        bidId: string,
+    }>
+}) {
+    return (
+        <Suspense fallback={< Loading />}>
+            <AsyncPage params={params} />
+        </Suspense>
+    )
+}
 
 /**
  * I have to check if these calls I'm making to the backend will be 

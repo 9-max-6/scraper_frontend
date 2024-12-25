@@ -109,21 +109,27 @@ export default async function DonorsTable({ donors }: {
 
 export function DonorsTableFallback() {
     return (
-        <Table className="relative h-full overflow-scroll">
-            <TableHeader className="sticky top-0">
-                <TableRow>
-                    {columns.map((column) => (
-                        <TableHead key={column.key}>
-                            {column.title}
-                        </TableHead>
-                    ))}
-                </TableRow>
-            </TableHeader>
-            <TableBody className="w-full">
-                <TableRow className="text-gray-400">
-                    Loading...
-                </TableRow>
-            </TableBody>
-        </Table>
+        <div className="w-full">
+            <Table className="relative h-full overflow-scroll">
+                <TableHeader className="sticky top-0">
+                    <TableRow>
+                        {columns.map((column) => (
+                            <TableHead key={column.key}>
+                                {column.title}
+                            </TableHead>
+                        ))}
+                    </TableRow>
+                </TableHeader>
+                <TableBody className="w-full">
+                </TableBody>
+            </Table>
+            <div className="flex items-center">
+                <div className="loader h-12 w-12">
+
+                </div>
+            </div>
+
+        </div>
+
     )
 }

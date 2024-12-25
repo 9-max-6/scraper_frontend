@@ -11,8 +11,22 @@ import Commercials from "./_components/commercials";
 import { OverviewGraphFallback } from "./_components/overview-graph";
 import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
 import { ShieldAlertIcon } from "lucide-react";
+import Loading from "../_components/loading";
 
-export default async function Page({ params }: {
+/**
+ * web vitals - before changing the structure of the page to
+ * use suspense and lazy loading
+ * TTFB-
+ * LCP-
+ * 
+ */
+
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
+export async function AsyncPage({ params }: {
     params: Promise<{
         bidId: string;
     }>;
@@ -142,5 +156,17 @@ export default async function Page({ params }: {
                 </CardFooter>
             </Card>
         </div>
+    )
+}
+
+export default function Page({ params }: {
+    params: Promise<{
+        bidId: string;
+    }>;
+}) {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AsyncPage params={params} />
+        </Suspense>
     )
 }
