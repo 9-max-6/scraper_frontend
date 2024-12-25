@@ -1,13 +1,12 @@
 import { db } from "@/db";
 import { metricsTable } from "@/db/schema/metrics";
-import { revalidateTag, unstable_cache } from "next/cache";
+import { unstable_cache } from "next/cache";
 import { eq, desc } from "drizzle-orm";
 import { capabilitiesTable } from "@/db/schema/capabilities";
 import { commercialsTable } from "@/db/schema/commercials";
 import { riskTable } from "@/db/schema/risk";
 import { competitivenessTable } from "@/db/schema/competitiveness";
 import { scoresTable } from "@/db/schema/scores";
-import { insertScore } from "../insert";
 
 export const getMetricsById = unstable_cache(
     async (id: number) => {
@@ -107,8 +106,8 @@ export const getScoresByBidId = unstable_cache(
                     competitivenessScore: 0,
                     capabilitiesScore: 0
                 }
-                const scoreId = await insertScore(defaultScores);
-                if (!scoreId) {
+                const [scoreId] = await db.insert(scoresTable).values(defaultScores).returning({ id: scoresTable.id });
+                if (!scoreId.id) {
                     console.log("Error inserting default scores");
                 }
                 return [defaultScores];

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription } from "@/components/ui/card"
 import { Suspense } from "react"
 import StatsOne from "@/components/stats-one"
 import CardWrapper from "./_components/card-wrapper"

@@ -2,22 +2,13 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   BadgeDollarSign,
-  BookOpen,
-  Bot,
-  ChartColumn,
-  Command,
   Frame,
-  GalleryVerticalEnd,
   HandHeart,
   Home,
   Lightbulb,
-  LucideGitGraph,
-  Map,
   PieChart,
   Settings2,
-  SquareTerminal,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { NavMain } from "@/components/nav-main"

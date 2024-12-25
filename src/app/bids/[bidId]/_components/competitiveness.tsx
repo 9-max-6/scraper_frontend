@@ -22,7 +22,6 @@ const getText = (key: string, value: string): {
 } => {
     try {
         const entry = CompetitivenessText[key as keyof typeof CompetitivenessText];
-        entry.scores[value as keyof typeof entry.scores];
         return {
             text: entry.scores[value as keyof typeof entry.scores],
             tag: entry.tag
@@ -109,7 +108,7 @@ export default async function Competitiveness({ id, score, phase, bidId }: {
                     // not gonna happen but for typescript
                     if (!value) {
                         return (
-                            <div>
+                            <div key={key}>
                                 Missing text
                             </div>
                         )

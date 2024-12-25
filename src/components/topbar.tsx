@@ -1,11 +1,3 @@
-import Image from "next/image";
-import { Card, CardContent } from "./ui/card";
-import { Separator } from "@/components/ui/separator"
-import {
-    SidebarInset,
-    SidebarProvider,
-    SidebarTrigger,
-} from "@/components/ui/sidebar"
 import { NavSecondary } from "@/components/nav-secondary"
 import ModeToggle from "@/components/toggle-mode"
 import {

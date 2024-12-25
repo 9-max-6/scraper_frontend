@@ -35,7 +35,6 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Card } from "./ui/card"
 
 const data: Payment[] = [
     {

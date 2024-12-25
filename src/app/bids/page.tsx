@@ -1,9 +1,9 @@
 import { getBids } from "@/db/queries/bids/get"
 import SearchBar from "./_components/search-bar"
-import Link from "next/link"
 import BidsTable, { BidsTableFallback } from "./_components/bids-table";
 import { Suspense } from "react";
 import Pagination from "./_components/paginator";
+import { cookies } from "next/headers";
 
 
 export default async function Page(props: {
@@ -20,6 +20,8 @@ export default async function Page(props: {
         page: page,
         title: title,
     })
+
+    cookies();
 
     const paginatorProps = {
         page: bids?.currentPage,

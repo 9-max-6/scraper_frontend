@@ -1,11 +1,10 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getClientsById } from "@/db/queries/donors/get";
-import { Bookmark, Clock, DollarSign, HeartHandshake, ShieldAlertIcon, Target, User2 } from "lucide-react";
+import { Clock, DollarSign, HeartHandshake, User2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import clsx from "clsx";
 import { getTime } from "./utils";
-import { Separator } from "@/components/ui/separator";
 import { formatDate } from "date-fns";
 import Link from "next/link";
 
@@ -48,6 +47,7 @@ export default async function BidData({ score, bidData }: {
         <Card className="shadow-none">
             <CardContent className="pt-4">
                 <div className="flex flex-start items-start flex-col">
+                    {score}
                 </div>
 
                 <div>

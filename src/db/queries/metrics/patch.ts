@@ -1,3 +1,4 @@
+/* eslint-disable-nextline @typescript-eslint/no-unused-vars */
 import { capabilitiesTable, InsertCapabilities } from "@/db/schema/capabilities";
 import { bidInputTable, commercialsTable, InsertBdInput, InsertCommercials } from "@/db/schema/commercials";
 import { competitivenessTable, InsertCompetitiveness } from "@/db/schema/competitiveness";
@@ -5,9 +6,9 @@ import { clientsTable } from "@/db/schema/donors";
 import { InsertRisk, riskTable } from "@/db/schema/risk";
 import { InsertScore, scoresTable } from "@/db/schema/scores";
 import { db } from "@/db";
-import { revalidateTag } from "next/cache";
 import { eq, desc } from "drizzle-orm";
 import { getScoresByBidId } from "./get";
+import { revalidateTag } from "next/cache";
 
 
 type GenericInsert = Partial<InsertCapabilities> |
@@ -43,10 +44,9 @@ export async function genericPatchById(
  */
 export async function patchCapById(id: number, data: Partial<InsertCapabilities>, bid: number, score: number) {
     try {
-        db.transaction(async (trx) => {
+        await db.transaction(async (trx) => {
             // patch capabilities.
-            trx.update(capabilitiesTable).set(data).where(eq(capabilitiesTable.id, id))
-
+            await trx.update(capabilitiesTable).set(data).where(eq(capabilitiesTable.id, id))
             // updating scores for capabilties for this id.
             const currentScore = await trx
                 .select()
@@ -74,10 +74,11 @@ export async function patchCapById(id: number, data: Partial<InsertCapabilities>
                 }
                 await trx.insert(scoresTable).values(scoreData)
             }
+
+            revalidateTag("single-bid")
             revalidateTag("capabilities")
-            revalidateTag("scores");
-            revalidateTag("metrics")
-            revalidateTag("bids")
+            revalidateTag("scores")
+
         })
 
     } catch (error: any) {

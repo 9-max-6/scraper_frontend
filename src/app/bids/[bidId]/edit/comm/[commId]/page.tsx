@@ -55,6 +55,8 @@ export default async function Page({ params }: {
             Edit commercials
             {commId}
             {bidId}
+            {budget}
+            {duration}
             {JSON.stringify(comm)}
             {JSON.stringify(bidData)}
         </div>

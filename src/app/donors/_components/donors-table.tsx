@@ -108,7 +108,6 @@ export default async function DonorsTable({ donors }: {
 }
 
 export function DonorsTableFallback() {
-    const fakeData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     return (
         <Table className="relative h-full overflow-scroll">
             <TableHeader className="sticky top-0">

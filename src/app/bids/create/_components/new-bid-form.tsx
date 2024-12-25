@@ -81,7 +81,7 @@ export default function NewBidForm({ props }: { props: { clients: Array<SelectCl
             })
         } else {
             setpending(false);
-            const toastId = toast({
+            toast({
                 title: "Success",
                 description: "Successfully created bid",
                 action: <ToastAction altText="Undo" onClick={() => {

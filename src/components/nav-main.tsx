@@ -6,7 +6,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -21,7 +20,8 @@ export function NavMain({
     icon: LucideIcon
   }[]
 }) {
-  const { isMobile } = useSidebar()
+  // const { isMobile } = useSidebar()
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
@@ -33,7 +33,7 @@ export function NavMain({
               <Link href={item.url} className={clsx(
                 "hover:text-blue-600",
                 {
-                  "text-blue-500": usePathname() === item.url,
+                  "text-blue-500": pathname === item.url,
                 }
               )}>
                 <item.icon />

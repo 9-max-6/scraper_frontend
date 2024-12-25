@@ -27,6 +27,7 @@ export default function Pagination({ page, totalItems, totalPages }: {
                 prev <ChevronLeft size={72} />
             </Button>
             <span className="text-gray-400 text-sm">{page} of {totalPages}</span>
+            <span className="text-gray-400 text-sm">{10} of {totalItems}</span>
             <Button disabled={page === totalPages} onClick={() => {
                 const newparams = new URLSearchParams(params);
                 if (!page) return;

@@ -8,7 +8,6 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { CapabilitiesText, Thresholds } from "./bid-profile-text";
 import { getTime } from "./utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 const getText = (key: string, value: string): {
     text: string,
@@ -16,8 +15,6 @@ const getText = (key: string, value: string): {
 } => {
     try {
         const entry = CapabilitiesText[key as keyof typeof CapabilitiesText];
-        entry.scores[value as keyof typeof entry.scores];
-
         return {
             text: entry.scores[value as keyof typeof entry.scores],
             tag: entry.tag
@@ -40,7 +37,7 @@ const getText = (key: string, value: string): {
  */
 const getStatus = (score: number, phase: string | null) => {
     const entry = Thresholds[phase as keyof typeof Thresholds]
-    return score >= entry[phase as keyof typeof entry]
+    return score >= entry["capabilities" as keyof typeof entry]
 }
 
 /**
@@ -110,7 +107,7 @@ export default async function Capabilities({ id, score, phase, bidId }: {
                     // not gonna happen but for typescript
                     if (!value) {
                         return (
-                            <div>
+                            <div key={key}>
                                 Missing text
                             </div>
                         )

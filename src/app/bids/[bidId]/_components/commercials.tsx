@@ -22,7 +22,6 @@ const getText = (key: string, value: string): {
 } => {
     try {
         const entry = CommercialsText[key as keyof typeof CommercialsText];
-        entry.scores[value as keyof typeof entry.scores];
         return {
             text: entry.scores[value as keyof typeof entry.scores],
             tag: entry.tag
@@ -113,7 +112,7 @@ export default async function Commercials({ id, score, phase, bidId }: {
                     // not gonna happen but for typescript
                     if (!value) {
                         return (
-                            <div>
+                            <div key={key}>
                                 Missing text
                             </div>
                         )

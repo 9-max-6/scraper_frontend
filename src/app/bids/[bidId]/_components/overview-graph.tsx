@@ -36,7 +36,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 
-export default async function OverviewGraph() {
+export default function OverviewGraph() {
 
     return (
         <Card className="shadow-none border-none">

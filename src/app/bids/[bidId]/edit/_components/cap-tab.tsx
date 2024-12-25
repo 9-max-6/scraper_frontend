@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
@@ -18,6 +18,7 @@ const categories = BidProfileText.Capabilities
 export default function EditCapabilitiess({ props, bid }: { props: Array<SelectCapabilities>, bid: number }) {
 
     const { toast } = useToast();
+    const router = useRouter();
 
 
     const [selectedValues, setSelectedValues] = useState({
@@ -55,6 +56,8 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
         setSelectedValues(updatedValues);
     };
 
+    // destructure props for more targeted dependencies
+    const id = props[0].id;
     const handleSubmit = useCallback(() => {
         // checking if there weere any changes made.
         if (!_.isEqual(selectedValues, initialCap)) {
@@ -66,7 +69,7 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
              */
             setpending(true);
 
-            patchById(props[0].id, selectedValues, bid, capScore).then(() => {
+            patchById(id, selectedValues, bid, capScore).then(() => {
                 setresponse(true);
 
             }).catch((error: any) => {
@@ -98,9 +101,8 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
             })
             router.back()
         }
-    }, [selectedValues, capScore])
+    }, [selectedValues, capScore, id, bid, initialCap, toast, router]);
 
-    const router = useRouter();
 
     // effect for submissions
     useEffect(() => {
@@ -116,9 +118,9 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
 
             // refetching bid page.
             router.refresh();
-            router.push(`/bids/${bid}/`);
+            router.back()
         }
-    }, [response, handleSubmit])
+    }, [response, handleSubmit, router, toast])
 
     // effect for score
     // Update score whenever selectedValues changes

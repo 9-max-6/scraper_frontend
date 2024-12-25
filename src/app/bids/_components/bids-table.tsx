@@ -9,11 +9,10 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import MiniClient from "./mini-client";
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
+import { Card, CardDescription } from "@/components/ui/card";
 import { CircleCheckBig, ShieldAlertIcon, User2 } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
@@ -178,7 +177,6 @@ export default async function BidsTable({ bids }: {
 }
 
 export function BidsTableFallback() {
-    const fakeData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     return (
         <Table className="relative h-full overflow-scroll">
             <TableHeader className="sticky top-0">
