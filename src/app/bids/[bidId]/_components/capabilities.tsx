@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getCapabilitiesById } from "@/db/queries/metrics/get";
@@ -71,7 +73,7 @@ export default async function Capabilities({ id, score, phase, bidId }: {
     const data = dataArray[0];
 
     return (
-        <Card className="shadow-none">
+        <Card>
             <CardHeader className="relative">
                 <CardTitle>
                     Capabilities

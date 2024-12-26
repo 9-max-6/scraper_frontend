@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
     Card,
@@ -17,75 +17,112 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart"
-import { Skeleton } from "@/components/ui/skeleton"
 import { SelectScore } from "@/db/schema/scores"
-const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-]
+import { format } from "date-fns"
+
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
+    score: {
+        label: "Score",
         color: "hsl(var(--chart-1))",
     },
-    mobile: {
-        label: "Mobile",
+    date: {
+        label: "Date",
         color: "hsl(var(--chart-2))",
     },
 } satisfies ChartConfig
 
+export default function OverviewGraphDetailed({ props }: { props: Array<Partial<SelectScore>> }) {
 
-export default function OverviewGraphDetailed({ props }: {
-    props: Array<Partial<SelectScore>>
-}) {
+    if (props.length < 5) {
+        return (
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        Detailed overview
+                    </CardTitle>
+                    <CardDescription>
+                        Showing trend for the last five edits
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="flex justify-center items-center">
+                    <CardDescription>
+                        Not enough edits to view this tab
+                    </CardDescription>
+                </CardContent>
+            </Card>
+        )
+    }
 
+    const firstFiveScores = props.slice(0, 5)
+    const chartData = [
+        { scores: "", score: firstFiveScores[0].overallScore, date: firstFiveScores[0].createdAt },
+        { scores: "", score: firstFiveScores[1].overallScore, date: firstFiveScores[1].createdAt },
+        { scores: "", score: firstFiveScores[2].overallScore, date: firstFiveScores[2].createdAt },
+        { scores: "", score: firstFiveScores[3].overallScore, date: firstFiveScores[3].createdAt },
+        { scores: "", score: firstFiveScores[4].overallScore, date: firstFiveScores[4].createdAt },
+    ]
     return (
-        <Card className="shadow-none border-none">
+        <Card>
             <CardHeader>
-                <CardTitle>Bar Chart - Multiple</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardTitle>Overall scores overview</CardTitle>
+                <CardDescription>{format(firstFiveScores[0].createdAt, 'dd-mm-yy')} - {format(firstFiveScores[4].createdAt, 'dd-mm-yy')}</CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-4">
-                <div className="cols-span-1">
-
-                </div>
-                <ChartContainer className="col-span-2" config={chartConfig}>
-                    <BarChart accessibilityLayer data={chartData}>
+            <CardContent>
+                <ChartContainer className="max-h-[500px]" config={chartConfig}>
+                    <LineChart
+                        accessibilityLayer
+                        data={chartData}
+                        margin={{
+                            top: 20,
+                            left: 12,
+                            right: 12,
+                        }}
+                    >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="score"
                             tickLine={false}
-                            tickMargin={10}
                             axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            tickMargin={8}
+                            tickFormatter={(value) => value}
                         />
+                        <YAxis domain={[0, 500]} />
+
                         <ChartTooltip
                             cursor={false}
-                            content={<ChartTooltipContent indicator="dashed" />}
+                            content={<ChartTooltipContent indicator="line" />}
                         />
-                        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-                    </BarChart>
+                        <Line
+                            dataKey="scores"
+                            type="natural"
+                            stroke="var(--color-score)"
+                            strokeWidth={2}
+                            dot={{
+                                fill: "var(--color-score)",
+                            }}
+                            activeDot={{
+                                r: 6,
+                            }}
+                        >
+                            <LabelList
+                                position="top"
+                                offset={12}
+                                className="fill-foreground"
+                                fontSize={12}
+                            />
+                        </Line>
+                    </LineChart>
                 </ChartContainer>
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                    Trend in overall score <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="leading-none text-muted-foreground">
-                    Showing total visitors for the last 6 months
+                    Showing overall scores for the last 5 edits
                 </div>
             </CardFooter>
         </Card>
-    )
-}
-
-export function OverviewGraphFallback() {
-    return (
-        <div>
-            <Skeleton className="h-96" />
-        </div>
     )
 }

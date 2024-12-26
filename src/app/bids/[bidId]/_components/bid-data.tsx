@@ -45,7 +45,7 @@ export default async function BidData({ score, bidData }: {
         )
     }
     return (
-        <Card className="shadow-none">
+        <Card>
             <CardContent className="pt-4">
                 <div className="flex flex-start items-start flex-col">
                     {score}

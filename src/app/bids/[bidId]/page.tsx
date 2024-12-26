@@ -28,7 +28,7 @@ import OverviewGraphDetailed from "./_components/overview-detailed";
  * @param param0 
  * @returns 
  */
-export async function AsyncPage({ params }: {
+async function AsyncPage({ params }: {
     params: Promise<{
         bidId: string;
     }>;

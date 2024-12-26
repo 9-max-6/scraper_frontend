@@ -24,11 +24,11 @@ import { Thresholds } from "./bid-profile-text"
 const chartConfig = {
     threshold: {
         label: "Threshold",
-        color: "hsl(var(--chart-1))",
+        color: "hsl(var(--chart-2))",
     },
     score: {
         label: "Score",
-        color: "hsl(var(--chart-2))",
+        color: "hsl(var(--chart-1))",
     },
 } satisfies ChartConfig
 
@@ -67,7 +67,7 @@ export default function OverviewGraph(
                             axisLine={false}
                             tickFormatter={(value) => value}
                         />
-                        <YAxis />
+                        <YAxis domain={[0, 200]} />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dashed" />}

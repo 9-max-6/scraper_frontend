@@ -4,7 +4,7 @@ import EditCapabilitiess from "../../_components/cap-tab";
 import { Suspense } from "react";
 import Loading from "@/app/bids/_components/loading";
 
-export async function AsyncPage({ params }: {
+async function AsyncPage({ params }: {
     params: Promise<{
         capId: string,
         bidId: string,

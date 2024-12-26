@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { db } from "@/db";
 import { metricsTable } from "@/db/schema/metrics";
 import { unstable_cache } from "next/cache";

@@ -11,7 +11,7 @@ export const bidsTable = t.pgTable("bids", {
     des: t.text("des").notNull(),
     createdAt: t.timestamp().defaultNow().notNull(),
     deletedAt: t.timestamp(),
-    updatedAt: t.timestamp(),
+    updatedAt: t.timestamp().notNull().defaultNow(),
     deadline: t.timestamp(),
     phase: phasesEnum().default("capture"),
     author: t.varchar('author', { length: 50 }).notNull(),
@@ -32,6 +32,9 @@ export const bidsTable = t.pgTable("bids", {
 
 export type InsertBid = typeof bidsTable.$inferInsert
 export type SelectBid = typeof bidsTable.$inferSelect
+export type BidUpdate = Partial<typeof bidsTable.$inferInsert> & {
+    updatedAt: Date;
+};
 
 /**
  * columns for the paginated table

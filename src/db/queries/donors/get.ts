@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { db } from "../../";
 import { clientsTable } from "../../schema/donors";
 import { ilike, desc, eq } from "drizzle-orm";

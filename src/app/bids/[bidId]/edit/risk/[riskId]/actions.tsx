@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use server"
 import { patchRiskById } from "@/db/queries/metrics/patch";
 

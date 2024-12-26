@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import Loading from "./_components/loading";
 
 
-export async function AsyncPage(props: {
+async function AsyncPage(props: {
     searchParams?: Promise<{
         title?: string;
         page?: string;

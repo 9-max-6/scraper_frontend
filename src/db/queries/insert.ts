@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { db } from "..";
 import { bidsTable, InsertBid } from "../schema/bids"
 import { capabilitiesTable, } from "../schema/capabilities";
-import { bidInputTable, commercialsTable, InsertCommercials } from "../schema/commercials";
+import { bidInputTable, commercialsTable } from "../schema/commercials";
 import { competitivenessTable } from "../schema/competitiveness";
 import { clientsTable, InsertClient } from "../schema/donors";
 import { InsertMetric, metricsTable } from "../schema/metrics";

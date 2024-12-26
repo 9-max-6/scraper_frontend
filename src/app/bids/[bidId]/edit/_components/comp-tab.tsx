@@ -1,5 +1,7 @@
-"use client";
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
 import { useCallback, useEffect, useState } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';

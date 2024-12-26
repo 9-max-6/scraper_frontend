@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRiskById } from "@/db/queries/metrics/get";
@@ -71,7 +73,7 @@ export default async function Risk({ id, score, phase, bidId }: {
     }
     const data = dataArray[0];
     return (
-        <Card className="shadow-none">
+        <Card>
             <CardHeader className="relative">
                 <CardTitle>
                     Risk

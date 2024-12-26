@@ -1,4 +1,5 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"

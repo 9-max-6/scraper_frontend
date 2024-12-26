@@ -1,6 +1,8 @@
-/* eslint-disable-nextline @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { capabilitiesTable, InsertCapabilities } from "@/db/schema/capabilities";
-import { bidInputTable, commercialsTable, InsertBdInput, InsertCommercials } from "@/db/schema/commercials";
+import { bidInputTable, commercialsTable, InsertCommercials } from "@/db/schema/commercials";
 import { competitivenessTable, InsertCompetitiveness } from "@/db/schema/competitiveness";
 import { clientsTable } from "@/db/schema/donors";
 import { InsertRisk, riskTable } from "@/db/schema/risk";
@@ -9,7 +11,7 @@ import { db } from "@/db";
 import { eq, desc } from "drizzle-orm";
 import { getScoresByBidId } from "./get";
 import { revalidateTag } from "next/cache";
-import { bidsTable, InsertBid } from "@/db/schema/bids";
+import { bidsTable, BidUpdate } from "@/db/schema/bids";
 
 
 type GenericInsert = Partial<InsertCapabilities> |
@@ -301,7 +303,7 @@ export async function patchCommData(
             await trx.update(bidsTable).set({
                 ...partialBid.data,
                 updatedAt: updatedAt
-            }).where(eq(bidsTable.id, partialBid.id))
+            } as BidUpdate).where(eq(bidsTable.id, partialBid.id))
 
             // updated commData
             await trx.update(commercialsTable).set({

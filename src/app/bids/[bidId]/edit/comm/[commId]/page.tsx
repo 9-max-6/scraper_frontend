@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import Loading from "@/app/bids/_components/loading";
 import EditCommercials from "../../_components/comm-tab";
 
-export async function AsyncPage({ params }: {
+async function AsyncPage({ params }: {
     params: Promise<{
         commId: string,
         bidId: string,

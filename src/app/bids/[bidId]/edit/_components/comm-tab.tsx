@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
 import { Button } from "../../../../../components/ui/button";
 import {
@@ -96,55 +98,59 @@ export default function EditCommercials(
         setSelectedValues(updatedValues);
     };
 
-    const initialCommData = {
-        budget: budget,
-        duration: duration,
-        bidDirectorCapture: bdInput.bidDirectorCapture,
-        bidDirectorEoi: bdInput.bidDirectorEoi,
-        bidDirectorTender: bdInput.bidDirectorTender,
-        bidManagerCapture: bdInput.bidManagerCapture,
-        bidManagerEoi: bdInput.bidManagerEoi,
-        bidManagerTender: bdInput.bidManagerTender,
-        technicalLeadCapture: bdInput.technicalLeadCapture,
-        technicalLeadEoi: bdInput.technicalLeadEoi,
-        technicalLeadTender: bdInput.technicalLeadTender,
-        recLeadCapture: bdInput.recLeadCapture,
-        recLeadEoi: bdInput.recLeadEoi,
-        recLeadTender: bdInput.recLeadTender,
-        proposalWriteCapture: bdInput.proposalWriteCapture,
-        proposalWriteEoi: bdInput.proposalWriteEoi,
-        proposalWriteTender: bdInput.proposalWriteTender,
-        analystCapture: bdInput.analystCapture,
-        analystEoi: bdInput.analystEoi,
-        analystTender: bdInput.analystTender,
-        reviewerCapture: bdInput.reviewerCapture,
-        reviewerEoi: bdInput.reviewerEoi,
-        reviewerTender: bdInput.reviewerTender,
-        copyWriterCapture: bdInput.copyWriterCapture,
-        copyWriterEoi: bdInput.copyWriterEoi,
-        copyWriterTender: bdInput.copyWriterTender,
-        recruiterAdminCapture: bdInput.recruiterAdminCapture,
-        recruiterAdminEoi: bdInput.recruiterAdminEoi,
-        recruiterAdminTender: bdInput.recruiterAdminTender,
-        commLeadCapture: bdInput.commLeadCapture,
-        commLeadEoi: bdInput.commLeadEoi,
-        commLeadTender: bdInput.commLeadTender,
-        pmCapture: bdInput.pmCapture,
-        pmEoi: bdInput.pmEoi,
-        pmTender: bdInput.pmTender,
-        graphicDesCapture: bdInput.graphicDesCapture,
-        graphicDesEoi: bdInput.graphicDesEoi,
-        graphicDesTender: bdInput.graphicDesTender,
-        translatorCapture: bdInput.translatorCapture,
-        translatorEoi: bdInput.translatorEoi,
-        translatorTender: bdInput.translatorTender,
-    }
+    const initialCommData = useMemo(() => {
+        return ({
+            budget: budget,
+            duration: duration,
+            bidDirectorCapture: bdInput.bidDirectorCapture,
+            bidDirectorEoi: bdInput.bidDirectorEoi,
+            bidDirectorTender: bdInput.bidDirectorTender,
+            bidManagerCapture: bdInput.bidManagerCapture,
+            bidManagerEoi: bdInput.bidManagerEoi,
+            bidManagerTender: bdInput.bidManagerTender,
+            technicalLeadCapture: bdInput.technicalLeadCapture,
+            technicalLeadEoi: bdInput.technicalLeadEoi,
+            technicalLeadTender: bdInput.technicalLeadTender,
+            recLeadCapture: bdInput.recLeadCapture,
+            recLeadEoi: bdInput.recLeadEoi,
+            recLeadTender: bdInput.recLeadTender,
+            proposalWriteCapture: bdInput.proposalWriteCapture,
+            proposalWriteEoi: bdInput.proposalWriteEoi,
+            proposalWriteTender: bdInput.proposalWriteTender,
+            analystCapture: bdInput.analystCapture,
+            analystEoi: bdInput.analystEoi,
+            analystTender: bdInput.analystTender,
+            reviewerCapture: bdInput.reviewerCapture,
+            reviewerEoi: bdInput.reviewerEoi,
+            reviewerTender: bdInput.reviewerTender,
+            copyWriterCapture: bdInput.copyWriterCapture,
+            copyWriterEoi: bdInput.copyWriterEoi,
+            copyWriterTender: bdInput.copyWriterTender,
+            recruiterAdminCapture: bdInput.recruiterAdminCapture,
+            recruiterAdminEoi: bdInput.recruiterAdminEoi,
+            recruiterAdminTender: bdInput.recruiterAdminTender,
+            commLeadCapture: bdInput.commLeadCapture,
+            commLeadEoi: bdInput.commLeadEoi,
+            commLeadTender: bdInput.commLeadTender,
+            pmCapture: bdInput.pmCapture,
+            pmEoi: bdInput.pmEoi,
+            pmTender: bdInput.pmTender,
+            graphicDesCapture: bdInput.graphicDesCapture,
+            graphicDesEoi: bdInput.graphicDesEoi,
+            graphicDesTender: bdInput.graphicDesTender,
+            translatorCapture: bdInput.translatorCapture,
+            translatorEoi: bdInput.translatorEoi,
+            translatorTender: bdInput.translatorTender,
+        })
+    }, [bdInput, budget, duration])
 
-    const initialSelectedValues = {
-        expertLoe: Number(comm.expertLoe),
-        historicalNetMargin: Number(comm.historicalNetMargin),
-        futureRevenue: Number(comm.futureRevenue),
-    }
+    const initialSelectedValues = useMemo(() => {
+        return ({
+            expertLoe: Number(comm.expertLoe),
+            historicalNetMargin: Number(comm.historicalNetMargin),
+            futureRevenue: Number(comm.futureRevenue),
+        })
+    }, [comm])
     const [bd_input, setbd_input] = useState(0);
 
     const { toast } = useToast();
@@ -160,8 +166,7 @@ export default function EditCommercials(
          * comm data and then comparing the two, or I can just check the values that am
          * actually interested in.
          */
-        console.log(commData, initialCommData)
-        console.log(selectedValues, initialSelectedValues)
+        setpending(true);
         if (_.isEqual(commData, initialCommData) && _.isEqual(selectedValues, initialSelectedValues)) {
             // do nothing, the user made no change
             toast({
@@ -189,7 +194,7 @@ export default function EditCommercials(
                 bidId,
             ).then(() => {
                 setresponse(true)
-            }).catch((error) => {
+            }).catch(() => {
                 toast({
                     title: "Failed",
                     description: "The system encountered an error",
@@ -203,8 +208,8 @@ export default function EditCommercials(
             })
         }
 
-
-    }, [selectedValues, commData, bd_input, toast, router])
+        /* eslint-disable-nextline @typescript-eslint/react-hooks/exhaustive-deps */
+    }, [selectedValues, commData, bd_input, toast, router, bdInput.id, bidId, comm.id, initialCommData, initialSelectedValues])
 
     const getTotal = (filter: string): number => {
         try {

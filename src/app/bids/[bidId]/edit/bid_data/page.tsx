@@ -14,21 +14,27 @@ export default async function Page({
 
     if (!bidId || !Number(bidId)) {
         return (
-            <ErrorPage />
+            <div>
+                Error!!
+            </div>
         )
     }
 
     const bidData = await getBidById(Number(bidId))
 
     if (!bidData || !bidData[0]) {
-        return <ErrorPage />
+        return <div>
+            Error!!
+        </div>
     }
 
     const client = await getClientsById(bidData[0].client)
 
     if (!client || !client[0]) {
         return (
-            <ErrorPage />
+            <div>
+                Error!!
+            </div>
         )
     }
 
@@ -36,7 +42,9 @@ export default async function Page({
 
     if (!clients) {
         return (
-            <ErrorPage />
+            <div>
+                Error!!
+            </div>
         )
     }
     const props = {
@@ -50,19 +58,6 @@ export default async function Page({
             <div className="max-w-[1080px]">
                 <EditBidForm props={props} />
             </div>
-        </div>
-    )
-}
-
-
-/**
- * 
- * @returns 
- */
-export function ErrorPage() {
-    return (
-        <div className="mx-4 dash_container">
-            Error occured.
         </div>
     )
 }

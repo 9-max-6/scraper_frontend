@@ -3,7 +3,8 @@ import Error from "../../_components/error";
 import { Suspense } from "react";
 import Loading from "@/app/bids/_components/loading";
 import EditCompetitiveness from "../../_components/comp-tab";
-export async function AsyncPage({ params }: {
+
+async function AsyncPage({ params }: {
     params: Promise<{
         compId: string,
         bidId: string,

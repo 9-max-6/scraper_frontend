@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BidProfileText } from "@/types/bid-profile-text";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
 import { SelectCapabilities } from "@/db/schema/capabilities";
@@ -27,11 +28,14 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
         clients: Number(props[0].clients),
     });
 
-    const [initialCap, setinitialCap] = useState({
-        competence: Number(props[0].competence),
-        countryExperience: Number(props[0].countryExperience),
-        clients: Number(props[0].clients),
-    })
+    const initialCap = useMemo(() => {
+        return {
+            competence: Number(props[0].competence),
+            countryExperience: Number(props[0].countryExperience),
+            clients: Number(props[0].clients),
+        }
+    }, [props])
+
     const [pending, setpending] = useState(false);
     const [cancelling, setcancelling] = useState(false);
     const [response, setresponse] = useState(null)

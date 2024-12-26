@@ -8,7 +8,7 @@ import EditRisk from "../../_components/risk-tab";
  * @param param0 
  * @returns 
  */
-export async function AsyncPage({ params }: {
+async function AsyncPage({ params }: {
     params: Promise<{
         riskId: string,
         bidId: string,

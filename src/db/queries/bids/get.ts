@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { db } from "../../";
 import { bidsTable } from "../../schema/bids";
 import { ilike, desc, eq } from "drizzle-orm";
