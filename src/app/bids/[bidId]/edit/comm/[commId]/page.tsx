@@ -83,6 +83,7 @@ export async function AsyncPage({ params }: {
                 bdInput={bdInput[0]}
                 budget={budget}
                 duration={duration}
+                bidId={bidIdMutated}
             />
         </div>
     )

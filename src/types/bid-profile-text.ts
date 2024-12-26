@@ -167,7 +167,7 @@ export const BidProfileText = {
     Commercials: [
         {
             name: "Contract Value ($)",
-            tag: 'contract',
+            tag: 'contractValue',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "< $0.5M", value: 1 },
@@ -180,7 +180,7 @@ export const BidProfileText = {
         },
         {
             name: "Expert LoE",
-            tag: 'expert',
+            tag: 'expertLoe',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "<350 days", value: 1 },
@@ -193,7 +193,7 @@ export const BidProfileText = {
         },
         {
             name: "Project duration",
-            tag: 'project',
+            tag: 'projectDuration',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "<6 months", value: 1 },
@@ -206,7 +206,7 @@ export const BidProfileText = {
         },
         {
             name: "BD input ($)",
-            tag: 'bd',
+            tag: 'bdInput',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "<35 days", value: 1 },
@@ -219,7 +219,7 @@ export const BidProfileText = {
         },
         {
             name: "Historical Net Margin (%)",
-            tag: 'historicals',
+            tag: 'historicalNetMargin',
             levels: [
                 { label: "Unknown", value: 0 },
                 { label: "< 15%", value: 1 },
@@ -232,7 +232,7 @@ export const BidProfileText = {
         },
         {
             name: "Future Revenue",
-            tag: 'future',
+            tag: 'futureRevenue',
             levels: [
                 { label: "No idea OR 0% chance of extension or future business", value: 0 },
                 { label: "Rumour from reliable sources of a possible cost extension OR follow up phase", value: 3 },

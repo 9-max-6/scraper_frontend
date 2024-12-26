@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
 import { Button } from "../../../../../components/ui/button";
 import {
@@ -19,17 +19,20 @@ import { SelectBdInput, SelectCommercials } from "@/db/schema/commercials";
 import { Tabs } from "@/components/ui/tabs";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2 } from "lucide-react";
+import { ToastAction } from "@/components/ui/toast";
+import { patchComms } from "../comm/[commId]/actions";
 
 
 const categoriesBuff = BidProfileText.Commercials
 const categories = categoriesBuff.filter((category, index) => !(index === 0 || index === 2 || index === 3))
 
 export default function EditCommercials(
-    { comm, bdInput, budget, duration }: {
+    { comm, bdInput, budget, duration, bidId }: {
         comm: SelectCommercials,
         bdInput: SelectBdInput,
         budget: number,
         duration: number,
+        bidId: number,
     }
 ) {
     // submit states
@@ -83,10 +86,7 @@ export default function EditCommercials(
     })
 
     const [selectedValues, setSelectedValues] = useState({
-        contractValue: Number(comm.contractValue),
         expertLoe: Number(comm.expertLoe),
-        projectDuration: Number(comm.projectDuration),
-        bdInput: Number(comm.bdInput),
         historicalNetMargin: Number(comm.historicalNetMargin),
         futureRevenue: Number(comm.futureRevenue),
     })
@@ -96,11 +96,118 @@ export default function EditCommercials(
         setSelectedValues(updatedValues);
     };
 
-    const [initialCommData, setInitialCommData] = useState(commData);
+    const initialCommData = {
+        budget: budget,
+        duration: duration,
+        bidDirectorCapture: bdInput.bidDirectorCapture,
+        bidDirectorEoi: bdInput.bidDirectorEoi,
+        bidDirectorTender: bdInput.bidDirectorTender,
+        bidManagerCapture: bdInput.bidManagerCapture,
+        bidManagerEoi: bdInput.bidManagerEoi,
+        bidManagerTender: bdInput.bidManagerTender,
+        technicalLeadCapture: bdInput.technicalLeadCapture,
+        technicalLeadEoi: bdInput.technicalLeadEoi,
+        technicalLeadTender: bdInput.technicalLeadTender,
+        recLeadCapture: bdInput.recLeadCapture,
+        recLeadEoi: bdInput.recLeadEoi,
+        recLeadTender: bdInput.recLeadTender,
+        proposalWriteCapture: bdInput.proposalWriteCapture,
+        proposalWriteEoi: bdInput.proposalWriteEoi,
+        proposalWriteTender: bdInput.proposalWriteTender,
+        analystCapture: bdInput.analystCapture,
+        analystEoi: bdInput.analystEoi,
+        analystTender: bdInput.analystTender,
+        reviewerCapture: bdInput.reviewerCapture,
+        reviewerEoi: bdInput.reviewerEoi,
+        reviewerTender: bdInput.reviewerTender,
+        copyWriterCapture: bdInput.copyWriterCapture,
+        copyWriterEoi: bdInput.copyWriterEoi,
+        copyWriterTender: bdInput.copyWriterTender,
+        recruiterAdminCapture: bdInput.recruiterAdminCapture,
+        recruiterAdminEoi: bdInput.recruiterAdminEoi,
+        recruiterAdminTender: bdInput.recruiterAdminTender,
+        commLeadCapture: bdInput.commLeadCapture,
+        commLeadEoi: bdInput.commLeadEoi,
+        commLeadTender: bdInput.commLeadTender,
+        pmCapture: bdInput.pmCapture,
+        pmEoi: bdInput.pmEoi,
+        pmTender: bdInput.pmTender,
+        graphicDesCapture: bdInput.graphicDesCapture,
+        graphicDesEoi: bdInput.graphicDesEoi,
+        graphicDesTender: bdInput.graphicDesTender,
+        translatorCapture: bdInput.translatorCapture,
+        translatorEoi: bdInput.translatorEoi,
+        translatorTender: bdInput.translatorTender,
+    }
+
+    const initialSelectedValues = {
+        contractValue: Number(comm.contractValue),
+        expertLoe: Number(comm.expertLoe),
+        projectDuration: Number(comm.projectDuration),
+        bdInput: Number(comm.bdInput),
+        historicalNetMargin: Number(comm.historicalNetMargin),
+        futureRevenue: Number(comm.futureRevenue),
+    }
     const [bd_input, setbd_input] = useState(0);
 
     const { toast } = useToast();
     const router = useRouter();
+
+    const handleSubmit = useCallback(async () => {
+        /**
+         * this function will be called when the user clicks the save button
+         * now the data is divided into two parts, so first we have to verify that 
+         * the data was in fact changed. 
+         * 
+         * I have the option of calling a function that will auto generate the
+         * comm data and then comparing the two, or I can just check the values that am
+         * actually interested in.
+         */
+        console.log(commData, initialCommData)
+        console.log(selectedValues, initialSelectedValues)
+        if (_.isEqual(commData, initialCommData) && _.isEqual(selectedValues, initialSelectedValues)) {
+            // do nothing, the user made no change
+            toast({
+                title: "No change",
+                description: "Redirecting to the bid page.",
+                action: <ToastAction onClick={() => {
+                    router.forward();
+                }} altText="Cancel">
+                    Keep editing
+                </ToastAction>
+            })
+            router.back()
+        } else {
+            // changes detected
+            /**
+             * we need a function that make the change using the data we give it.
+             * 
+             */
+            await patchComms(
+                commData,
+                selectedValues,
+                bd_input,
+                comm.id,
+                bdInput.id,
+                bidId,
+            ).then(() => {
+                setresponse(true)
+            }).catch((error) => {
+                toast({
+                    title: "Failed",
+                    description: "The system encountered an error",
+                    action: <ToastAction altText="Undo" onClick={() => {
+                        handleSubmit()
+                    }}>
+                        Retry
+                        {/* For now this does nothing */}
+                    </ToastAction>
+                })
+            })
+        }
+
+
+    }, [selectedValues, commData, initialCommData, initialSelectedValues, bd_input, comm.id, bdInput.id, bidId, toast, router, patchComms])
 
     const getTotal = (filter: string): number => {
         try {
@@ -143,6 +250,22 @@ export default function EditCommercials(
 
     }, [commData])
 
+    useEffect(() => {
+        if (response) {
+            toast({
+                title: "Success",
+                description: "Changed uploaded successfully",
+                action: <ToastAction altText="Undo">
+                    Undo
+                    {/* For now this does nothing */}
+                </ToastAction>
+            })
+
+            // refetching bid page.
+            router.refresh();
+            router.back()
+        }
+    }, [response, handleSubmit, router, toast])
 
     return (
         <div className="flex flex-col gap-2">
@@ -152,82 +275,83 @@ export default function EditCommercials(
                     <TabsTrigger value="bdInput">BD Input</TabsTrigger>
                     <TabsTrigger value="other">Other metrics</TabsTrigger>
                 </TabsList>
-                <TabsContent value="overview"><Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Category</TableHead>
-                            <TableHead>Amount</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell className="font-medium">Budget</TableCell>
-                            <TableCell>
-                                <Input
-                                    placeholder={`${commData.budget}`}
-                                    type='number'
-                                    onKeyDown={(e) => {
-                                        handleKeyPress(e)
-                                    }}
-                                    onChange={(e) => handleInputChange(e, 'budget')}
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-semibold">Less COGS(70% of budget)</TableCell>
-                            <TableCell>
-                                {(commData.budget) * 0.7}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-semibold">Gross margin</TableCell>
-                            <TableCell>
-                                {(commData.budget) * 0.3}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-semibold">Less PM cost(10% of fees)</TableCell>
-                            <TableCell>
-                                {(commData.budget) * 0.07}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-medium">Less BD cost</TableCell>
-                            <TableCell>
-                                {bd_input * 250}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-medium">Net margin</TableCell>
-                            <TableCell>
-                                {((commData.budget) * 0.3) - (bd_input * 250)}
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-medium">Project duration in months</TableCell>
-                            <TableCell>
+                <TabsContent value="overview">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Category</TableHead>
+                                <TableHead>Amount</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell className="font-medium">Budget</TableCell>
+                                <TableCell>
+                                    <Input
+                                        placeholder={`${commData.budget}`}
+                                        type='number'
+                                        onKeyDown={(e) => {
+                                            handleKeyPress(e)
+                                        }}
+                                        onChange={(e) => handleInputChange(e, 'budget')}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-semibold">Less COGS(70% of budget)</TableCell>
+                                <TableCell>
+                                    {(commData.budget) * 0.7}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-semibold">Gross margin</TableCell>
+                                <TableCell>
+                                    {(commData.budget) * 0.3}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-semibold">Less PM cost(10% of fees)</TableCell>
+                                <TableCell>
+                                    {(commData.budget) * 0.07}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-medium">Less BD cost</TableCell>
+                                <TableCell>
+                                    {bd_input * 250}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-medium">Net margin</TableCell>
+                                <TableCell>
+                                    {((commData.budget) * 0.3) - (bd_input * 250)}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-medium">Project duration in months</TableCell>
+                                <TableCell>
 
-                                <Input
-                                    inputMode='numeric'
-                                    onKeyDown={(e) => {
-                                        handleKeyPress(e)
-                                    }}
+                                    <Input
+                                        inputMode='numeric'
+                                        onKeyDown={(e) => {
+                                            handleKeyPress(e)
+                                        }}
 
-                                    placeholder={`${commData.duration}`
+                                        placeholder={`${commData.duration}`
 
-                                    }
-                                    onChange={(e) => handleInputChange(e, 'duration')}
-                                />
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell className="font-medium">Net margin per month</TableCell>
-                            <TableCell>
-                                {(((commData.budget) * 0.3) - (bd_input * 250)) / (commData.duration || 1)}
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
+                                        }
+                                        onChange={(e) => handleInputChange(e, 'duration')}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell className="font-medium">Net margin per month</TableCell>
+                                <TableCell>
+                                    {(((commData.budget) * 0.3) - (bd_input * 250)) / (commData.duration || 1)}
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                     <div className="w-full flex mb-12">
                         <div className="ml-auto flex gap-2">
                             <Button variant="secondary" disabled={cancelling} onClick={() => {
@@ -247,7 +371,7 @@ export default function EditCommercials(
                             </Button>
                             <Button disabled={pending}
                                 onClick={() => {
-                                    // handleSubmit()
+                                    handleSubmit()
                                 }}>
                                 {pending ? (
                                     <>

@@ -9,6 +9,7 @@ import { db } from "@/db";
 import { eq, desc } from "drizzle-orm";
 import { getScoresByBidId } from "./get";
 import { revalidateTag } from "next/cache";
+import { InsertBid } from "@/db/schema/bids";
 
 
 type GenericInsert = Partial<InsertCapabilities> |
@@ -215,4 +216,84 @@ export async function updateScores(
 
     }
 
+}
+
+export async function patchCommData(
+    bdInputObj: {
+        data: {
+            bidDirectorCapture: number;
+            bidDirectorEoi: number;
+            bidDirectorTender: number;
+            bidManagerCapture: number;
+            bidManagerEoi: number;
+            bidManagerTender: number;
+            technicalLeadCapture: number;
+            technicalLeadEoi: number;
+            technicalLeadTender: number;
+            recLeadCapture: number;
+            recLeadEoi: number;
+            recLeadTender: number;
+            proposalWriteCapture: number;
+            proposalWriteEoi: number;
+            proposalWriteTender: number;
+            analystCapture: number;
+            analystEoi: number;
+            analystTender: number;
+            reviewerCapture: number;
+            reviewerEoi: number;
+            reviewerTender: number;
+            copyWriterCapture: number;
+            copyWriterEoi: number;
+            copyWriterTender: number;
+            recruiterAdminCapture: number;
+            recruiterAdminEoi: number;
+            recruiterAdminTender: number;
+            commLeadCapture: number;
+            commLeadEoi: number;
+            commLeadTender: number;
+            pmCapture: number;
+            pmEoi: number;
+            pmTender: number;
+            graphicDesCapture: number;
+            graphicDesEoi: number;
+            graphicDesTender: number;
+            translatorCapture: number;
+            translatorEoi: number;
+            translatorTender: number;
+        },
+        id: number,
+    },
+    commDataObj: {
+        data: {
+            contractValue: number;
+            expertLoe: number;
+            projectDuration: number;
+            bdInput: number;
+            historicalNetMargin: number;
+            futureRevenue: number;
+        },
+        id: number
+    },
+    partialBid: {
+        data: {
+            budget: number;
+            duration: number;
+        },
+        id: number;
+    },
+    scoreData: {
+        score: number,
+        id: number,
+    }
+): Promise<boolean | undefined> {
+    try {
+        // transaction
+        console.log("scoreData", scoreData)
+        console.log("partialBid", partialBid)
+        console.log("bdInputObj", bdInputObj)
+        console.log("commDataObj", commDataObj)
+        return true;
+    } catch (error: any) {
+        console.error("Error patching comms", error.toString())
+    }
 }
