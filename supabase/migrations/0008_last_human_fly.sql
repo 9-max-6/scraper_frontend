@@ -1,0 +1,1 @@
+ALTER TABLE "bids" ALTER COLUMN "metrics" SET NOT NULL;

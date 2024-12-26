@@ -9,7 +9,7 @@ import { db } from "@/db";
 import { eq, desc } from "drizzle-orm";
 import { getScoresByBidId } from "./get";
 import { revalidateTag } from "next/cache";
-import { InsertBid } from "@/db/schema/bids";
+import { bidsTable, InsertBid } from "@/db/schema/bids";
 
 
 type GenericInsert = Partial<InsertCapabilities> |
@@ -59,7 +59,7 @@ export async function patchCapById(id: number, data: Partial<InsertCapabilities>
                 // adding default values
                 const result = {
                     bid: bid,
-                    overallScore: 0,
+                    overallScore: score,
                     riskScore: 0,
                     commercialsScore: 0,
                     competitivenessScore: 0,
@@ -68,10 +68,10 @@ export async function patchCapById(id: number, data: Partial<InsertCapabilities>
                 await trx.insert(scoresTable).values(result)
             } else {
                 const { id, createdAt, ...withoutId } = currentScore[0]
-
                 const scoreData = {
                     ...withoutId,
-                    capabilitiesScore: score
+                    overallScore: score + withoutId.commercialsScore + withoutId.competitivenessScore + withoutId.riskScore,
+                    capabilitiesScore: score,
                 }
                 await trx.insert(scoresTable).values(scoreData)
             }
@@ -112,7 +112,7 @@ export async function patchCompById(id: number, data: Partial<InsertCompetitiven
                 // adding default values
                 const result = {
                     bid: bid,
-                    overallScore: 0,
+                    overallScore: score,
                     riskScore: 0,
                     commercialsScore: 0,
                     competitivenessScore: score,
@@ -124,6 +124,7 @@ export async function patchCompById(id: number, data: Partial<InsertCompetitiven
 
                 const scoreData = {
                     ...withoutId,
+                    overallScore: withoutId.capabilitiesScore + withoutId.commercialsScore + score + withoutId.riskScore,
                     competitivenessScore: score
                 }
                 await trx.insert(scoresTable).values(scoreData)
@@ -151,9 +152,7 @@ export async function patchCompById(id: number, data: Partial<InsertCompetitiven
 export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: number, score: number) {
     try {
         await db.transaction(async (trx) => {
-            // patch capabilities.
             await trx.update(riskTable).set(data).where(eq(riskTable.id, id))
-            // updating scores for capabilties for this id.
             const currentScore = await trx
                 .select()
                 .from(scoresTable)
@@ -164,7 +163,7 @@ export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: 
                 // adding default values
                 const result = {
                     bid: bid,
-                    overallScore: 0,
+                    overallScore: score,
                     riskScore: score,
                     commercialsScore: 0,
                     competitivenessScore: 0,
@@ -176,6 +175,7 @@ export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: 
 
                 const scoreData = {
                     ...withoutId,
+                    overallScore: withoutId.capabilitiesScore + withoutId.commercialsScore + withoutId.competitivenessScore + score,
                     riskScore: score
                 }
                 await trx.insert(scoresTable).values(scoreData)
@@ -287,12 +287,63 @@ export async function patchCommData(
     }
 ): Promise<boolean | undefined> {
     try {
-        // transaction
-        console.log("scoreData", scoreData)
-        console.log("partialBid", partialBid)
-        console.log("bdInputObj", bdInputObj)
-        console.log("commDataObj", commDataObj)
+
+        const updatedAt = new Date();
+
+        await db.transaction(async (trx) => {
+            // update bidInputTable
+            await trx.update(bidInputTable).set({
+                ...bdInputObj.data,
+                updatedAt: updatedAt
+            }).where(eq(bidInputTable.id, bdInputObj.id))
+
+            // update bidData
+            await trx.update(bidsTable).set({
+                ...partialBid.data,
+                updatedAt: updatedAt
+            }).where(eq(bidsTable.id, partialBid.id))
+
+            // updated commData
+            await trx.update(commercialsTable).set({
+                ...commDataObj.data,
+                updatedAt
+            }).where(eq(commercialsTable.id, commDataObj.id))
+
+            // updated Scores
+            const currentScore = await trx
+                .select()
+                .from(scoresTable)
+                .where(eq(scoresTable.bid, partialBid.id))
+                .orderBy(desc(scoresTable.createdAt))
+
+            if (currentScore.length === 0) {
+                // adding default values
+                const result = {
+                    bid: partialBid.id,
+                    overallScore: scoreData.score,
+                    riskScore: 0,
+                    competitivenessScore: 0,
+                    commercialsScore: scoreData.score,
+                    capabilitiesScore: 0,
+                }
+                await trx.insert(scoresTable).values(result)
+            } else {
+                const { id, createdAt, ...withoutId } = currentScore[0]
+
+                const mutatedScoreData = {
+                    ...withoutId,
+                    overallScore: withoutId.capabilitiesScore + withoutId.commercialsScore + withoutId.competitivenessScore + withoutId.riskScore,
+                    commercialsScore: scoreData.score
+                }
+                await trx.insert(scoresTable).values(mutatedScoreData)
+            }
+        })
+        revalidateTag("single-bid")
+        revalidateTag("commercials")
+        revalidateTag("scores")
+        revalidateTag("bd_input")
         return true;
+
     } catch (error: any) {
         console.error("Error patching comms", error.toString())
     }

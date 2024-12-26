@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
     Card,
@@ -18,61 +18,71 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { Skeleton } from "@/components/ui/skeleton"
-const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-]
+import { SelectScore } from "@/db/schema/scores"
+import { Thresholds } from "./bid-profile-text"
 
 const chartConfig = {
-    desktop: {
-        label: "Desktop",
+    threshold: {
+        label: "Threshold",
         color: "hsl(var(--chart-1))",
     },
-    mobile: {
-        label: "Mobile",
+    score: {
+        label: "Score",
         color: "hsl(var(--chart-2))",
     },
 } satisfies ChartConfig
 
+function getThreshold(phase: string, metric: string) {
+    const entry = Thresholds[phase as keyof typeof Thresholds]
+    return entry[metric as keyof typeof entry]
+}
 
-export default function OverviewGraph() {
+export default function OverviewGraph(
+    { props, phase }:
+        {
+            props: Partial<SelectScore>,
+            phase: string
+        }) {
+    const chartData = [
+        { metric: "Capability", threshold: getThreshold(phase, "capabilities"), score: props.capabilitiesScore },
+        { metric: "Competitiveness", threshold: getThreshold(phase, "competitiveness"), score: props.competitivenessScore },
+        { metric: "Commercials", threshold: getThreshold(phase, "commercials"), score: props.commercialsScore },
+        { metric: "Risk", threshold: getThreshold(phase, "risk"), score: props.riskScore },
+    ]
 
     return (
-        <Card className="shadow-none border-none">
+        <Card className="">
             <CardHeader>
-                <CardTitle>Bar Chart - Multiple</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardTitle>Overview</CardTitle>
+                <CardDescription>Showing latest comparison of metrics against phase-dependent thresholds</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-4">
-                <div className="cols-span-1">
-
-                </div>
-                <ChartContainer className="col-span-2" config={chartConfig}>
+                <ChartContainer className="col-span-3 max-h-[500px]" config={chartConfig}>
                     <BarChart accessibilityLayer data={chartData}>
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="metric"
                             tickLine={false}
                             tickMargin={10}
                             axisLine={false}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            tickFormatter={(value) => value}
                         />
+                        <YAxis />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="dashed" />}
                         />
-                        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                        <Bar dataKey="threshold" fill="var(--color-threshold)" radius={4} />
+                        <Bar dataKey="score" fill="var(--color-score)" radius={4} />
                     </BarChart>
                 </ChartContainer>
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                    Bid has an overall score of <span className="text-bold">{props.overallScore}</span><TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="leading-none text-muted-foreground">
-                    Showing total visitors for the last 6 months
+                    Showing total performance across the four metrics
                 </div>
             </CardFooter>
         </Card>

@@ -37,6 +37,7 @@ export default async function BidData({ score, bidData }: {
     const clientData = await getClientsById(bidData.client)
 
     if (!clientData || !clientData[0] || !bidData.deadline || !bidData.status) {
+        console.log(clientData, bidData.deadline, bidData.status)
         return (
             <div>
                 Not my backend bruv!!

@@ -136,9 +136,9 @@ export async function patchComms(
 
     // logic for the actual score.
     const getScore = () => {
-        const scores = Object.keys(selectedValues).map((key, index) => {
+        const scores = Object.keys(reformattedCommData).map((key, index) => {
             const category = categories[index];
-            const level = category.levels.find((lvl) => lvl.value === selectedValues[key as keyof typeof selectedValues]);
+            const level = category.levels.find((lvl) => lvl.value === reformattedCommData[key as keyof typeof reformattedCommData]);
             return level ? level.value * category.weight : 0;
         });
         const overallScore = scores.reduce((acc, score) => acc + score, 0);

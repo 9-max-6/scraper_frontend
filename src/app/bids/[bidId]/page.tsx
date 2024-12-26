@@ -1,4 +1,3 @@
-import OverviewGraph from "@/app/_components/overview-graph";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBidById } from "@/db/queries/bids/get";
 import BidData from "./_components/bid-data";
@@ -8,10 +7,13 @@ import Risk from "./_components/risk";
 import { Suspense } from "react";
 import { Fallback } from "./_components/fallback";
 import Commercials from "./_components/commercials";
-import { OverviewGraphFallback } from "./_components/overview-graph";
+import OverviewGraph, { OverviewGraphFallback } from "./_components/overview-graph";
 import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
 import { ShieldAlertIcon } from "lucide-react";
 import Loading from "../_components/loading";
+import HistoryGraph from "./_components/history-graph";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import OverviewGraphDetailed from "./_components/overview-detailed";
 
 /**
  * web vitals - before changing the structure of the page to
@@ -107,9 +109,40 @@ export async function AsyncPage({ params }: {
                     />
 
                     {/* overview */}
-                    <Suspense fallback={<OverviewGraphFallback />}>
-                        <OverviewGraph />
-                    </Suspense>
+                    <Tabs defaultValue="overview">
+                        <TabsList className="ml-auto grid w-[300px] grid-cols-3">
+                            <TabsTrigger value="overview">
+                                Overview
+                            </TabsTrigger>
+                            <TabsTrigger value="history_overview">
+                                History
+                            </TabsTrigger>
+                            <TabsTrigger value="history_detail">
+                                Detailed
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="overview">
+                            <Suspense fallback={<OverviewGraphFallback />}>
+                                <OverviewGraph
+                                    props={scoresArray[0]}
+                                    phase={bidData.phase}
+                                />
+                            </Suspense>
+                        </TabsContent>
+                        <TabsContent value="history_detail">
+                            <Suspense fallback={<OverviewGraphFallback />}>
+                                <HistoryGraph props={scoresArray} />
+                            </Suspense>
+                        </TabsContent>
+                        <TabsContent value="history_overview">
+                            <Suspense fallback={<OverviewGraphFallback />}>
+                                <OverviewGraphDetailed props={scoresArray} />
+                            </Suspense>
+                        </TabsContent>
+                    </Tabs>
+
+
+
 
                     {/* capabilities */}
                     <Suspense fallback={<Fallback />}>

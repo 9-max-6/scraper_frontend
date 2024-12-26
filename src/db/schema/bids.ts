@@ -26,7 +26,7 @@ export const bidsTable = t.pgTable("bids", {
     status: statusEnum().default("undec"),
 
     // metrics - can be null
-    metrics: t.integer('metrics').references(() => metricsTable.id).unique(),
+    metrics: t.integer('metrics').references(() => metricsTable.id).unique().notNull(),
 });
 
 

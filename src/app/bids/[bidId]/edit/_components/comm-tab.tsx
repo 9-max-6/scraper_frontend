@@ -141,10 +141,7 @@ export default function EditCommercials(
     }
 
     const initialSelectedValues = {
-        contractValue: Number(comm.contractValue),
         expertLoe: Number(comm.expertLoe),
-        projectDuration: Number(comm.projectDuration),
-        bdInput: Number(comm.bdInput),
         historicalNetMargin: Number(comm.historicalNetMargin),
         futureRevenue: Number(comm.futureRevenue),
     }
@@ -207,7 +204,7 @@ export default function EditCommercials(
         }
 
 
-    }, [selectedValues, commData, initialCommData, initialSelectedValues, bd_input, comm.id, bdInput.id, bidId, toast, router, patchComms])
+    }, [selectedValues, commData, bd_input, toast, router])
 
     const getTotal = (filter: string): number => {
         try {

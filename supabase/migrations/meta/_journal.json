@@ -57,6 +57,13 @@
       "when": 1735050221344,
       "tag": "0007_minor_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1735216257768,
+      "tag": "0008_last_human_fly",
+      "breakpoints": true
     }
   ]
 }
