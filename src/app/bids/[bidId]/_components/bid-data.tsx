@@ -112,7 +112,7 @@ export default async function BidData({ score, bidData }: {
                             "text-green-800 bg-text-green-400 hover:text-green-800": diff > 0
                         })}
                     >
-                        <Clock /> {formatDate(bidData.deadline, "do, LLLL, yyyy")}
+                        <Clock /> {formatDate(bidData.deadline, "do LLLL, yyyy")}
                     </Button>
                 </div>
             </CardContent>
