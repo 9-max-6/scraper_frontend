@@ -43,19 +43,31 @@ async function AsyncPage({ params }: {
     const bid = await getBidById(id);
 
     if (!bid) {
-        throw new Error("Bid not found");
+        return (
+            <div className="mx-4 dash_container">
+                "Bid not found"
+            </div>
+        )
     }
     const bidData = bid[0]
 
     if (!bidData.metrics) {
-        throw new Error("Metrics not found");
+        return (
+            <div className="mx-4 dash_container">
+                "Metrics not found"
+            </div>
+        )
     }
 
     // getting metrics
     const metrics = await getMetricsById(bidData.metrics)
 
     if (!metrics) {
-        throw new Error("Metrics not found");
+        return (
+            <div className="mx-4 dash_container">
+                "Bid not found"
+            </div>
+        )
     }
     // getting scores
     const scoresArray = await getScoresByBidId(id)

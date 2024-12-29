@@ -13,6 +13,11 @@ export default function SearchBar() {
     const router = useRouter();
     const pathname = usePathname();
 
+    /**
+     * choosing not to use the hook below
+     * but then leaving it there incase 
+     * I need to scale.
+     */
     const handleSearch = useDebouncedCallback((term) => {
         const params = new URLSearchParams();
         if (term) {
@@ -21,7 +26,7 @@ export default function SearchBar() {
             params.delete('title');
         }
         router.push(`${pathname}?${params.toString()}`);
-    }, 100);
+    });
 
     return (
         <div className="w-full grid grid-rows-12 relative h-full">
