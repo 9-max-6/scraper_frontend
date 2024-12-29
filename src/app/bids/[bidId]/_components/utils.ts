@@ -14,3 +14,12 @@ export function getTime(updatedAt: Date | null, createdAt: Date) {
 
     return `Last updated ${diff} days ago`
 }
+
+
+export function getDeadline(deadline: Date) {
+    if (deadline) {
+        const diff = differenceInCalendarDays(deadline, new Date());
+        return diff;
+    }
+
+}

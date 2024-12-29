@@ -2,6 +2,7 @@ import { getBidById } from "@/db/queries/bids/get"
 import { getClients, getClientsById } from "@/db/queries/donors/get"
 import EditBidForm from "../_components/edit-bid-form"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import GoNoGO from "../_components/go-no-go"
 
 export default async function Page({
     params
@@ -60,15 +61,15 @@ export default async function Page({
             <Tabs defaultValue="general">
                 <TabsList className="ml-auto">
                     <TabsTrigger value="general">
-                        General
+                        Go-No-Go
                     </TabsTrigger>
                     <TabsTrigger value="bid_data">
-                        Bid Data
+                        Edit bid data
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <div className="max-w-[1080px]">
-                        General
+                        <GoNoGO />
                     </div>
                 </TabsContent>
                 <TabsContent value="bid_data">
