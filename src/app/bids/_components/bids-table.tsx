@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns = [
     {
@@ -193,10 +194,11 @@ export function BidsTableFallback() {
 
                 </TableBody>
             </Table>
-            <div className="h-[500px]">
-                <div className="loader h-12 w-12">
-
-                </div>
+            <div className="h-[500px] flex flex-col gap-2 w-full">
+                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-5 w-full" />
             </div>
         </div>
 
