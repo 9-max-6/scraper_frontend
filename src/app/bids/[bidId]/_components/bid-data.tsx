@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getClientsById } from "@/db/queries/donors/get";
-import { Clock, DollarSign, HeartHandshake, User2 } from "lucide-react";
+import { Clock, DollarSign, HeartHandshake, StarHalf, User2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import clsx from "clsx";
 import { getTime } from "./utils";
@@ -47,20 +47,19 @@ export default async function BidData({ score, bidData }: {
     return (
         <Card>
             <CardContent className="pt-4">
-                <div className="flex flex-start items-start flex-col">
-                    {score}
-                </div>
 
                 <div>
 
                     <div className="my-2 flex gap-2 items-center text-sm">
 
                         <Button variant="ghost" className="hover:cursor-default pl-0 hover:bg-inherit">
-                            <HeartHandshake color="#a51d2d" />{" "}{clientData[0].name}
+                            <HeartHandshake size={32} color="#a51d2d" />{" "}{clientData[0].name}
                         </Button>
                         <Button variant="ghost" className="hover:cursor-default hover:bg-inherit">
-                            <DollarSign /> {bidData.budget}
+                            <DollarSign size={32} /> {bidData.budget}
                         </Button>
+
+
 
                         <Badge variant="outline" className={
                             clsx(
@@ -86,7 +85,12 @@ export default async function BidData({ score, bidData }: {
                         }>
                             {bidData.status}
                         </Badge>
-                        {/* urgent */}
+
+                        {/* Score */}
+                        <Button variant="ghost" className="ml-auto hover:cursor-default hover:bg-inherit">
+                            <StarHalf size={32} />{score}
+                        </Button>
+
 
                     </div>
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import { Frown, TrendingUp } from "lucide-react"
 import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
 
 import {
@@ -36,20 +36,24 @@ export default function OverviewGraphDetailed({ props }: { props: Array<Partial<
 
     if (props.length < 5) {
         return (
-            <Card>
+            <Card className="shadow-none border-none">
                 <CardHeader>
-                    <CardTitle>
+                    {/* <CardTitle>
                         Detailed overview
-                    </CardTitle>
-                    <CardDescription>
+                    </CardTitle> */}
+                    {/* <CardDescription>
                         Showing trend for the last five edits
-                    </CardDescription>
+                    </CardDescription> */}
                 </CardHeader>
                 <CardContent className="flex justify-center items-center">
-                    <CardDescription>
+                    <CardDescription className="flex flex-col items-center gap-2">
                         Not enough edits to view this tab
+                        <Frown size={32} strokeWidth={1} />
                     </CardDescription>
                 </CardContent>
+                <CardHeader>
+                    {/* just for spacing */}
+                </CardHeader>
             </Card>
         )
     }
