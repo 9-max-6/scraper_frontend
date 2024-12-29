@@ -124,8 +124,7 @@ export default function NewBidForm({ props }: { props: { clients: Array<SelectCl
         <>
             {redirecting ? (
                 <div className="flex flex-col gap-2 items-center justify-center h-full w-full">
-                    Redirecting...
-                    <Loader2 className="text-blue-500 animate-spin" size={32} />
+                    <div className="loader"></div>
                 </div>
             ) : (
                 <Form {...form}>

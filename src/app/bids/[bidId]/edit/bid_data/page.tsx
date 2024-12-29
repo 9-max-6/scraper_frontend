@@ -1,6 +1,7 @@
 import { getBidById } from "@/db/queries/bids/get"
 import { getClients, getClientsById } from "@/db/queries/donors/get"
 import EditBidForm from "../_components/edit-bid-form"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default async function Page({
     params
@@ -55,9 +56,28 @@ export default async function Page({
 
     return (
         <div className="dash_container mx-4">
-            <div className="max-w-[1080px]">
-                <EditBidForm props={props} />
-            </div>
+
+            <Tabs defaultValue="general">
+                <TabsList className="ml-auto">
+                    <TabsTrigger value="general">
+                        General
+                    </TabsTrigger>
+                    <TabsTrigger value="bid_data">
+                        Bid Data
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="general">
+                    <div className="max-w-[1080px]">
+                        General
+                    </div>
+                </TabsContent>
+                <TabsContent value="bid_data">
+                    <div className="max-w-[1080px]">
+                        <EditBidForm props={props} />
+                    </div>
+                </TabsContent>
+            </Tabs>
+
         </div>
     )
 }

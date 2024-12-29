@@ -25,14 +25,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { format } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import { ToastAction } from "@/components/ui/toast";
 
 /**
  * server imports
  */
 import { SelectClient } from "@/db/schema/donors";
-import { ToastAction } from "@/components/ui/toast";
-// import { patchBidById } from "../actions";
+import { patchBidDataById } from "../bid_data/actions"
 import { SelectBid } from "@/db/schema/bids";
+import _ from "lodash";
+import { reformatBid } from "@/lib/bid-service";
 
 /**
  * type import
@@ -52,6 +54,16 @@ export const FormSchema = z.object({
 });
 
 const countryNames = ["Kenya", "Uganda", "Tanzania"];
+
+const getPhasetext = (phase: string) => {
+    if (phase === "eoi") {
+        return "Expression of Interest";
+    } else if (phase === "capture") {
+        return "Capture";
+    } else {
+        return "Tender stage";
+    }
+}
 
 /**
  * 
@@ -76,32 +88,65 @@ export default function EditBidForm({ props }: {
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         setpending(true);
-        // const result = await patchBidById(1, data)
-        console.log(data)
-        const result = 81;
-        if (!result) {
-            setpending(false);
-            toast({
-                title: "Error",
-                variant: "destructive",
-                description: "Failed to created bid",
-                action:
-                    <ToastAction altText="retry" onClick={() => { onSubmit(data) }}>
-                        Retry
-                    </ToastAction>
-            })
-        } else {
-            setpending(false);
-            toast({
-                title: "Success",
-                description: "Successfully uploaded changes",
 
+        // reformatting bid
+        const reformattedBid = reformatBid(data)
+        const { id,
+            deletedAt,
+            updatedAt,
+            createdAt,
+            budget,
+            status,
+            metrics,
+            urgent,
+            duration,
+            ...initialBid
+        } = props.bidData[0];
+
+        if (!_.isEqual(reformattedBid, initialBid)) {
+
+            const result = await patchBidDataById(reformattedBid, props.bidData[0].id);
+            if (!result) {
+                setpending(false);
+                toast({
+                    title: "Error",
+                    variant: "destructive",
+                    description: "Failed to created bid",
+                    action:
+                        <ToastAction altText="retry" onClick={() => { onSubmit(data) }}>
+                            Retry
+                        </ToastAction>
+                })
+            } else {
+                setpending(false);
+
+                toast({
+                    title: "Success",
+                    description: "Successfully uploaded changes",
+                    action:
+                        <ToastAction altText="undo" onClick={() => { console.log("undo") }}>
+                            Undo
+                        </ToastAction>
+                }
+                )
+                // redirect to the bid page
+                router.refresh();
+                setredirecting(true);
+                router.push(`/bids/${id}`);
             }
-            )
-            // redirect to the bid page
-            setredirecting(true);
-            router.push(`/bids/${result}`);
+        } else {
+            toast({
+                title: "No change",
+                description: "Redirecting to the bid page.",
+                action: <ToastAction onClick={() => {
+                    router.forward();
+                }} altText="Cancel">
+                    Keep editing
+                </ToastAction>
+            })
+            router.back()
         }
+
     }
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -109,13 +154,14 @@ export default function EditBidForm({ props }: {
         defaultValues: {
             title: props.bidData[0].title,
             des: props.bidData[0].des,
-            phase: props.bidData[0].phase ? props.bidData[0].phase : "",
+            phase: getPhasetext(props.bidData[0].phase),
             author: props.bidData[0].author,
             client: `${props.bidData[0].client}`,
-            deadline: props.bidData[0].deadline ? format(props.bidData[0].deadline, "yyyy-mm-dd") : format(new Date(), "yyyy-mm-dd"),
+            deadline: format(new Date(props.bidData[0].deadline), "yyyy-MM-dd"),
             biddingEntity: props.bidData[0].biddingEntity,
             technicalUnit: props.bidData[0].technicalUnit,
             consortiumRole: props.bidData[0].consortiumRole,
+            country: props.bidData[0].country,
         }
     });
 
@@ -331,6 +377,7 @@ export default function EditBidForm({ props }: {
                                                     onChange={(e) => {
                                                         field.onChange(e);
                                                     }}
+                                                    className="h-32 resize-y"
                                                 />
 
 

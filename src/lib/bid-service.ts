@@ -22,8 +22,10 @@ export function reformatBid(data: any): InsertBid | undefined {
 				return "tender";
 			}
 		}
+
 		const reformattedData = {
 			...data,
+
 			client: client,
 			deadline: deadline,
 			phase: phase(),
