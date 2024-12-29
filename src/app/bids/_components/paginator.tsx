@@ -5,10 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 
-export default function Pagination({ page, totalItems, totalPages }: {
+export default function Pagination({ page, totalPages }: {
     page: number | undefined,
     totalPages: number | undefined,
-    totalItems: number | undefined,
 }) {
     const router = useRouter();
     const params = useSearchParams();
@@ -26,8 +25,7 @@ export default function Pagination({ page, totalItems, totalPages }: {
             }}>
                 prev <ChevronLeft size={72} />
             </Button>
-            <span className="text-gray-400 text-sm">{page} of {totalPages}</span>
-            <span className="text-gray-400 text-sm">{10} of {totalItems}</span>
+            <span className="text-gray-400 text-sm">Showing results for page {page} of {totalPages}</span>
             <Button disabled={page === totalPages} onClick={() => {
                 const newparams = new URLSearchParams(params);
                 if (!page) return;

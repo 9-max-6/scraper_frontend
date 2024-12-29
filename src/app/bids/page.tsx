@@ -27,7 +27,6 @@ async function AsyncPage(props: {
     const paginatorProps = {
         page: bids?.currentPage,
         totalPages: bids?.totalPages,
-        totalItems: bids?.totalItems,
 
     }
     return (
