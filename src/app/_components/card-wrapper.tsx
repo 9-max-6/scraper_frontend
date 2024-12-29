@@ -1,7 +1,7 @@
 import BidRevenue from "./bid-revenue"
 import BidCount from "./bid-count"
 import OppCount from "./opp-count"
-import OtherStat from "./other-stat"
+import ClientCount from "./client-count"
 
 export default async function CardWrapper() {
     return (
@@ -9,7 +9,7 @@ export default async function CardWrapper() {
             <BidRevenue />
             <BidCount />
             <OppCount />
-            <OtherStat />
+            <ClientCount />
         </div>
     )
 }

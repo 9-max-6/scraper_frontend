@@ -1,7 +1,17 @@
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { getClientCount } from "@/db/queries/stats/revenue";
 
-export default async function OppCount() {
+export default async function ClientCount() {
 
+    const clientCount = await getClientCount();
+
+    if (!clientCount) {
+        return (
+            <div>
+                Error!
+            </div>
+        )
+    }
 
     return (
         < Card className="w-full shadow-none" >
@@ -12,7 +22,7 @@ export default async function OppCount() {
             </CardHeader>
             <CardContent>
                 <h3 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                    1000
+                    {clientCount}
                 </h3>
             </CardContent>
         </Card>
