@@ -19,7 +19,7 @@ export default async function BidRevenue() {
      */
 
     return (
-        <Card className="w-full shadow-none max-h-full box-border" >
+        <Card className="w-full max-h-full box-border" >
             <CardHeader>
                 <CardDescription>
                     Total Revenue

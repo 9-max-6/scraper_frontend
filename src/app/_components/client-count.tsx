@@ -14,10 +14,10 @@ export default async function ClientCount() {
     }
 
     return (
-        < Card className="w-full shadow-none" >
+        < Card className="w-full" >
             <CardHeader>
                 <CardDescription>
-                    Total opportunities
+                    Total clients
                 </CardDescription>
             </CardHeader>
             <CardContent>

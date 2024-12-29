@@ -6,7 +6,7 @@ export default async function BidCount() {
     const bidcount = await getBidCount()
 
     return (
-        < Card className="shadow-none w-full" >
+        < Card className="w-full" >
             <CardHeader>
                 <CardDescription>
                     Total bid count

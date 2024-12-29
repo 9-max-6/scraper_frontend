@@ -3,8 +3,9 @@ import { bidsTable } from "@/db/schema/bids";
 import { clientsTable } from "@/db/schema/donors";
 import { eq, sql } from "drizzle-orm";
 import { phasesEnum } from "@/db/schema/bids";
+import { unstable_cache } from "next/cache";
 
-export async function getBidRevenue() {
+export const getBidRevenue = unstable_cache(async () => {
     try {
 
         const revenue = await db.select({ budget: bidsTable.budget }).from(bidsTable)
@@ -21,37 +22,99 @@ export async function getBidRevenue() {
 
 
 
-}
+},
+    ['revenue'],
+    {
+        tags: ['revenue'],
+    })
 
-export async function getBidCount() {
+export const getBidCount = unstable_cache(async () => {
     try {
         const bidCount = await db.$count(bidsTable)
         return bidCount;
     } catch (error) {
         console.log(error.toString())
     }
-}
+},
+    ['bid_count'],
+    {
+        tags: ['bid_count']
+    },
 
-export async function getClientCount() {
+)
+export const getClientCount = unstable_cache(async () => {
     try {
         const bidCount = await db.$count(clientsTable)
         return bidCount;
     } catch (error) {
         console.log(error.toString())
     }
-}
+},
+    ['client_count'],
+    {
+        tags: ['client_count']
+    },
+)
 
-
-export async function getBidCountPerPhase(phase: "capture" | "eoi" | "tender") {
+export const getBidCountCapture = unstable_cache(async () => {
     try {
         const result = await db
             .select({
                 count: sql`COUNT(*)`.as("count"),
             })
             .from(bidsTable)
-            .where(eq(bidsTable.phase, phase as keyof typeof phasesEnum));
+            .where(eq(bidsTable.phase, "capture"));
+
+        return result;
 
     } catch (error) {
         console.log(error.toString())
     }
-}
+},
+    ['count_capture'],
+    {
+        tags: ['count_capture']
+    },
+)
+
+export const getBidCountEOI = unstable_cache(async () => {
+    try {
+        const result = await db
+            .select({
+                count: sql`COUNT(*)`.as("count"),
+            })
+            .from(bidsTable)
+            .where(eq(bidsTable.phase, "eoi"));
+
+        return result;
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+},
+    ['count_eoi'],
+    {
+        tags: ['count_eoi']
+    },
+)
+
+export const getBidCountTender = unstable_cache(async () => {
+    try {
+        const result = await db
+            .select({
+                count: sql`COUNT(*)`.as("count"),
+            })
+            .from(bidsTable)
+            .where(eq(bidsTable.phase, "tender"));
+
+        return result;
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+},
+    ['count_tender'],
+    {
+        tags: ['count_tender']
+    },
+)

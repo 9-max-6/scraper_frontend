@@ -4,7 +4,7 @@ export default async function OppCount() {
 
 
     return (
-        < Card className="w-full shadow-none" >
+        < Card className="w-full" >
             <CardHeader>
                 <CardDescription>
                     Total opportunities

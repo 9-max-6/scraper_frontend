@@ -54,7 +54,7 @@ export default function RootLayout({
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 h-4" />
                 </div>
-                <div className="px-4 ml-auto">
+                <div className="px-4 sticky ml-auto">
                   <Topbar />
                 </div>
               </header>
