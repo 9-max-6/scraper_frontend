@@ -45,9 +45,9 @@ export default function OverviewGraph(
         }) {
     const chartData = [
         { metric: "Capability", threshold: getThreshold(phase, "capabilities"), score: props.capabilitiesScore },
-        { metric: "Competitiveness", threshold: getThreshold(phase, "competitiveness"), score: props.competitivenessScore },
-        { metric: "Commercials", threshold: getThreshold(phase, "commercials"), score: props.commercialsScore },
-        { metric: "Risk", threshold: getThreshold(phase, "risk"), score: props.riskScore },
+        { metric: "Competitiveness", threshold: getThreshold(phase, "competitiveness"), score: phase === 'capture' ? 0 : props.competitivenessScore },
+        { metric: "Commercials", threshold: getThreshold(phase, "commercials"), score: phase === 'capture' ? 0 : props.commercialsScore },
+        { metric: "Risk", threshold: getThreshold(phase, "risk"), score: phase === 'capture' ? 0 : props.riskScore },
     ]
 
     return (

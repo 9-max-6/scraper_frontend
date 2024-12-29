@@ -18,7 +18,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { SelectScore } from "@/db/schema/scores"
-import { format } from "date-fns"
+import { format, formatDate } from "date-fns"
 
 
 const chartConfig = {
@@ -60,20 +60,20 @@ export default function OverviewGraphDetailed({ props }: { props: Array<Partial<
 
     const firstFiveScores = props.slice(0, 5)
     const chartData = [
-        { scores: "", score: firstFiveScores[0].overallScore, date: firstFiveScores[0].createdAt },
-        { scores: "", score: firstFiveScores[1].overallScore, date: firstFiveScores[1].createdAt },
-        { scores: "", score: firstFiveScores[2].overallScore, date: firstFiveScores[2].createdAt },
-        { scores: "", score: firstFiveScores[3].overallScore, date: firstFiveScores[3].createdAt },
-        { scores: "", score: firstFiveScores[4].overallScore, date: firstFiveScores[4].createdAt },
+        { score: firstFiveScores[4].overallScore, date: firstFiveScores[4].createdAt },
+        { score: firstFiveScores[3].overallScore, date: firstFiveScores[3].createdAt },
+        { score: firstFiveScores[2].overallScore, date: firstFiveScores[2].createdAt },
+        { score: firstFiveScores[1].overallScore, date: firstFiveScores[1].createdAt },
+        { score: firstFiveScores[0].overallScore, date: firstFiveScores[0].createdAt },
     ]
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Overall scores overview</CardTitle>
-                <CardDescription>{format(firstFiveScores[0].createdAt, 'dd-mm-yy')} - {format(firstFiveScores[4].createdAt, 'dd-mm-yy')}</CardDescription>
+                <CardDescription>{formatDate(firstFiveScores[0].createdAt, 'do LLL')} - {formatDate(firstFiveScores[4].createdAt, 'do LLL')}</CardDescription>
             </CardHeader>
-            <CardContent>
-                <ChartContainer className="max-h-[500px]" config={chartConfig}>
+            <CardContent className="p-12">
+                <ChartContainer config={chartConfig}>
                     <LineChart
                         accessibilityLayer
                         data={chartData}
@@ -85,20 +85,19 @@ export default function OverviewGraphDetailed({ props }: { props: Array<Partial<
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="score"
+                            dataKey="date"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={8}
-                            tickFormatter={(value) => value}
+                            tickMargin={2}
+                            tickFormatter={(value) => formatDate(value, "do LLL")}
                         />
-                        <YAxis domain={[0, 500]} />
 
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent indicator="line" />}
                         />
                         <Line
-                            dataKey="scores"
+                            dataKey="score"
                             type="natural"
                             stroke="var(--color-score)"
                             strokeWidth={2}
