@@ -36,7 +36,7 @@ export default async function Page() {
     captureCount: Number(captureCount[0].count),
   }
   return (
-    <div className="grid dash_container grid-cols-12 gap-4 px-4 ">
+    <div className="grid dash_container overflow-scroll flex flex-col xl:grid-cols-12 gap-4 px-4 ">
       <div className="col-span-8 h-full">
         <div className="h-full min-h-full max-h-full gap-4 flex flex-col">
           <div className="">
@@ -62,13 +62,13 @@ export default async function Page() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-2 col-span-4 min-h-full h-full overflow-scroll scrollbar-hide">
-        <div>
+      <div className="flex flex-basis flex-col gap-2 w-full xl:col-span-4 min-h-full h-full ">
+        <div className="w-full">
           <Suspense fallback={<BidDistributionFallback />}>
             <BidDistribution props={props} />
           </Suspense>
         </div>
-        <div>
+        <div className="">
           <BidPerformance />
         </div>
 

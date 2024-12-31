@@ -50,11 +50,6 @@ export const columns = [
         key: "author",
     },
     {
-        title: "Country",
-        dataIndex: "country",
-        key: "country",
-    },
-    {
         title: "Date created",
         dataIndex: "createdAt",
         key: "createdAt",
@@ -151,9 +146,7 @@ export default async function BidsTable({ bids }: {
                                     </Button>
                                 </TableCell>
                                 {/* Country */}
-                                <TableCell>
-                                    {bid.country}
-                                </TableCell>
+
                                 {/* Date created */}
                                 <TableCell>
                                     {format(bid.createdAt, 'dd-mm-yy')}

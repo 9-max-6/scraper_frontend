@@ -47,9 +47,9 @@ export default async function BidData({ score, bidData }: {
 
     const diff = getDeadline(bidData.deadline)
     return (
-        <Card>
+        <Card className="bg-primary/10">
             <CardContent className="pt-4">
-                <div>
+                <div className="text-lg font-semibold">
                     <div className="my-2 flex gap-2 items-center text-sm">
                         <Button variant="ghost" className="hover:cursor-default pl-0 hover:bg-inherit">
                             <HeartHandshake size={32} color="#a51d2d" />{" "}{clientData[0].name}
@@ -87,33 +87,34 @@ export default async function BidData({ score, bidData }: {
                             <StarHalf size={32} />{score}
                         </Button>
                     </div>
+                    <div className="px-2">
+                        <small className="text-sm font-medium leading-none">
+                            {bidData.des}
+                            <div className="flex mt-2 gap-2 items-center">
+                                <Button variant="ghost" className={clsx(
+                                    "hover:cursor-default hover:bg-inherit text-bold pl-0",
 
-                    <CardDescription>
-                        {bidData.des}
-                        <div className="flex gap-2 items-center">
-                            <Button variant="ghost" className="hover:bg-inherit cursor-default pl-0 border-none">
-                                <User2 />
-                                {bidData.author}
-                            </Button>
+                                    {
+                                        "text-red-800 bg-text-red-400 hover:text-red-800": diff <= 0,
+                                        "text-green-800 bg-text-green-400 hover:text-green-800": diff > 0
+                                    })}
+                                >
+                                    <Clock /> {formatDate(bidData.deadline, "do LLLL, yyyy")}
+                                </Button>
+                                <Button variant="ghost" className="hover:bg-inherit cursor-default pl-0 border-none">
+                                    <User2 />
+                                    {bidData.author}
+                                </Button>
 
 
-                            <Button variant="ghost" className="hover:bg-inherit cursor-default pl-0 border-none">
-                                {bidData.biddingEntity}
-                            </Button>
-                        </div>
+                                <Button variant="ghost" className="hover:bg-inherit cursor-default pl-0 border-none">
+                                    {bidData.biddingEntity}
+                                </Button>
+                            </div>
+                        </small>
+                    </div>
 
 
-                    </CardDescription>
-                    <Button variant="ghost" className={clsx(
-                        "hover:cursor-default hover:bg-inherit text-bold",
-
-                        {
-                            "text-red-800 bg-text-red-400 hover:text-red-800": diff <= 0,
-                            "text-green-800 bg-text-green-400 hover:text-green-800": diff > 0
-                        })}
-                    >
-                        <Clock /> {formatDate(bidData.deadline, "do LLLL, yyyy")}
-                    </Button>
                 </div>
             </CardContent>
             <CardFooter className="flex">

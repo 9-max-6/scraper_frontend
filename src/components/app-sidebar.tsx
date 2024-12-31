@@ -3,12 +3,12 @@
 import * as React from "react"
 import {
   BadgeDollarSign,
-  Frame,
-  HandHeart,
+  HeartHandshake,
   Home,
   Lightbulb,
   PieChart,
   Settings2,
+  SmilePlus,
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { NavMain } from "@/components/nav-main"
@@ -48,7 +48,7 @@ const data = {
     {
       name: "Donors",
       url: "/donors",
-      icon: HandHeart,
+      icon: HeartHandshake,
     },
     {
       name: "Knowledge",
@@ -61,7 +61,7 @@ const data = {
     {
       name: "Opportunities",
       url: "/opportunities",
-      icon: Frame,
+      icon: SmilePlus,
     },
     {
       name: "Playground",

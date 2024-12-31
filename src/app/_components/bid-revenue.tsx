@@ -1,6 +1,7 @@
 import { getBidRevenue } from "@/db/queries/stats/revenue"
 import { formatRevenue } from "../_components/utils"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { PiggyBank } from "lucide-react";
 
 
 export default async function BidRevenue() {
@@ -19,17 +20,18 @@ export default async function BidRevenue() {
      */
 
     return (
-        <Card className="w-full max-h-full box-border" >
+        <Card className="w-full relative bg-primary/10 max-h-full box-border" >
+            <div className="top-2 absolute right-2 z-10">
+                <PiggyBank className="text-green-800" />
+            </div>
             <CardHeader>
                 <CardDescription>
                     Total Revenue
                 </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <h3 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                    {formatRevenue(revenue)}
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    ${formatRevenue(revenue)}
                 </h3>
-            </CardContent>
+            </CardHeader>
         </Card>
     )
 }

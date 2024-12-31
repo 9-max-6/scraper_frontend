@@ -34,7 +34,7 @@ export default function StatsOne() {
     const totalVisitors = chartData[0].desktop + chartData[0].mobile
 
     return (
-        <Card className="flex shadow-none flex-col">
+        <Card className="flex flex-col">
             <CardHeader className="items-center pb-0">
                 <CardTitle>Radial Chart - Stacked</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>

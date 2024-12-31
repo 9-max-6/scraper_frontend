@@ -37,7 +37,7 @@ const chartConfig = {
 export default function OverviewGraph() {
 
     return (
-        <Card className="shadow-none">
+        <Card className="">
             <CardHeader>
                 <CardTitle>Bar Chart - Multiple</CardTitle>
                 <CardDescription>January - June 2024</CardDescription>

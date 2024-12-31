@@ -69,7 +69,7 @@ export default async function Page({
                 </TabsList>
                 <TabsContent value="general">
                     <div className="max-w-[1080px]">
-                        <GoNoGO />
+                        <GoNoGO props={props.bidData} />
                     </div>
                 </TabsContent>
                 <TabsContent value="bid_data">
