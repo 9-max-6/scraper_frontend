@@ -2,10 +2,50 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ProgressRed } from "@/components/ui/progressred";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHealthyBidsCount, getOverDueBidsCount, getUrgentBidCount } from "@/db/queries/stats/health";
+import { getBidCount } from "@/db/queries/stats/revenue";
 import { Activity } from "lucide-react";
-export default function BidPerformance() {
+import { Suspense } from "react";
+export async function AsyncBidPerformance() {
+
+    const healthBids = await getHealthyBidsCount();
+    if (!healthBids) {
+        return (
+            <div>
+                Error!
+            </div>
+        )
+    }
+    const bidCount = await getBidCount();
+    if (!bidCount) {
+        return (
+            <div>
+                Error!
+            </div>
+        )
+    }
+
+    const urgentBidCount = await getUrgentBidCount();
+    if (!urgentBidCount || typeof urgentBidCount !== "number") {
+        return (
+            <div>
+                Error!
+            </div>
+        )
+    }
+
+    const overDueBidCount = await getOverDueBidsCount();
+    if (!overDueBidCount || typeof overDueBidCount !== "number") {
+        return (
+            <div>
+                Error!
+            </div>
+        )
+    }
+
     return (
-        <Card>
+        <Card className="shadow-none">
             <CardHeader className="relative">
                 <CardTitle>
                     Bid performance
@@ -20,33 +60,60 @@ export default function BidPerformance() {
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-primary/10">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
                     <CardDescription>
-                        10 Urgent bids
+                        {
+                            urgentBidCount == 0 ? "No urgent bids" : `${urgentBidCount} Urgent bid${urgentBidCount > 1 ? "s" : ""}`
+                        }
                     </CardDescription>
-                    <Progress value={10} max={100} className="text-green-400" />
+                    <Progress value={Number(urgentBidCount)} max={bidCount} className="text-green-400" />
                 </Card>
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-primary/10">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
                     <CardDescription>
-                        64 Healthy bids
+                        {
+                            healthBids == 0 ? "No healthy bids" : `${healthBids} Healthy bid${healthBids > 1 ? "s" : ""}`
+                        }
                     </CardDescription>
-                    <Progress value={64} max={100} className="text-green-400" />
+                    <Progress value={healthBids} max={bidCount} className="text-green-400" />
                 </Card>
 
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-primary/10">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
                     <CardDescription>
-                        20 Unhealthy bids
+                        {
+                            bidCount - healthBids == 0 ? "No unhealthy bids" : `${bidCount - healthBids} Unhealthy bid${bidCount - healthBids > 1 ? "s" : ""}`
+                        }
                     </CardDescription>
                     <ProgressRed value={24} max={100} className="text-green-400" />
                 </Card>
 
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-primary/10">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
                     <CardDescription>
-                        10 Overdue bids
+                        {
+                            overDueBidCount == 0 ? "No overdue bids" : `${overDueBidCount} Overdue bid${overDueBidCount > 1 ? "s" : ""}`
+                        }
                     </CardDescription>
                     <ProgressRed value={10} max={100} className="text-green-400" />
                 </Card>
             </CardContent>
         </Card>
+    )
+}
+export default function BidPerformance() {
+    return (
+        <Suspense fallback={<BidPerformanceFallback />}>
+            <AsyncBidPerformance />
+        </Suspense>
+    )
+}
+
+
+export function BidPerformanceFallback() {
+    return (
+        <div className="flex flex-col gap-2">
+            <Skeleton className="h-12" />
+            <Skeleton className="h-12" />
+            <Skeleton className="h-12" />
+            <Skeleton className="h-12" />
+        </div>
     )
 }

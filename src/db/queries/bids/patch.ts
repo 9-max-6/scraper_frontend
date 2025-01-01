@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { db } from "../../index"
 import { bidsTable } from "../../schema/bids"
 import { eq } from "drizzle-orm";
@@ -15,6 +17,10 @@ export async function dbPatchDataById(data: Partial<InsertBid>, id: number): Pro
         // have to revalidate tag for bids
 
         revalidateTag('single-bid')
+        revalidateTag('overdue_bid_count')
+        revalidateTag('healthy_bid')
+        revalidateTag('top_scorer')
+        revalidateTag('top_bid')
         // returning true for successful update.
         return true
     } catch (error: any) {

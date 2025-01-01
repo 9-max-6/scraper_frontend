@@ -63,6 +63,10 @@ export async function insertBid(data: InsertBid): Promise<number | undefined> {
         })
         // revalidate and return
         revalidateTag('bids')
+        revalidateTag('overdue_bid_count')
+        revalidateTag('healthy_bid')
+        revalidateTag('top_scorer')
+        revalidateTag('top_bid')
         return bid.id;
     } catch (error: any) {
         console.error("DB: insertBid: ", error.toString());

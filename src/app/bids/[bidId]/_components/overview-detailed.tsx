@@ -1,7 +1,7 @@
 "use client"
 
 import { Frown, TrendingUp } from "lucide-react"
-import { CartesianGrid, LabelList, Line, LineChart, XAxis, YAxis } from "recharts"
+import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
 
 import {
     Card,
@@ -18,7 +18,7 @@ import {
     ChartTooltipContent,
 } from "@/components/ui/chart"
 import { SelectScore } from "@/db/schema/scores"
-import { format, formatDate } from "date-fns"
+import { formatDate } from "date-fns"
 
 
 const chartConfig = {

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBidById } from "@/db/queries/bids/get";
 import BidData from "./_components/bid-data";
 import Capabilities from "./_components/capabilities";
@@ -45,7 +45,7 @@ async function AsyncPage({ params }: {
     if (!bid) {
         return (
             <div className="mx-4 dash_container">
-                "Bid not found"
+                Bid not found
             </div>
         )
     }
@@ -54,7 +54,7 @@ async function AsyncPage({ params }: {
     if (!bidData.metrics) {
         return (
             <div className="mx-4 dash_container">
-                "Metrics not found"
+                Metrics not found
             </div>
         )
     }
@@ -65,7 +65,7 @@ async function AsyncPage({ params }: {
     if (!metrics) {
         return (
             <div className="mx-4 dash_container">
-                "Bid not found"
+                Bid not found
             </div>
         )
     }
@@ -106,7 +106,7 @@ async function AsyncPage({ params }: {
                     {/* urgent */}
                     <div className="top-4 right-8 absolute">
                         {
-                            !bidData.urgent && (
+                            bidData.urgent && (
                                 <ShieldAlertIcon className="text-red-800" size={20} />
                             )
                         }
@@ -135,10 +135,19 @@ async function AsyncPage({ params }: {
                         </TabsList>
                         <TabsContent value="overview">
                             <Suspense fallback={<OverviewGraphFallback />}>
-                                <OverviewGraph
-                                    props={scoresArray[0]}
-                                    phase={bidData.phase}
-                                />
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Overview</CardTitle>
+                                        <CardDescription>
+                                            Showing the performance of the bid in the four metrics
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <OverviewGraph
+                                        props={scoresArray[0]}
+                                        phase={bidData.phase}
+                                    />
+                                </Card>
+
                             </Suspense>
                         </TabsContent>
                         <TabsContent value="history_detail">

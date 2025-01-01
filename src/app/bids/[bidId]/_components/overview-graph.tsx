@@ -6,10 +6,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import {
     ChartConfig,
@@ -51,11 +48,8 @@ export default function OverviewGraph(
     ]
 
     return (
-        <Card className="">
-            <CardHeader>
-                <CardTitle>Overview</CardTitle>
-                <CardDescription>Showing latest comparison of metrics against phase-dependent thresholds</CardDescription>
-            </CardHeader>
+        <Card className="shadow-none border-none">
+
             <CardContent className="grid grid-cols-4">
                 <ChartContainer className="col-span-3 max-h-[500px]" config={chartConfig}>
                     <BarChart accessibilityLayer data={chartData}>

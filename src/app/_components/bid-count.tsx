@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, } from "@/components/ui/card"
 import { getBidCount } from "@/db/queries/stats/revenue"
 import { BadgeDollarSign } from "lucide-react"
 

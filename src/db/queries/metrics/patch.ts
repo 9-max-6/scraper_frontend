@@ -186,6 +186,10 @@ export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: 
             revalidateTag("single-bid")
             revalidateTag("risks")
             revalidateTag("scores")
+            revalidateTag('overdue_bid_count')
+            revalidateTag('healthy_bid')
+            revalidateTag('top_scorer')
+            revalidateTag('top_bid')
 
         })
 
@@ -344,6 +348,10 @@ export async function patchCommData(
         revalidateTag("commercials")
         revalidateTag("scores")
         revalidateTag("bd_input")
+        revalidateTag('overdue_bid_count')
+        revalidateTag('healthy_bid')
+        revalidateTag('top_scorer')
+        revalidateTag('top_bid')
         return true;
 
     } catch (error: any) {

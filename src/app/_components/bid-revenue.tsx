@@ -1,6 +1,6 @@
 import { getBidRevenue } from "@/db/queries/stats/revenue"
 import { formatRevenue } from "../_components/utils"
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader } from "@/components/ui/card"
 import { PiggyBank } from "lucide-react";
 
 

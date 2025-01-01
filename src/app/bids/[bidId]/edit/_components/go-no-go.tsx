@@ -4,19 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { SelectBid } from "@/db/schema/bids";
 import { SquareArrowLeft, SquareArrowRight } from "lucide-react";
-import { useState } from "react";
 
-export default function GoNoGO({ props }: {
-    props: {
-        bidData: SelectBid
-    }
+export default function GoNoGO({ bidData }: {
+    bidData: SelectBid
 }) {
-    const [deleteConfirm, setdeleteConfirm] = useState("")
-
-    const handleDelete = () => {
-        // logic for the deletion of a bid
-        console.log("Delete", deleteConfirm)
-    }
+    // const [deleteConfirm, setdeleteConfirm] = useState("")
+    console.log(bidData)
+    // const handleDelete = () => {
+    //     // logic for the deletion of a bid
+    //     console.log("Delete", deleteConfirm)
+    // }
     /**
      * so I have to find a way to make this work very well
      * If the bid is in the undec stage, then of course the text should
@@ -101,9 +98,9 @@ export default function GoNoGO({ props }: {
                     <div className="max-w-[600px]">
                         <Input
                             placeholder="Delete..."
-                            onChange={(e) => {
-                                setdeleteConfirm(e.target.value)
-                            }}
+                        // onChange={(e) => {
+                        // setdeleteConfirm(e.target.value)
+                        // }}
                         />
                     </div>
                     <div className="ml-auto">

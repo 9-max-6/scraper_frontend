@@ -52,7 +52,7 @@ const data = {
     },
     {
       name: "Knowledge",
-      url: "#",
+      url: "/knowledge",
       icon: Lightbulb,
     },
   ],

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { db } from "@/db";
 import { bidsTable } from "@/db/schema/bids";
 import { clientsTable } from "@/db/schema/donors";
 import { eq, sql } from "drizzle-orm";
-import { phasesEnum } from "@/db/schema/bids";
 import { unstable_cache } from "next/cache";
 
 export const getBidRevenue = unstable_cache(async () => {

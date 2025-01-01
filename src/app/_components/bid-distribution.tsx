@@ -1,13 +1,11 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -53,7 +51,7 @@ export default function BidDistribution({ props }: {
     ]
     return (
 
-        <Card>
+        <Card className="shadow-none">
             <CardHeader>
                 <CardTitle>Bid Backlog</CardTitle>
                 <CardDescription>Distribution of bids per phase</CardDescription>
