@@ -40,9 +40,8 @@ const getText = (key: string, value: string): {
  */
 const getStatus = (score: number, phase: string | null) => {
     const entry = Thresholds[phase as keyof typeof Thresholds]
-    return score >= entry[phase as keyof typeof entry]
+    return score >= entry["risk" as keyof typeof entry]
 }
-
 
 /**
  * 

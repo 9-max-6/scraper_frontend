@@ -81,6 +81,10 @@ export async function patchCapById(id: number, data: Partial<InsertCapabilities>
             revalidateTag("single-bid")
             revalidateTag("capabilities")
             revalidateTag("scores")
+            revalidateTag('overdue_bid_count')
+            revalidateTag('healthy_bid')
+            revalidateTag('top_scorer')
+            revalidateTag('top_bid')
 
         })
 
@@ -135,6 +139,10 @@ export async function patchCompById(id: number, data: Partial<InsertCompetitiven
             revalidateTag("single-bid")
             revalidateTag("competitiveness")
             revalidateTag("scores")
+            revalidateTag('overdue_bid_count')
+            revalidateTag('healthy_bid')
+            revalidateTag('top_scorer')
+            revalidateTag('top_bid')
 
         })
 
@@ -190,7 +198,6 @@ export async function patchRiskById(id: number, data: Partial<InsertRisk>, bid: 
             revalidateTag('healthy_bid')
             revalidateTag('top_scorer')
             revalidateTag('top_bid')
-
         })
 
     } catch (error: any) {

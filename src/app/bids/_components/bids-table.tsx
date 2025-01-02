@@ -10,13 +10,14 @@ import {
 } from "@/components/ui/table"
 import MiniClient from "./mini-client";
 import { Card, CardDescription } from "@/components/ui/card";
-import { CircleCheckBig, ShieldAlertIcon, User2 } from "lucide-react";
+import { CircleCheckBig, Clock, ShieldAlertIcon, User2 } from "lucide-react";
 import clsx from "clsx";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
+import { format, formatDate } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getDeadline } from "../[bidId]/_components/utils";
 
 export const columns = [
     {
@@ -63,6 +64,7 @@ export default async function BidsTable({ bids }: {
 }) {
 
     const data = bids?.items || [];
+
     return (
         <Table className="relative h-full overflow-scroll">
             <TableHeader className="sticky top-0">
@@ -120,7 +122,16 @@ export default async function BidsTable({ bids }: {
 
                                 {/* Deadline */}
                                 <TableCell>
-                                    {bid.deadline ? format(bid.deadline, "dd-mm-yy") : ""}
+                                    <Button variant="ghost" className={clsx(
+                                        "hover:cursor-default hover:bg-inherit text-bold pl-0",
+
+                                        {
+                                            "text-red-800 bg-text-red-400 hover:text-red-800": getDeadline(bid.deadline) <= 0,
+                                            "text-green-800 bg-text-green-400 hover:text-green-800": getDeadline(bid.deadline) > 0
+                                        })}
+                                    >
+                                        <Clock /> {formatDate(bid.deadline, "do LLLL, yyyy")}
+                                    </Button>
                                 </TableCell>
 
                                 {/* Phase */}

@@ -13,7 +13,7 @@ export async function AsyncBidPerformance() {
     if (!healthBids) {
         return (
             <div>
-                Error!
+                Err healthBidsor!
             </div>
         )
     }
@@ -21,25 +21,26 @@ export async function AsyncBidPerformance() {
     if (!bidCount) {
         return (
             <div>
-                Error!
+                E bidCountrror!
             </div>
         )
     }
 
     const urgentBidCount = await getUrgentBidCount();
-    if (!urgentBidCount || typeof urgentBidCount !== "number") {
+    if (!urgentBidCount || !Number(urgentBidCount)) {
         return (
             <div>
-                Error!
+                Error! urgentBidCount
             </div>
         )
     }
 
     const overDueBidCount = await getOverDueBidsCount();
-    if (!overDueBidCount || typeof overDueBidCount !== "number") {
+
+    if (!overDueBidCount || !Number(overDueBidCount)) {
         return (
             <div>
-                Error!
+                Error! overDueBidCount
             </div>
         )
     }
@@ -60,39 +61,39 @@ export async function AsyncBidPerformance() {
             </CardHeader>
 
             <CardContent className="flex flex-col gap-4">
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-2 px-2 border-none bg-muted">
                     <CardDescription>
                         {
-                            urgentBidCount == 0 ? "No urgent bids" : `${urgentBidCount} Urgent bid${urgentBidCount > 1 ? "s" : ""}`
+                            urgentBidCount == 0 ? "No urgent bids" : `${urgentBidCount} Urgent bid${Number(urgentBidCount) > 1 ? "s" : ""}`
                         }
                     </CardDescription>
-                    <Progress value={Number(urgentBidCount)} max={bidCount} className="text-green-400" />
+                    <Progress value={(Number(urgentBidCount) / bidCount) * 100} max={100} className="text-green-400" />
                 </Card>
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-2 px-2 border-none bg-muted">
                     <CardDescription>
                         {
                             healthBids == 0 ? "No healthy bids" : `${healthBids} Healthy bid${healthBids > 1 ? "s" : ""}`
                         }
                     </CardDescription>
-                    <Progress value={healthBids} max={bidCount} className="text-green-400" />
+                    <Progress value={(healthBids / bidCount) * 100} max={100} className="text-green-400" />
                 </Card>
 
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-2 px-2 border-none bg-muted">
                     <CardDescription>
                         {
                             bidCount - healthBids == 0 ? "No unhealthy bids" : `${bidCount - healthBids} Unhealthy bid${bidCount - healthBids > 1 ? "s" : ""}`
                         }
                     </CardDescription>
-                    <ProgressRed value={24} max={100} className="text-green-400" />
+                    <ProgressRed value={((bidCount - healthBids) / bidCount) * 100} max={100} className="text-green-400" />
                 </Card>
 
-                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-4 border-none bg-muted">
+                <Card className="rounded-sm shadow-none flex flex-col gap-2 p-2 px-2 border-none bg-muted">
                     <CardDescription>
                         {
-                            overDueBidCount == 0 ? "No overdue bids" : `${overDueBidCount} Overdue bid${overDueBidCount > 1 ? "s" : ""}`
+                            overDueBidCount == 0 ? "No overdue bids" : `${overDueBidCount} Overdue bid${Number(overDueBidCount) > 1 ? "s" : ""}`
                         }
                     </CardDescription>
-                    <ProgressRed value={10} max={100} className="text-green-400" />
+                    <ProgressRed value={(Number(overDueBidCount) / bidCount) * 100} max={100} className="text-green-400" />
                 </Card>
             </CardContent>
         </Card>

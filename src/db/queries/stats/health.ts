@@ -104,7 +104,6 @@ export const getTopScorer = unstable_cache(async () => {
             }
             if (score.rank === '1') {
                 if (topScore.value < score.overallScore) {
-                    console.log(topScore, score)
                     topScore.value = score.overallScore;
                     topScore.id = score.bid;
                 }
@@ -133,4 +132,3 @@ export const topBid = unstable_cache(async (id: number) => {
         console.error(error.toString())
     }
 }, ["top_bid"], { tags: ["top_bid"] })
-

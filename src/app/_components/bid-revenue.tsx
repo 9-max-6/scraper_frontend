@@ -1,7 +1,7 @@
 import { getBidRevenue } from "@/db/queries/stats/revenue"
 import { formatRevenue } from "../_components/utils"
 import { Card, CardDescription, CardHeader } from "@/components/ui/card"
-import { PiggyBank } from "lucide-react";
+import { EqualApproximately, PiggyBank } from "lucide-react";
 
 
 export default async function BidRevenue() {
@@ -28,8 +28,8 @@ export default async function BidRevenue() {
                 <CardDescription>
                     Total Revenue
                 </CardDescription>
-                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                    ${formatRevenue(revenue)}
+                <h3 className="scroll-m-20 flex items-center gap-2 text-2xl font-semibold tracking-tight">
+                    <EqualApproximately strokeWidth={0.5} /> ${formatRevenue(revenue)}
                 </h3>
             </CardHeader>
         </Card>
