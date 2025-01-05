@@ -150,7 +150,7 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
                     </CardHeader>
 
 
-                    <CardContent className="grid overflow-scroll grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <CardContent className="grid overflow-scroll scrollbar-hide grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {category.levels.map((level, index) => {
                             const categoryKey = category.tag;
                             const isSelected = selectedValues[categoryKey as keyof typeof selectedValues] === level.value;
