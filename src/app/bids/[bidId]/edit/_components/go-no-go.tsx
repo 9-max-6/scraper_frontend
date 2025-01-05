@@ -1,7 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { SelectBid } from "@/db/schema/bids";
 import { SquareArrowLeft, SquareArrowRight } from "lucide-react";
 
@@ -31,6 +30,15 @@ export default function GoNoGO({ bidData }: {
      * 
      * The last one is of course one that deletes the bid.
      */
+    const getStatusText = (status: string) => {
+        if (status === "undec") {
+            return "The team is not going for this bid."
+        } else if (status.startsWith('tent')) {
+            return "The team is still deliberating on this bid."
+        } else {
+            return "The team is going for this bid."
+        }
+    }
     return (
         <div className="flex flex-col gap-4">
             <Card className="">
@@ -54,15 +62,30 @@ export default function GoNoGO({ bidData }: {
                 </CardContent>
             </Card>
 
-            <Card className=" shadow-none">
+            <Card className="">
                 <CardHeader>
                     <CardTitle>
-                        No go
+                        Go-No-Go.
                     </CardTitle>
+                    <CardDescription>
+                        {getStatusText(bidData.status)}
+                    </CardDescription>
                 </CardHeader>
-                <CardContent>
-                    This bid is in the go phase
-                    Click here to go to the next phase
+                <CardContent className="flex flex-col gap-2">
+                    <p>
+                        If anything has changed in the bid, you can update the status by selecting one of the options below.
+                    </p>
+                    <div className="ml-auto flex gap-2">
+                        <Button variant="secondary">
+                            Go <SquareArrowLeft />
+                        </Button>
+                        <Button>
+                            No Go <SquareArrowRight />
+                        </Button>
+                        <Button variant="destructive">
+                            Tentative <SquareArrowRight />
+                        </Button>
+                    </div>
                 </CardContent>
             </Card>
             <Card className=" shadow-none">
@@ -96,11 +119,9 @@ export default function GoNoGO({ bidData }: {
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">
                     <div className="max-w-[600px]">
-                        <Input
-                            placeholder="Delete..."
-                        // onChange={(e) => {
-                        // setdeleteConfirm(e.target.value)
-                        // }}
+                        <input
+                            placeholder="delete..."
+                            className="ring-1 min-w-[300px] ring-opacity-50 ring-transparent focus:ring-red-500 rounded-sm p-2 active:ring-red-500 hover:ring-red-500 focus:ring-opacity-100 active:ring-opacity-100 hover:ring-opacity-100 outline-none transition"
                         />
                     </div>
                     <div className="ml-auto">

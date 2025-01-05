@@ -141,7 +141,7 @@ export default function EditCapabilitiess({ props, bid }: { props: Array<SelectC
             </div>
 
             {categories.map((category) => (
-                <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
+                <Card key={category.name} className="mb-8 shadow-none">
                     {/* Category Title */}
                     <CardHeader>
                         <CardTitle>

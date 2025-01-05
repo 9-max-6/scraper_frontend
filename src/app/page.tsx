@@ -38,7 +38,7 @@ export default async function Page() {
     captureCount: Number(captureCount[0].count),
   }
   return (
-    <div className="grid dash_container overflow-scroll flex flex-col xl:grid-cols-12 gap-4 px-4 ">
+    <div className="grid dash_container overflow-scroll scrollbar-hide flex flex-col xl:grid-cols-12 gap-4 px-4 ">
       <div className="col-span-8 h-full">
         <div className="h-full min-h-full max-h-full  flex flex-col">
           <div className="">

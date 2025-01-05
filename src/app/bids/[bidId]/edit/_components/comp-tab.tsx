@@ -146,7 +146,7 @@ export default function EditCompetitiveness({ props, bid }: { props: Array<Selec
             </div>
 
             {categories.map((category) => (
-                <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
+                <Card key={category.name} className="mb-8 shadow-none">
                     {/* Category Title */}
                     <CardHeader>
                         <CardTitle>

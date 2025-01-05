@@ -140,7 +140,7 @@ export default function EditRisk({ props, bid }: { props: Array<SelectRisk>, bid
             </div>
 
             {categories.map((category) => (
-                <Card key={category.name} className="mb-8 shadow-none overflow-scroll">
+                <Card key={category.name} className="mb-8 shadow-none">
                     {/* Category Title */}
                     <CardHeader>
                         <CardTitle>
