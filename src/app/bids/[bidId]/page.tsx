@@ -14,6 +14,7 @@ import Loading from "../_components/loading";
 import HistoryGraph from "./_components/history-graph";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import OverviewGraphDetailed from "./_components/overview-detailed";
+import Comments from "./_components/comments";
 
 /**
  * web vitals - before changing the structure of the page to
@@ -93,10 +94,10 @@ async function AsyncPage({ params }: {
     const phase = bidData.phase
 
     return (
-        <div className="dash_container max-w-full"
+        <div className="dash_container max-w-full flex gap-4"
         // remove the break-all text-wrap classes at the end.
         >
-            <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full mx-auto max-w-[1080px]">
+            <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full max-w-[1080px]">
                 {/* {JSON.stringify(bidData)} */}
                 <CardHeader className="relative text-xl">
                     <CardTitle>
@@ -208,6 +209,19 @@ async function AsyncPage({ params }: {
                 <CardFooter>
                     @max
                 </CardFooter>
+            </Card>
+            <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full">
+                <CardHeader>
+                    <CardTitle>
+                        Notes
+                    </CardTitle>
+                    <CardDescription>
+                        Bid notes.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Comments />
+                </CardContent>
             </Card>
         </div>
     )
