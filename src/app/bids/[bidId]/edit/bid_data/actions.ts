@@ -3,7 +3,7 @@
 "use server"
 import { z } from "zod"
 import { dbPatchDataById } from "@/db/queries/bids/patch"
-
+import { deleteBidById } from "@/db/queries/delete"
 
 export async function patchBidDataById(data: z.infer<typeof FormSchema>, id: number): Promise<boolean | undefined> {
     // make a promise here that will resolve or reject
@@ -24,3 +24,7 @@ const FormSchema = z.object({
     consortiumRole: z.string().min(2, { message: "Consortium role is required." }),
     deadline: z.string().min(1, { message: "Deadline is required." }),
 });
+
+export async function deleteBid(bidId: number) {
+    const result = await deleteBidById(bidId);
+}

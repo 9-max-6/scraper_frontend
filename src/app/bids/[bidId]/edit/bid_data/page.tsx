@@ -2,7 +2,7 @@ import { getBidById } from "@/db/queries/bids/get"
 import { getClients, getClientsById } from "@/db/queries/donors/get"
 import EditBidForm from "../_components/edit-bid-form"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import GoNoGO from "../_components/go-no-go"
+import DeleteBid from "../_components/delete-bid"
 
 export default async function Page({
     params
@@ -58,18 +58,19 @@ export default async function Page({
     return (
         <div className="dash_container mx-4">
 
-            <Tabs defaultValue="general">
+            <Tabs defaultValue="bid_data">
                 <TabsList className="ml-auto">
-                    <TabsTrigger value="general">
-                        Go-No-Go
-                    </TabsTrigger>
+
                     <TabsTrigger value="bid_data">
                         Edit bid data
                     </TabsTrigger>
+                    <TabsTrigger value="delete">
+                        Delete bid
+                    </TabsTrigger>
                 </TabsList>
-                <TabsContent value="general">
+                <TabsContent value="delete">
                     <div className="max-w-[1080px]">
-                        <GoNoGO bidData={props.bidData[0]} />
+                        <DeleteBid bidId={bidId} />
                     </div>
                 </TabsContent>
                 <TabsContent value="bid_data">

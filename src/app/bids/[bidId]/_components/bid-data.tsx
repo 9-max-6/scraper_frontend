@@ -1,12 +1,13 @@
 import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getClientsById } from "@/db/queries/donors/get";
-import { Clock, DollarSign, HeartHandshake, PlaneTakeoff, StarHalf, User2 } from "lucide-react";
+import { Clock, DollarSign, HeartHandshake, StarHalf, User2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import clsx from "clsx";
 import { getDeadline, getTime } from "./utils";
 import Link from "next/link";
 import { formatDate } from "date-fns";
+import GoNoGO from "../edit/_components/go-no-go";
 
 export default async function BidData({ score, bidData }: {
     score: number;
@@ -18,7 +19,7 @@ export default async function BidData({ score, bidData }: {
         deletedAt: Date | null;
         updatedAt: Date | null;
         deadline: Date | null;
-        phase: string | null;
+        phase: "eoi" | "tender" | "capture" | null;
         author: string;
         client: number;
         country: string;
@@ -28,7 +29,7 @@ export default async function BidData({ score, bidData }: {
         urgent: boolean;
         budget: number;
         duration: number;
-        status: string | null;
+        status: "undec" | "go_cap" | "tent_eoi" | "tent_cap" | "go_eoi" | "go_tender" | "tent_tender" | null;
         metrics: number | null
     }
 }
@@ -123,11 +124,11 @@ export default async function BidData({ score, bidData }: {
                 </CardDescription>
                 <div className="ml-auto flex gap-2">
                     <Link href={`/bids/${bidData.id}/edit/bid_data`}>
-                        <Button>
-                            Edit {" "}  <PlaneTakeoff strokeWidth={3} />
+                        <Button variant="link">
+                            Edit
                         </Button>
                     </Link>
-
+                    <GoNoGO bidData={bidData} />
                 </div>
 
             </CardFooter>

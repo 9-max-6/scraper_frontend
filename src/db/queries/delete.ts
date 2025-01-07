@@ -6,7 +6,7 @@ import { db } from "..";
 import { revalidateTag } from "next/cache";
 
 
-export async function deleteBid(id: number) {
+export async function deleteBidById(id: number) {
     try {
         const result = await db.delete(bidsTable).where(eq(bidsTable.id, id));
         revalidateTag('overdue_bid_count')

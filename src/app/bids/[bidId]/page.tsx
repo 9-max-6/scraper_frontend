@@ -11,7 +11,6 @@ import OverviewGraph, { OverviewGraphFallback } from "./_components/overview-gra
 import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
 import { ShieldAlertIcon } from "lucide-react";
 import Loading from "../_components/loading";
-import HistoryGraph from "./_components/history-graph";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import OverviewGraphDetailed from "./_components/overview-detailed";
 
@@ -122,16 +121,14 @@ async function AsyncPage({ params }: {
 
                     {/* overview */}
                     <Tabs defaultValue="overview">
-                        <TabsList className="ml-auto grid w-[300px] grid-cols-3">
+                        <TabsList className="ml-auto grid w-[300px] grid-cols-2">
                             <TabsTrigger value="overview">
                                 Overview
                             </TabsTrigger>
                             <TabsTrigger value="history_overview">
                                 History
                             </TabsTrigger>
-                            <TabsTrigger value="history_detail">
-                                Detailed
-                            </TabsTrigger>
+
                         </TabsList>
                         <TabsContent value="overview">
                             <Suspense fallback={<OverviewGraphFallback />}>
@@ -148,11 +145,6 @@ async function AsyncPage({ params }: {
                                     />
                                 </Card>
 
-                            </Suspense>
-                        </TabsContent>
-                        <TabsContent value="history_detail">
-                            <Suspense fallback={<OverviewGraphFallback />}>
-                                <HistoryGraph props={scoresArray} />
                             </Suspense>
                         </TabsContent>
                         <TabsContent value="history_overview">
