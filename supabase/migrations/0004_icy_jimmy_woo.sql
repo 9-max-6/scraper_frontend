@@ -1,0 +1,1 @@
+ALTER TABLE "scores" ADD COLUMN "createdAt" timestamp DEFAULT now() NOT NULL;

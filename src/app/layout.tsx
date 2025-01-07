@@ -4,10 +4,15 @@ import { Toaster } from "@/components/ui/toaster"
 import "./globals.css";
 import "./custom.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AppSidebar } from "@/components/app-sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import Topbar from "@/components/topbar";
-
+import { AppSidebar } from "@/components/app-sidebar"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+import { WebVitals } from "./_components/web-vitals";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,25 +46,25 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="z-50 sticky top-0">
-            <Topbar />
-          </div>
-          <div className="relative main_container overflow-hidden grid grid-cols-12">
-            <div className="xl:col-span-1">
-
-            </div>
-            <div className="relative z-10 col-span-2 xl:col-span-2">
-              <SidebarProvider>
-                <AppSidebar />
-              </SidebarProvider>
-            </div>
-            <div className="h-full p-2 z-50 col-span-9">
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                <div className="flex items-center gap-2 px-4">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                </div>
+                <div className="px-4 sticky ml-auto">
+                  <Topbar />
+                </div>
+              </header>
+              <WebVitals />
               {children}
-            </div>
-          </div>
+            </SidebarInset>
+          </SidebarProvider>
         </ThemeProvider>
         <Toaster />
       </body>
-    </html>
+    </html >
   );
 }

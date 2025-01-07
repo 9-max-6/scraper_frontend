@@ -1,224 +1,218 @@
-import { OctagonAlert } from "lucide-react";
-import { getBidById } from "@/lib/bid-service";
-import Overview from "@/components/overview";
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { BidProfileText } from '@/types/bid-profile-text'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { getBidById } from "@/db/queries/bids/get";
+import BidData from "./_components/bid-data";
+import Capabilities from "./_components/capabilities";
+import Competitiveness from "./_components/competitiveness";
+import Risk from "./_components/risk";
+import { Suspense } from "react";
+import { Fallback } from "./_components/fallback";
+import Commercials from "./_components/commercials";
+import OverviewGraph, { OverviewGraphFallback } from "./_components/overview-graph";
+import { getMetricsById, getScoresByBidId } from "@/db/queries/metrics/get";
+import { ShieldAlertIcon } from "lucide-react";
+import Loading from "../_components/loading";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import OverviewGraphDetailed from "./_components/overview-detailed";
 
-import Commercials from "@/components/comm-tab";
-import DataCardFooter from "@/components/data-card-footer";
-import { BidType } from "@/types/types";
-
-interface BadgeProperties {
-    text: string;
-    color: string;
-}
-interface ScoresProperties {
-    capabilities: number;
-    risk: number;
-    competitiveness: number;
-    commercials: number;
-}
-export interface OverviewProperties {
-    entry: BidType;
-    scores: ScoresProperties;
-}
-
-
-async function getDetailedBid(bidId: number) {
-    try {
-        if (Number.isNaN(bidId)) {
-            throw new Error("Bid ID is required")
-        }
-        const response = await getBidById(bidId)
-        return response
-    } catch (e) {
-        const error = e as Error
-        console.error("Error when fetching detailed biid", error.toString());
-        return null;
-    }
-}
-
-export default async function Page({ params }: { params: Promise<{ bidId: string }> }) {
-    const bidId = (await params).bidId
-    const optimisticBid = await getDetailedBid(parseInt(bidId))
-    if (!optimisticBid) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p>Error fetching bid details. Please try again later.</p>
-            </div>
-        );
-    }
-
-    const bid = optimisticBid as BidType
-
-    // const bidVersions = await getBidVersionsById(parseInt(bidId))
-
-    /**
+/**
+ * web vitals - before changing the structure of the page to
+ * use suspense and lazy loading
+ * TTFB-
+ * LCP-
  * 
+ */
+
+/**
+ * 
+ * @param param0 
  * @returns 
  */
-    function getBadgeText(): BadgeProperties | null {
-        if (!bid) {
-            return null
-        }
+async function AsyncPage({ params }: {
+    params: Promise<{
+        bidId: string;
+    }>;
+}) {
+    const idPromise = (await params).bidId
 
-        if (bid.bidData.phase === "Tender stage") {
-            if (bid.bidData.go_capture) {
-                return {
-                    text: "Go tender",
-                    color: "bg-green-300"
-                }
-            }
-            if (bid.bidData.tent_capture) {
-                return {
-                    text: "Tentative",
-                    color: "bg-yellow-300"
-                }
-            } else
-                return {
-                    text: "NO GO",
-                    color: "bg-red-300"
-                }
-        }
-        if (bid.bidData.phase === "Expression of Interest") {
-            if (bid.bidData.go_eoi) {
-                return {
-                    text: "GO",
-                    color: "bg-green-300"
-                }
-            }
-            if (bid.bidData.tent_eoi) {
-                return {
-                    text: "Tentative",
-                    color: "bg-yellow-300"
-                }
-            } else
-                return {
-                    text: "NO GO",
-                    color: "bg-destructive"
-                }
-        }
-        if (bid.bidData.phase === "Capture") {
-            if (bid.bidData.go_capture) {
-                return {
-                    text: "GO",
-                    color: "bg-green-300"
-                }
-            }
-            if (bid.bidData.tent_capture) {
-                return {
-                    text: "Tentative",
-                    color: "bg-yellow-300"
-                }
-            } else
-                return {
-                    text: "NO GO",
-                    color: "bg-red-300"
-                }
-        }
-        return {
-            text: "NO GO",
-            color: "bg-red-100"
-        }
+    const id = Number(idPromise)
+    if (!id) {
+        return <div>Invalid ID</div>
     }
 
-    function calculateScores(): ScoresProperties {
-        const getScore = (scores: number[], weights: number[]): number => {
-            return scores.reduce((acc, score, index) => acc + score * weights[index], 0);
-        }
-
-        const getWeights = (category: { weight: number }[]): number[] => {
-            const catWeights: number[] = []
-            for (const cat of category) {
-                catWeights.push(cat.weight)
-            }
-            return catWeights
-        }
-        return {
-            capabilities: getScore(Object.values((bid.metrics.capabilities)), getWeights(BidProfileText.Capabilities)),
-            competitiveness: getScore(Object.values((bid.metrics.competitiveness)), getWeights(BidProfileText.Competitiveness)),
-            commercials: getScore(Object.values((bid.metrics.commercials)), getWeights(BidProfileText.Commercials)),
-            risk: getScore(Object.values((bid.metrics.risk)), getWeights(BidProfileText.Risk)),
-        }
-    }
-
-    const badge = getBadgeText();
-    const text = badge ? badge.text : "";
-    const color = badge ? badge.color : "";
-    const scores = calculateScores()
-
+    const bid = await getBidById(id);
 
     if (!bid) {
         return (
-            <div className="flex justify-center items-center h-screen">
-                <p>Error fetching bid details. Please try again later.</p>
+            <div className="mx-4 dash_container">
+                Bid not found
             </div>
-        );
+        )
+    }
+    const bidData = bid[0]
+
+    if (!bidData.metrics) {
+        return (
+            <div className="mx-4 dash_container">
+                Metrics not found
+            </div>
+        )
     }
 
+    // getting metrics
+    const metrics = await getMetricsById(bidData.metrics)
 
-    const props: OverviewProperties = {
-        entry: bid,
-        scores
+    if (!metrics) {
+        return (
+            <div className="mx-4 dash_container">
+                Bid not found
+            </div>
+        )
+    }
+    // getting scores
+    const scoresArray = await getScoresByBidId(id)
+
+    if (!scoresArray) {
+        return (
+            <div className="mx-4 dash_container">
+                Missing scores
+            </div>
+        )
+    }
+    const latestScore = scoresArray[0]
+
+    if (!latestScore) {
+        return (
+            <div className="mx-4 dash_container">
+                Missing scores
+            </div>
+        )
     }
 
+    // getting phase
+    const phase = bidData.phase
 
     return (
-        <div className="grid grid-cols-9 my-2 w-full main-container overflow-hidden">
+        <div className="dash_container max-w-full"
+        // remove the break-all text-wrap classes at the end.
+        >
+            <Card className="shadow-none border-none overflow-scroll scrollbar-hide h-full mx-auto max-w-[1080px]">
+                {/* {JSON.stringify(bidData)} */}
+                <CardHeader className="relative text-xl">
+                    <CardTitle>
+                        {bidData.title}
+                    </CardTitle>
 
-            <Card className="shadow-none border-none min-w-full col-span-6 relative main-container">
-                {/* Render bid details here */}
-                {/* <Separator /> */}
-                <div className="flex gap-3">
-                    <div>
-                        <div>
-                            <CardTitle className="text-xl">
-                                {bid.bidData.title}
-                            </CardTitle>
-
-                            <CardDescription className="mt-2">
-                                {bid.bidData.des}
-                            </CardDescription>
-                        </div>
+                    {/* urgent */}
+                    <div className="top-4 right-8 absolute">
+                        {
+                            bidData.urgent && (
+                                <ShieldAlertIcon className="text-red-800" size={20} />
+                            )
+                        }
                     </div>
+                </CardHeader>
+
+                <CardContent className="flex flex-col gap-12">
+                    {/* bid data */}
+                    <BidData
+                        score={latestScore.overallScore}
+                        bidData={bidData}
+                    />
+
+                    {/* overview */}
+                    <Tabs defaultValue="overview">
+                        <TabsList className="ml-auto grid w-[300px] grid-cols-2">
+                            <TabsTrigger value="overview">
+                                Overview
+                            </TabsTrigger>
+                            <TabsTrigger value="history_overview">
+                                History
+                            </TabsTrigger>
+
+                        </TabsList>
+                        <TabsContent value="overview">
+                            <Suspense fallback={<OverviewGraphFallback />}>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Overview</CardTitle>
+                                        <CardDescription>
+                                            Showing the performance of the bid in the four metrics
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <OverviewGraph
+                                        props={scoresArray[0]}
+                                        phase={bidData.phase}
+                                    />
+                                </Card>
+
+                            </Suspense>
+                        </TabsContent>
+                        <TabsContent value="history_overview">
+                            <Suspense fallback={<OverviewGraphFallback />}>
+                                <OverviewGraphDetailed props={scoresArray} />
+                            </Suspense>
+                        </TabsContent>
+                    </Tabs>
 
 
-                    {/* <div>
-                        <Image
-                            src="/dt_global_logo.jpeg"
-                            alt="Donor logo"
-                            width={50}
-                            height={50}
+
+
+                    {/* capabilities */}
+                    <Suspense fallback={<Fallback />}>
+                        <Capabilities
+                            id={metrics[0].capabilitiesId}
+                            score={latestScore.capabilitiesScore}
+                            phase={phase}
+                            bidId={bidData.id}
                         />
-                    </div> */}
-                </div>
-                <div className="flex justify-end gap-2 my-2">
-                    <Button className={`${color} p-2 line-h-2 hover:bg-red-500`}>
-                        {text}
-                    </Button>
+                    </Suspense>
 
+                    {/* commercials */}
+                    <Suspense fallback={<Fallback />}>
+                        <Commercials
+                            id={metrics[0].commercialsId}
+                            score={latestScore.commercialsScore}
+                            phase={phase}
+                            bidId={bidData.id}
+                        />
+                    </Suspense>
 
-                    <Button className=" p-2 line-h-2">
-                        {Object.values(scores).reduce((total, current) => total + current, 0)}
-                    </Button>
-                    {bid.bidData.urgent && (<div className="ml-auto">
-                        <OctagonAlert size={36} color="#c01c28" />
-                    </div>)}
-                </div>
-                <div className="overflow-scroll mt-8 scrollbar-hide h-[70vh]">
-                    <Overview props={props} />
-                </div>
+                    {/* competitiveness */}
+                    <Suspense fallback={<Fallback />}>
+                        <Competitiveness
+                            id={metrics[0].competitivenessId}
+                            score={latestScore.competitivenessScore}
+                            phase={phase}
+                            bidId={bidData.id}
+                        />
+                    </Suspense>
 
+                    {/* risk */}
+                    <Suspense fallback={<Fallback />}>
+                        <Risk
+                            id={metrics[0].riskId}
+                            score={latestScore.riskScore}
+                            phase={phase}
+                            bidId={bidData.id}
+                        />
+                    </Suspense>
+                </CardContent>
+                <CardFooter>
+                    @max
+                </CardFooter>
             </Card>
-            <div className="pl-12 col-span-3 relative">
-                <div className="flex flex-col w-full">
-                    <div className="flex gap-2 ">
-                        <Commercials props={bid} />
-                        <DataCardFooter entry={bid} />
-                    </div>
-                </div>
-            </div>
         </div>
-    );
+    )
+}
+
+export default function Page({ params }: {
+    params: Promise<{
+        bidId: string;
+    }>;
+}) {
+    return (
+        <Suspense fallback={<Loading />}>
+            <AsyncPage params={params} />
+        </Suspense>
+    )
 }

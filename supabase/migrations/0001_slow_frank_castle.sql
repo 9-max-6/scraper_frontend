@@ -1,0 +1,1 @@
+ALTER TABLE "bids" ADD CONSTRAINT "bids_metrics_unique" UNIQUE("metrics");
